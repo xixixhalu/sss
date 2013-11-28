@@ -5,5 +5,11 @@
 # Home page
 GET     /                           controllers.Application.index()
 
+#Course Operation
+GET		/admin/course_list				controllers.CourseController.retrieveCourses()
+POST    /admin/deleteCourse/:id/delete	controllers.CourseController.deleteCourse(id: Integer)
+POST	/admin/editCourse/:id/edit		controllers.CourseController.editCourse(id: Integer)
+#POST	/admin/updateCourse				controllers.CourseController.updateCourse()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
