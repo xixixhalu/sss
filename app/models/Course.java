@@ -17,31 +17,31 @@ public class Course extends Model{
 	
 	@Id
 	@Column(name="course_id_pk")
-	public Integer id;
+	private Integer id;
 	
 	@Column(name="course_prefix")
-	public String prefix;
+	private String prefix;
 	
 	@Column(name="course_number")
-	public Integer number;
+	private Integer number;
 	
 	@Column(name="course_title")
-	public String title;
+	private String title;
 	
 	@Column(name="course_credit")
-	public Integer credit;
+	private Integer credit;
 	
 	@Column(name="course_prerequisite_ids")
-	public String prerequisite_ids;
+	private String prerequisite_ids;
 	
 	@Column(name="course_corequisite_ids")
-	public String corequisite_ids;
+	private String corequisite_ids;
 	
 	@Column(name="course_oncampus")
-	public String oncampus;
+	private String oncampus;
 	
 	@Column(name="course_online")
-	public String online;
+	private String online;
 	
 	/** Finder<Integer, Bar>, private variable, 
 	 * Method to realize select, update, delete statement in Play Framework*/

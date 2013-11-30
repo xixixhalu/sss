@@ -9,6 +9,8 @@ GET     /                           controllers.Application.index()
 GET		/admin/course_list				controllers.CourseController.retrieveCourses()
 POST    /admin/deleteCourse/:id/delete	controllers.CourseController.deleteCourse(id: Integer)
 POST	/admin/editCourse/:id/edit		controllers.CourseController.editCourse(id: Integer)
+GET		/admin/createCourse				controllers.CourseController.createCourse()
+POST	/admin/addCourse				controllers.CourseController.addCourse()
 #POST	/admin/updateCourse				controllers.CourseController.updateCourse()
 
 # Map static resources from the /public folder to the /assets URL path

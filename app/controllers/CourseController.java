@@ -24,6 +24,16 @@ public class CourseController extends Controller {
     	return ok(views.html.course_info.render(Course.find(id), courseForm));
     }
     
+    public static Result createCourse(){
+    	return ok(views.html.course_new.render());
+    }
+    
+    public static Result addCourse(){
+    	Course course = Form.form(Course.class).bindFromRequest().get();
+    	course.save();
+    	return redirect(routes.CourseController.retrieveCourses());
+    }
+    
     /*
     public static Result updateCourse(){
     	Form<Course> filledForm = courseForm.bindFromRequest();
@@ -34,9 +44,6 @@ public class CourseController extends Controller {
     		Course.update(filledForm.get());
     		return ok(views.html.course_list.render(Course.find()));
     	}
-    }*/
-    /*public static Result createCourse(){
-    	
     }*/
 
 }
