@@ -62,6 +62,8 @@ public class Course extends Model{
 		return finder.all();
 	}
 	
+	/** find(Integer), 
+	 * Corresponding to select statement for one record*/
 	public static Course find(Integer id){
 		return finder.ref(id);
 	}
