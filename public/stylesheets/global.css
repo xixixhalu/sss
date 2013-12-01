@@ -25,7 +25,7 @@ background: #EEE;
 .block{
 width:980px;
 height:inherit;
-overflow:scroll;
+overflow:none;
 }
 .degree_bar{
 height:26px;

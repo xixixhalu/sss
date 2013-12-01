@@ -71,20 +71,20 @@ Username: &nbsp;&nbsp;&nbsp;Zheng Bohan &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; lo
         <ul><li style="width:100px">Abbreviation</li>
         <li style="width:300px">Course Name</li>
         <li style="width:250px">Prerequisites</li>
-        <li style="width:250px">Corequisites</li>
-        <li style="width:80px">Options</li></ul>
+        <li style="width:200px">Corequisites</li>
+        <li style="width:130px">Options</li></ul>
         </div>
         @for(course <- courses) {
         <div class="list_row">
         <ul><li style="width:100px">@course.getPrefix() @course.getNumber() @course.getId()</li>
         <li style="width:300px">@course.getTitle()</li>
         <li style="width:250px">@course.getPrerequisite_ids()</li>
-        <li style="width:250px">@course.getCorequisite_ids()</li>
-        <li style="width:80px">
+        <li style="width:200px">@course.getCorequisite_ids()</li>
+        <li style="width:130px">
 			<form action="@routes.CourseController.editCourse(course.getId())" method="post">
 			<a href="javascript:{}" onclick="submit();">edit</a>
 			</form> 
-        	/ 
+        	<span>/</span> 
 			<form action="@routes.CourseController.deleteCourse(course.getId())" method="post">
 			<a href="javascript:{}" onclick="submit();">delete</a>
 			</form>
