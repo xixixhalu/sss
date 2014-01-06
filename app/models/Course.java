@@ -82,6 +82,8 @@ public class Course extends Model{
 		return;
 	}
 	
+	/** createNewEntity() : Course, 
+	 * Return a new ECourse entity*/
 	public static Course createNewEntity()
 	{
 		ECourse entity = new ECourse();
