@@ -1,3 +1,4 @@
+@(courseAddForm: Form[controllers.forms.CourseAddForm])
 
 <!doctype html>
 <html>
@@ -213,7 +214,7 @@
                 <div>
                     <div class="float_left">
                         <span>The prerequisites of the course : </span>
-                        <input type="text" name="prereq" class="b_text">
+                        <input type="text" name="prerequisite_ids" class="b_text" value="NULL">
                         <button>
                             ADD
                         </button>
@@ -240,7 +241,7 @@ the relation within boxes is AND">
                 <div>
                     <div class="float_left">
                         <span>The corequisites of the course : </span>
-                        <input type="text" name="coreq" class="b_text">
+                        <input type="text" name="corequisite_ids" class="b_text" value="NULL">
                         <button>
                             ADD
                         </button>

@@ -4,46 +4,61 @@ import models.Course;
 import play.*;
 import play.data.Form;
 import play.mvc.*;
+import controllers.forms.CourseEditForm;
 import views.html.*;
+import controllers.forms.*;
 
 public class CourseController extends Controller {
 
-	static Form<Course> courseForm = Form.form(Course.class);
-	
     public static Result retrieveCourses() {
-        return ok(views.html.course_list.render(Course.find()));
+        return ok(views.html.course_list.render(Course.getAll()));
     }
-    
+   
     public static Result deleteCourse(Integer id){
     	Course.delete(id);
     	return redirect(routes.CourseController.retrieveCourses());
     }
     
-    public static Result editCourse(Integer id){
-    	courseForm.fill(Course.find(id));
-    	return ok(views.html.course_info.render(Course.find(id), courseForm));
+    public static Result requestEditCoursePage(Integer id){
+    	Form<CourseEditForm> form = Form.form(CourseEditForm.class);
+    	return ok(views.html.course_info.render(Course.findById(id), form));
     }
     
-    public static Result createCourse(){
-    	return ok(views.html.course_new.render());
-    }
-    
-    public static Result addCourse(){
-    	Course course = Form.form(Course.class).bindFromRequest().get();
-    	course.save();
-    	return redirect(routes.CourseController.retrieveCourses());
-    }
-    
-    /*
-    public static Result updateCourse(){
-    	Form<Course> filledForm = courseForm.bindFromRequest();
+    public static Result updateCourse(Integer id){
+    	Form<CourseEditForm> filledForm = Form.form(CourseEditForm.class).bindFromRequest();
+    	
     	if(filledForm.hasErrors()) {
     		return badRequest("Wrong");
     	} 
     	else {
-    		Course.update(filledForm.get());
-    		return ok(views.html.course_list.render(Course.find()));
+    		CourseEditForm courseForm = filledForm.get();
+			Course course = Course.findById(id);
+			course.setPrefix(courseForm.prefix);
+			course.setTitle(courseForm.title);
+			course.setNumber(courseForm.number);
+			course.setCredit(courseForm.credit);
+			course.update();
+    		return redirect(routes.CourseController.retrieveCourses());
     	}
-    }*/
-
+    }
+    
+    public static Result requestCreateCoursePage(){
+    	Form<CourseAddForm> form = Form.form(CourseAddForm.class);
+    	return ok(views.html.course_new.render(form));
+    }
+    
+    public static Result addCourse(){
+    	Form<CourseAddForm> filledForm = Form.form(CourseAddForm.class).bindFromRequest();
+    	CourseAddForm courseForm = filledForm.get();
+    	Course course = Course.createNewEntity();
+    	course.setPrefix(courseForm.prefix);
+		course.setTitle(courseForm.title);
+		course.setNumber(courseForm.number);
+		course.setCredit(courseForm.credit);
+		course.setPrerequisite_ids(courseForm.prerequisite_ids);
+		course.setCorequisite_ids(courseForm.corequisite_ids);
+    	course.save();
+    	return redirect(routes.CourseController.retrieveCourses());
+    }
+           
 }

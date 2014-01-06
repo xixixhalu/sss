@@ -76,14 +76,14 @@ Username: &nbsp;&nbsp;&nbsp;Zheng Bohan &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; lo
         </div>
         @for(course <- courses) {
         <div class="list_row">
-        <ul><li style="width:100px">@course.getPrefix() @course.getNumber() @course.getId()</li>
+        <ul><li style="width:100px">@course.getPrefix() @course.getNumber()</li>
         <li style="width:300px">@course.getTitle()</li>
         <li style="width:250px">@course.getPrerequisite_ids()</li>
         <li style="width:200px">@course.getCorequisite_ids()</li>
         <li style="width:130px">
-			<form action="@routes.CourseController.editCourse(course.getId())" method="post">
+			<form action="@routes.CourseController.requestEditCoursePage(course.getId())" method="post">
 			<a href="javascript:{}" onclick="submit();">edit</a>
-			</form> 
+			</form>
         	<span>/</span> 
 			<form action="@routes.CourseController.deleteCourse(course.getId())" method="post">
 			<a href="javascript:{}" onclick="submit();">delete</a>
@@ -103,9 +103,11 @@ Username: &nbsp;&nbsp;&nbsp;Zheng Bohan &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; lo
         
     </div>
     <div class="block">
+    <!--
     <div class="page_bar">
     	<span style="width:40px;">prev</span><span>1</span><span>2</span><span>3</span><span>4</span><span style="width:40px;">next</span>
     </div>
+    -->
     </div>
     <!--列表结束-->
 </div>

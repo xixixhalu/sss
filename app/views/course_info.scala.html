@@ -1,4 +1,4 @@
-@(course: Course, courseForm: Form[Course])
+@(course: Course, courseEditForm: Form[controllers.forms.CourseEditForm])
 
 @import helper._
 
@@ -50,6 +50,7 @@
         <!--menu bar结束-->
 
         <!--网页主体-->
+        <form action="@routes.CourseController.updateCourse(course.getId())" method="post">
         <div class="content">
             <!--课程号课程名学分-->
             <div class="top">
@@ -66,7 +67,7 @@
                 </div>
                 <div>
                     <span class="title">Course Name: </span>
-                    <input type="text" name="name" class="name" value="@course.getTitle()">
+                    <input type="text" name="title" value="@course.getTitle()">
                     <span class="credit">Credits: </span>
                     <input type="text" name="credit" value="@course.getCredit()">
                 </div>
@@ -88,7 +89,9 @@
                             ADD
                         </button>
                     </div>
+                    
                     <div class="avil_list float_left">
+                    	<!--
                         <ul>
                             <li>
                                 <b>1.</b><span>Spring</span><span>2013</span>
@@ -163,7 +166,9 @@
                                 </button>
                             </li>
                         </ul>
+                        -->
                     </div>
+                    
                 </div>
                 <div class="float_right">
                     <div>
@@ -179,7 +184,9 @@
                             ADD
                         </button>
                     </div>
+                    
                     <div class="avil_list float_right">
+                    	<!--
                         <ul>
                             <li>
                                 <b>1.</b><span>Spring</span><span>2013</span>
@@ -200,7 +207,9 @@
                                 </button>
                             </li>
                         </ul>
+                        -->
                     </div>
+                    
                 </div>
             </div>
             <!--先行课-->
@@ -221,13 +230,14 @@ the relation between boxes is OR,
 the relation within boxes is AND">
                     </div>
                 </div>
-
+				<!--
                 <div class="req_list">
                     <div>
                         <span class="req">CS-115 OR CS-116</span><span>AND</span><span class="req">CS-117 OR CS-184</span>
                     </div>
 
                 </div>
+                -->
             </div>
             <!--并行课-->
             <div class="bottom">
@@ -251,9 +261,9 @@ the relation within boxes is AND">
             </div>
             <div align="center">
 	            
-
+					
         			<input type="submit" value="submit">
-    		
+    		</form>
             </div>
             <!--主体结束-->
 
