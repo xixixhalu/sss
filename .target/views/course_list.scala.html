@@ -1,0 +1,121 @@
+@(courses: List[Course])
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Course List</title>
+<link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
+<link href="/assets/stylesheets/admin.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!--最上面的导航栏-->
+<div class="nav_bar"><div class="block"><div class="degree_bar">
+Username: &nbsp;&nbsp;&nbsp;Zheng Bohan &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; logout
+</div></div></div>
+<!--最上面的导航栏完了-->
+
+<!--网站logo S. S. MS -->
+<div class="logo"><img src="/assets/images/management logo.png" width="960px;"/></div>
+<!--网站logo完了-->
+
+<!--menu bar开始-->
+<div class="menu_bar">
+	<ul>
+    	<li class="active">
+        	Course
+        </li>
+        <li>
+        	Course Group
+        </li>
+        <li>
+        	Requirement
+        </li>
+        <li>
+        	Degree Program
+        </li>
+        <li>
+        	Help
+        </li>
+    </ul>
+</div>
+<!--menu bar结束-->
+
+<!--网页主体-->
+<div class="content">
+	<!--添加按钮和搜索栏-->
+	<div class="content_top">
+    	<button class="float_left" onclick="window.location.href='createCourse'">
+    		Add New Course
+    	</button>
+    	<!--
+       <span class="float_left text">Can't find the course? Search for it: </span>
+       <div class="float_left">
+    	<form>
+        	  <input class="search_input" type="text">
+             <select>
+             		<option>By Name</option>
+                  <option>By Number</option>
+             </select>
+             <input type="submit">
+        </form>
+        </div>
+        -->
+    </div>
+    <!--添加按钮和搜索栏完了-->
+    
+    <!--列表 每列是一个div-->
+    <div class="list">
+    	<div class="list_row" style="background-color:#EEE;">
+        <ul><li style="width:100px">Abbreviation</li>
+        <li style="width:300px">Course Name</li>
+        <li style="width:250px">Prerequisites</li>
+        <li style="width:200px">Corequisites</li>
+        <li style="width:130px">Options</li></ul>
+        </div>
+        @for(course <- courses) {
+        <div class="list_row">
+        <ul><li style="width:100px">@course.getPrefix() @course.getNumber()</li>
+        <li style="width:300px">@course.getTitle()</li>
+        <li style="width:250px">@course.getPrerequisite_ids()</li>
+        <li style="width:200px">@course.getCorequisite_ids()</li>
+        <li style="width:130px">
+			<form action="@routes.CourseController.requestEditCoursePage(course.getId())" method="post">
+			<a href="javascript:{}" onclick="submit();">edit</a>
+			</form>
+        	<span>/</span> 
+			<form action="@routes.CourseController.deleteCourse(course.getId())" method="post">
+			<a href="javascript:{}" onclick="submit();">delete</a>
+			</form>
+        </li></ul>
+        </div>
+        <!--
+        <div class="list_row"  style="background-color:#F8F8F8;">
+        <ul><li style="width:100px">@course.getPrefix()  @course.getNumber()</li>
+        <li style="width:300px">@course.getTitle()</li>
+        <li style="width:250px">@course.getPrerequisite_ids()</li>
+        <li style="width:250px">@course.getCorequisite_ids()</li>
+        <li style="width:80px">Edit / Delete</li></ul>
+        </div>
+        -->
+        }
+        
+    </div>
+    <div class="block">
+    <!--
+    <div class="page_bar">
+    	<span style="width:40px;">prev</span><span>1</span><span>2</span><span>3</span><span>4</span><span style="width:40px;">next</span>
+    </div>
+    -->
+    </div>
+    <!--列表结束-->
+</div>
+<!--主体完了-->
+<div class="footer">
+	<span>Students Scheduling System in Stevens Institute of Technology</span><span>Copy right: Team #10</span>
+</div>
+</body>
+</html>
+
+
