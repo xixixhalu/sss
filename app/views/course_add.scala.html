@@ -1,6 +1,4 @@
-@(course: Course, courseEditForm: Form[controllers.forms.CourseEditForm])
-
-@import helper._
+@(courseAddForm: Form[controllers.forms.CourseAddForm])
 
 <!doctype html>
 <html>
@@ -23,7 +21,7 @@
         <!--最上面的导航栏完了-->
 
         <!--网站logo S. S. MS -->
-        <div class="logo"><img src="/assets/images/Screen Shot 2013-11-25 at 10.30.10 PM.png" width="960px;"/>
+        <div class="logo"><img src="/assets/images/management logo.png" width="960px;"/>
         </div>
         <!--网站logo完了-->
 
@@ -50,26 +48,27 @@
         <!--menu bar结束-->
 
         <!--网页主体-->
-        <form action="@routes.CourseController.updateCourse(course.getId())" method="post">
+       	<form action="@routes.CourseController.addCourse()" method="post">
+		
         <div class="content">
             <!--课程号课程名学分-->
             <div class="top">
 
                 <div class="location">
-                    <span>course list -></span><span> CS - 115 Introduction to Computer Science</span>
+                    <span>course list -></span><span>Add new course</span>
                 </div>
 
                 <div>
                     <span class="title">Rrefix&amp;Number: </span>
-					<input type="text" name="prefix" value="@course.getPrefix()">
+                    <input type="text" name="prefix">
                     <span> - </span>
-                    <input type="text" name="number" value="@course.getNumber()">
+                    <input type="text" name="number">
                 </div>
                 <div>
                     <span class="title">Course Name: </span>
-                    <input type="text" name="title" value="@course.getTitle()">
+                    <input type="text" name="title" class="name">
                     <span class="credit">Credits: </span>
-                    <input type="text" name="credit" value="@course.getCredit()">
+                    <input type="text" name="credit">
                 </div>
             </div>
 
@@ -184,7 +183,6 @@
                             ADD
                         </button>
                     </div>
-                    
                     <div class="avil_list float_right">
                     	<!--
                         <ul>
@@ -209,7 +207,6 @@
                         </ul>
                         -->
                     </div>
-                    
                 </div>
             </div>
             <!--先行课-->
@@ -217,7 +214,7 @@
                 <div>
                     <div class="float_left">
                         <span>The prerequisites of the course : </span>
-                        <input type="text" name="prereq" class="b_text">
+                        <input type="text" name="prerequisite_ids" class="b_text" value="NULL">
                         <button>
                             ADD
                         </button>
@@ -244,7 +241,7 @@ the relation within boxes is AND">
                 <div>
                     <div class="float_left">
                         <span>The corequisites of the course : </span>
-                        <input type="text" name="coreq" class="b_text">
+                        <input type="text" name="corequisite_ids" class="b_text" value="NULL">
                         <button>
                             ADD
                         </button>
@@ -260,11 +257,9 @@ the relation within boxes is AND">
             </div>
             </div>
             <div align="center">
-	            
-					
-        			<input type="submit" value="submit">
-    		</form>
+            	<input type="submit" value="submit">
             </div>
+			</form>
             <!--主体结束-->
 
             <div class="footer">

@@ -21,7 +21,7 @@ public class CourseController extends Controller {
     
     public static Result requestEditCoursePage(Integer id){
     	Form<CourseEditForm> form = Form.form(CourseEditForm.class);
-    	return ok(views.html.course_info.render(Course.findById(id), form));
+    	return ok(views.html.course_edit.render(Course.findById(id), form));
     }
     
     public static Result updateCourse(Integer id){
@@ -44,7 +44,7 @@ public class CourseController extends Controller {
     
     public static Result requestCreateCoursePage(){
     	Form<CourseAddForm> form = Form.form(CourseAddForm.class);
-    	return ok(views.html.course_new.render(form));
+    	return ok(views.html.course_add.render(form));
     }
     
     public static Result addCourse(){
