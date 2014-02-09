@@ -21,6 +21,7 @@ public class CourseController extends Controller {
     
     public static Result requestEditCoursePage(Integer id){
     	Form<CourseEditForm> form = Form.form(CourseEditForm.class);
+    	
     	return ok(views.html.course_edit.render(Course.findById(id), form));
     }
     
@@ -37,6 +38,10 @@ public class CourseController extends Controller {
 			course.setTitle(courseForm.title);
 			course.setNumber(courseForm.number);
 			course.setCredit(courseForm.credit);
+			course.setPrerequisite_ids(courseForm.prerequisite_ids);
+			course.setCorequisite_ids(courseForm.corequisite_ids);
+			course.setOncampus(courseForm.oncampus);
+			course.setOnline(courseForm.online);
 			course.update();
     		return redirect(routes.CourseController.retrieveCourses());
     	}
@@ -57,6 +62,8 @@ public class CourseController extends Controller {
 		course.setCredit(courseForm.credit);
 		course.setPrerequisite_ids(courseForm.prerequisite_ids);
 		course.setCorequisite_ids(courseForm.corequisite_ids);
+		course.setOncampus(courseForm.oncampus);
+		course.setOnline(courseForm.online);
     	course.save();
     	return redirect(routes.CourseController.retrieveCourses());
     }

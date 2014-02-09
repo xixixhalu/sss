@@ -13,6 +13,8 @@ POST	/admin/updateCourse				controllers.CourseController.updateCourse(id: Intege
 GET		/admin/createCourse				controllers.CourseController.requestCreateCoursePage()
 POST	/admin/addCourse				controllers.CourseController.addCourse()
 
+#Course Group Operation
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
