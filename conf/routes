@@ -31,11 +31,21 @@ POST	/admin/addSr				controllers.SrController.addSr()
 
 #Requirement Operation
 GET		/admin/requirement_list				controllers.RequirementController.retrieveRequirements()
-POST    /admin/deleteRequirement				controllers.RequirementController.deleteRequirement(id: Integer)
+POST    /admin/deleteRequirement			controllers.RequirementController.deleteRequirement(id: Integer)
 POST	/admin/editRequirement				controllers.RequirementController.requestEditRequirementPage(id: Integer)
-POST	/admin/updateRequirement				controllers.RequirementController.updateRequirement(id: Integer)
-GET		/admin/createRequirement				controllers.RequirementController.requestCreateRequirementPage()
+POST	/admin/updateRequirement			controllers.RequirementController.updateRequirement(id: Integer)
+GET		/admin/createRequirement			controllers.RequirementController.requestCreateRequirementPage()
 POST	/admin/addRequirement				controllers.RequirementController.addRequirement()
+
+#Degree Operation
+GET		/admin/degree_list			controllers.DegreeController.retrieveDegrees()
+POST    /admin/deleteDegree			controllers.DegreeController.deleteDegree(id: Integer)
+POST	/admin/editDegree			controllers.DegreeController.requestEditDegreePage(id: Integer)
+POST	/admin/updateDegree			controllers.DegreeController.updateDegree(id: Integer)
+GET		/admin/createDegree			controllers.DegreeController.requestCreateDegreePage()
+POST	/admin/addDegree			controllers.DegreeController.addDegree()
+
+#GET		/admin/help					controllers.Application.help()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

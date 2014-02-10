@@ -124,7 +124,7 @@ public class Cg extends Model{
 		if(courses != "null")
     	{
     		String[] courseList = courses.split(",");
-    		int pos = 0;
+
     		for(int i = 0; i < courseList.length; i++)
     		{
     			CourseList.add(courseList[i]);

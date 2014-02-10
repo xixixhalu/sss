@@ -75,7 +75,7 @@ function remove() {
     }
 }
 
-function onSub(e) {
+function onCgSub(e) {
     var s_courses = document.getElementsByName("s_courses");
     var selected_course = new Array;
     if (s_courses) {
@@ -88,6 +88,24 @@ function onSub(e) {
     hidden.type = "hidden";
     hidden.value = selected_course;
     hidden.name = "course_ids";
+    document.getElementById("selected").appendChild(hidden);
+    
+    e.submit();
+}
+
+function onDegreeSub(e) {
+    var s_courses = document.getElementsByName("s_courses");
+    var selected_course = new Array;
+    if (s_courses) {
+        for ( i = 0; i < s_courses.length; i++) {
+            selected_course.push(s_courses[i].value);
+        }
+    }
+
+    var hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.value = selected_course;
+    hidden.name = "req_ids";
     document.getElementById("selected").appendChild(hidden);
     
     e.submit();
