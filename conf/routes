@@ -29,5 +29,13 @@ POST	/admin/updateSr				controllers.SrController.updateSr(id: Integer)
 GET		/admin/createSr				controllers.SrController.requestCreateSrPage()
 POST	/admin/addSr				controllers.SrController.addSr()
 
+#Requirement Operation
+GET		/admin/requirement_list				controllers.RequirementController.retrieveRequirements()
+POST    /admin/deleteRequirement				controllers.RequirementController.deleteRequirement(id: Integer)
+POST	/admin/editRequirement				controllers.RequirementController.requestEditRequirementPage(id: Integer)
+POST	/admin/updateRequirement				controllers.RequirementController.updateRequirement(id: Integer)
+GET		/admin/createRequirement				controllers.RequirementController.requestCreateRequirementPage()
+POST	/admin/addRequirement				controllers.RequirementController.addRequirement()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
