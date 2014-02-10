@@ -9,3 +9,10 @@ function dropdown() {
     else
         document.getElementById("dropdown").style.display = "none";
 }
+
+function onDelConf(e){
+	var c=confirm("Are you sure?");
+	if(c==true)	{
+		e.submit();
+	}
+}

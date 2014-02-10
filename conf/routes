@@ -14,7 +14,12 @@ GET		/admin/createCourse				controllers.CourseController.requestCreateCoursePage
 POST	/admin/addCourse				controllers.CourseController.addCourse()
 
 #Course Group Operation
-
+GET		/admin/cg_list				controllers.CgController.retrieveCgs()
+POST    /admin/deleteCg				controllers.CgController.deleteCg(id: Integer)
+POST	/admin/EditCg				controllers.CgController.requestEditCgPage(id: Integer)
+POST	/admin/updateCg				controllers.CgController.updateCg(id: Integer)
+GET		/admin/createCg				controllers.CgController.requestCreateCgPage()
+POST	/admin/addCg				controllers.CgController.addCg()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
