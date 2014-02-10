@@ -21,5 +21,13 @@ POST	/admin/updateCg				controllers.CgController.updateCg(id: Integer)
 GET		/admin/createCg				controllers.CgController.requestCreateCgPage()
 POST	/admin/addCg				controllers.CgController.addCg()
 
+#Simple Requirement Operation
+GET		/admin/sr_list				controllers.SrController.retrieveSrs()
+POST    /admin/deleteSr				controllers.SrController.deleteSr(id: Integer)
+POST	/admin/EditSr				controllers.SrController.requestEditSrPage(id: Integer)
+POST	/admin/updateSr				controllers.SrController.updateSr(id: Integer)
+GET		/admin/createSr				controllers.SrController.requestCreateSrPage()
+POST	/admin/addSr				controllers.SrController.addSr()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -19,7 +19,7 @@ drop table if exists course;
 /*==============================================================*/
 create table course
 (
-   ourse_id_pk         int not null auto_increment,
+   course_id_pk         int not null auto_increment,
    course_prefix        varchar(20),
    course_number        int,
    course_title         varchar(50),
