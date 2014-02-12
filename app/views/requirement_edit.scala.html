@@ -65,38 +65,40 @@
                 <span><a href="requirement_list">Requirement </a>-></span><span> @requirement.getTitle()</span>
             </div>
             <form action="@routes.RequirementController.updateRequirement(requirement.getId())" method="post">
-            <div class="top">
-                <div>
-                    <span>Title:
-                        <input type="text" name="title" value="@requirement.getTitle()">
+                <div class="top">
+                    <div>
+                        <span>Title:
+                            <input type="text" name="title" value="@requirement.getTitle()">
+                        </span>
+                    </div>
+                </div>
+                <div class="float_left left">
+                    <span>Add simple requirement: </span>
+                    <select class="r_list" id="s_req" name="sr_ids">
+                        @for(sr <- srs) {
+                        <option value="@sr.getId()">@sr.getTitle()</option>
+                        }
+                        <!--<option value="simple requirement 2">simple requirement 2</option>
+                        <option value="simple requirement 3">simple requirement 3</option>
+                        <option value="simple requirement 4">simple requirement 4</option>-->
+                    </select>
+                    <a href="javascript:addSimpleReq()">ADD</a>
+                    <div>
+                        <ul class="s_list" id="s_list">
+                            <li>
+                                List of Simple Requriement:
+                            </li>
+                        </ul>
+                    </div>
+                    <span class="s_submit">
+                        <input type="submit" value="submit">
                     </span>
                 </div>
-            </div>
-            <div class="float_left left">
-                <span>Add simple requirement: </span>
-                <select class="r_list" id="s_req" name="sr_ids">
-                @for(sr <- srs) {
-                    <option value="@sr.getId()">@sr.getTitle()</option>
-                }
-                    <!--<option value="simple requirement 2">simple requirement 2</option>
-                    <option value="simple requirement 3">simple requirement 3</option>
-                    <option value="simple requirement 4">simple requirement 4</option>-->
-                </select>
-                <button onclick="addSimpleReq()">
-                    ADD
-                </button>
-                <div>
-                    <ul class="s_list" id="s_list">
-                        <li>List of Simple Requriement: </li>
-                    </ul>
-                </div>
-                <span class="s_submit"><input type="submit" value="submit"></span>
-            </div>
-            <div class="right float_right">
-                <div class="list_head">
-                    Courses in (Course Group 1) <a>Edit</a>
-                </div>
-            </div>
+                <!-- <div class="right float_right">
+                    <div class="list_head">
+                        Courses in (Course Group 1) <a>Edit</a>
+                    </div>
+                </div> -->
             </form>
         </div>
 
