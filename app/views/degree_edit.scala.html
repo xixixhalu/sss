@@ -5,7 +5,7 @@
 
 <!doctype html>
 <html>
-	<head>
+    <head>
         <meta charset="UTF-8">
         <title>Degree Program</title>
         <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
@@ -14,7 +14,7 @@
         <script src="/assets/javascripts/course_group.js"></script>
     </head>
 
-<body>
+    <body>
         <!--最上面的导航栏-->
         <div class="nav_bar">
             <div class="block">
@@ -68,61 +68,59 @@
             <div class="location">
                 <span><a href="degree_list">Degree Program </a>-></span><span> @degree.getTitle()</span>
             </div>
-			<form action="@routes.DegreeController.updateDegree(degree.getId())" method="post">
-            <div class="top">
-                <div>
-                    
-                    <span>Title:
-                        <input type="text" name="title" value="@degree.getTitle()" style="width:350px; margin-left:15px;">
-                    </span>
+            <form action="@routes.DegreeController.updateDegree(degree.getId())" method="post">
+                <div class="top">
+                    <div>
+
+                        <span>Title:
+                            <input type="text" name="title" value="@degree.getTitle()" style="width:350px; margin-left:15px;">
+                        </span>
+                    </div>
                 </div>
-            </div>
 
-           
-
-            <div class="course_list float_left">
-                <ul>
-                @for(requirement <- requirements) {
-                    <li>
-                        <input type="checkbox" name="courses" value="@requirement.getId()">
-                        <span id="@requirement.getId()">@requirement.getTitle()</span>
-                    </li>
-                    }
-                    <!--<li>
+                <div class="course_list float_left">
+                    <ul>
+                        @for(requirement <- requirements) {
+                        <li>
+                            <input type="checkbox" name="courses" value="@requirement.getId()">
+                            <span id="@requirement.getId()">@requirement.getTitle()</span>
+                        </li>
+                        }
+                        <!--<li>
                         <input type="checkbox" name="courses" value="Requirement 2">
                         <span>Requirement 2</span>
-                    </li>
-                    <li>
+                        </li>
+                        <li>
                         <input type="checkbox" name="courses" value="Requirement 3">
                         <span>Requirement 3</span>
-                    </li>
-                    <li>
+                        </li>
+                        <li>
                         <input type="checkbox" name="courses" value="Requirement 4">
                         <span>Requirement 4</span>
-                    </li>-->
-                </ul>
-            </div>
-            <div class="middle">
-                <a href="javascript:add()">--></a>
-                <br>
-                <a href="javascript:remove()"><--</a>
-            </div>
-            <div class="course_list float_right">
-                <ul id="selected">
-                    @for(req_id <- degree.getReq_ids()){
-                    <li>
-                        <input type="checkbox" name="s_courses" value="@req_id">
-                        <span>@Requirement.findById(Integer.parseInt(req_id)).getTitle()</span>
-                    </li>
-                    }
-                </ul>
-            </div>
-            <div class="submit">
+                        </li>-->
+                    </ul>
+                </div>
+                <div class="middle">
+                    <a href="javascript:add()">--></a>
+                    <br>
+                    <a href="javascript:remove()"><--</a>
+                </div>
+                <div class="course_list float_right">
+                    <ul id="selected">
+                        @for(req_id <- degree.getReq_ids()){
+                        <li>
+                            <input type="checkbox" name="s_courses" value="@req_id">
+                            <span>@Requirement.findById(Integer.parseInt(req_id)).getTitle()</span>
+                        </li>
+                        }
+                    </ul>
+                </div>
+                <div class="submit">
 
-                <input type="submit" value="SUBMIT" onclick="onDegreeSub(this.parentElement);"/>
+                    <input type="submit" value="SUBMIT" onclick="onDegreeSub(this.parentElement);"/>
 
-            </div>
-			</form>
+                </div>
+            </form>
         </div>
         <!-- end of main content -->
         <div class="footer">
