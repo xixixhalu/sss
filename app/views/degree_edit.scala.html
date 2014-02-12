@@ -85,7 +85,7 @@
                 @for(requirement <- requirements) {
                     <li>
                         <input type="checkbox" name="courses" value="@requirement.getId()">
-                        <span>@requirement.getTitle()</span>
+                        <span id="@requirement.getId()">@requirement.getTitle()</span>
                     </li>
                     }
                     <!--<li>
@@ -111,7 +111,7 @@
                 <ul id="selected">
                     @for(req_id <- degree.getReq_ids()){
                     <li>
-                        <input type="checkbox" name="courses" value="@req_id">
+                        <input type="checkbox" name="s_courses" value="@req_id">
                         <span>@Requirement.findById(Integer.parseInt(req_id)).getTitle()</span>
                     </li>
                     }
