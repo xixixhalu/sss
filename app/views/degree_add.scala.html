@@ -8,7 +8,7 @@
         <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/course_group.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
-        <script src="/assets/javascripts/degree.js"></script>
+        <script src="/assets/javascripts/course_group.js"></script>
     </head>
 
 <body>
@@ -82,7 +82,7 @@
                 @for(requirement <- requirements) {
                     <li>
                         <input type="checkbox" name="courses" value="@requirement.getId()">
-                        <span>@requirement.getTitle()</span>
+                        <span id="@requirement.getId()">@requirement.getTitle()</span>
                     </li>
                     }
                     <!--<li>
@@ -111,7 +111,7 @@
             </div>
             <div class="submit">
 
-                <input type="submit" value="SUBMIT" onclick="onSub(this.parentElement);"/>
+                <input type="submit" value="SUBMIT" onclick="onDegreeSub(this.parentElement);"/>
 
             </div>
 			</form>
