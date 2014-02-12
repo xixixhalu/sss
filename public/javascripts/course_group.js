@@ -19,9 +19,10 @@ function add() {
         }
     }
     var result=combineCourse(checked_course,selected_course);
+    
     var resultName=new Array;
     for (i=0; i<result.length;i++){
-    	resultName.push=document.getElementById(result[i]).innerHTML;
+    	resultName.push(document.getElementById(result[i]).innerHTML);
     	
     }
     //alert(selected_course[0]);
