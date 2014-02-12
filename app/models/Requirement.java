@@ -113,21 +113,24 @@ public class Requirement extends Model{
 	
 	public String getSr_ids() {
 		 String simple_req=this.entity.getSr_ids();
-	        String[] idList=simple_req.split("and");
+	        String[] idList=simple_req.split("AND");
 	        String[] titleList=new String[idList.length];
 	        String[] relationList=new String[idList.length];
 	        String[] priorityList=new String[idList.length];
 	        
 	        for(int i=0;i<idList.length;i++){
 	        	titleList[i]=Sr.findById(Integer.parseInt(idList[i])).getTitle();
-	        	relationList[i]="and";
+	        	if(i==idList.length-1)
+	        		relationList[i]="";
+	        	else
+	        		relationList[i]="and";
 	        	priorityList[i]="1";
 	        }
 	        
 	        JSONArray json_srArray=new JSONArray();
-	        JSONObject json_sr=new JSONObject();
 	        try {
 	        	for(int i=0; i<idList.length;i++){
+	    	        JSONObject json_sr=new JSONObject();
 		        	json_sr.put("id", idList[i]);
 		        	json_sr.put("name", titleList[i]);
 		        	json_sr.put("relation", relationList[i]);
