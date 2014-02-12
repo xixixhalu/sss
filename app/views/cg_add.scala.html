@@ -90,7 +90,7 @@
                 @for(course <- courses){
                     <li>
                         <input type="checkbox" name="courses" value="@course.getId()">
-                        <span>@course.getPrefix() @course.getNumber() @course.getTitle()</span>
+                        <span id="@course.getId()">@course.getPrefix() @course.getNumber() @course.getTitle()</span>
                     </li>
                     }
                     <!--<li>
