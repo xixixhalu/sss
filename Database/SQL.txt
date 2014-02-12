@@ -24,10 +24,10 @@ create table course
    course_number        int,
    course_title         varchar(50),
    course_credit        int,
-   course_prerequisite_ids varchar(20),
-   course_corequisite_ids varchar(20),
-   course_oncampus      varchar(20),
-   course_online        varchar(20),
+   course_prerequisite_ids varchar(50),
+   course_corequisite_ids varchar(50),
+   course_oncampus      varchar(10),
+   course_online        varchar(10),
    primary key (course_id_pk)
 );
 
@@ -40,6 +40,7 @@ drop table if exists course_group;
 create table course_group
 (
    cg_id_pk             int not null auto_increment,
+   cg_prefix            varchar(20),
    cg_title             varchar(50),
    cg_course_ids        varchar(20),
    primary key (cg_id_pk)

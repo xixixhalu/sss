@@ -1,0 +1,58 @@
+@charset "UTF-8";
+/* CSS Document */
+.top{
+	width:960px;
+	float:left;
+	margin-left:15px;
+	margin-bottom:20px;
+}
+.top input{
+	margin-left:15px;
+	width:300px;
+}
+.left span{
+	margin-right:10px;
+}
+.r_list{
+	width:180px;
+}
+.left{
+	width:410px;
+	height:auto;
+	margin-bottom:50px;
+}
+.s_submit{
+	margin-left:140px;
+	margin-top:15px;
+	float:left;
+}
+.right{
+	width:410px;
+	height:400px;
+	border:solid 1px #bbb;
+	margin-bottom:50px;
+	padding-top: 10px;
+	padding-left: 20px;
+	color: #999;
+	overflow: scroll;
+}
+.list_head a{
+	float:right;
+	margin-right:15px;
+}
+.s_list{
+	padding-left:20px;
+	padding-top:10px;
+	margin-top:20px;
+	width:410px;
+	border:solid 1px #bbb;
+}
+.s_list li{
+	margin-bottom:10px;
+}
+.s_list li span{
+	width:220px;
+	float:left;
+	border:solid 1px #bbb;
+	padding-left:10px;
+}

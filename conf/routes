@@ -13,6 +13,39 @@ POST	/admin/updateCourse				controllers.CourseController.updateCourse(id: Intege
 GET		/admin/createCourse				controllers.CourseController.requestCreateCoursePage()
 POST	/admin/addCourse				controllers.CourseController.addCourse()
 
+#Course Group Operation
+GET		/admin/cg_list				controllers.CgController.retrieveCgs()
+POST    /admin/deleteCg				controllers.CgController.deleteCg(id: Integer)
+POST	/admin/EditCg				controllers.CgController.requestEditCgPage(id: Integer)
+POST	/admin/updateCg				controllers.CgController.updateCg(id: Integer)
+GET		/admin/createCg				controllers.CgController.requestCreateCgPage()
+POST	/admin/addCg				controllers.CgController.addCg()
+
+#Simple Requirement Operation
+GET		/admin/sr_list				controllers.SrController.retrieveSrs()
+POST    /admin/deleteSr				controllers.SrController.deleteSr(id: Integer)
+POST	/admin/EditSr				controllers.SrController.requestEditSrPage(id: Integer)
+POST	/admin/updateSr				controllers.SrController.updateSr(id: Integer)
+GET		/admin/createSr				controllers.SrController.requestCreateSrPage()
+POST	/admin/addSr				controllers.SrController.addSr()
+
+#Requirement Operation
+GET		/admin/requirement_list				controllers.RequirementController.retrieveRequirements()
+POST    /admin/deleteRequirement			controllers.RequirementController.deleteRequirement(id: Integer)
+POST	/admin/editRequirement				controllers.RequirementController.requestEditRequirementPage(id: Integer)
+POST	/admin/updateRequirement			controllers.RequirementController.updateRequirement(id: Integer)
+GET		/admin/createRequirement			controllers.RequirementController.requestCreateRequirementPage()
+POST	/admin/addRequirement				controllers.RequirementController.addRequirement()
+
+#Degree Operation
+GET		/admin/degree_list			controllers.DegreeController.retrieveDegrees()
+POST    /admin/deleteDegree			controllers.DegreeController.deleteDegree(id: Integer)
+POST	/admin/editDegree			controllers.DegreeController.requestEditDegreePage(id: Integer)
+POST	/admin/updateDegree			controllers.DegreeController.updateDegree(id: Integer)
+GET		/admin/createDegree			controllers.DegreeController.requestCreateDegreePage()
+POST	/admin/addDegree			controllers.DegreeController.addDegree()
+
+#GET		/admin/help					controllers.Application.help()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

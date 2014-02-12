@@ -1,14 +1,14 @@
-@(courses: List[Course])
+@(degrees: List[Degree])
 
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Course</title>
-        <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
+<head>
+<meta charset="UTF-8">
+<title>Degree Program</title>
+<link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/admin.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
-    </head>
+</head>
 
     <body>
         <!--最上面的导航栏-->
@@ -29,7 +29,7 @@
         <!--menu bar开始-->
         <div class="menu_bar">
             <ul>
-                <li class="active">
+                <li>
                     <a href="course_list">Course</a>
                 </li>
                 <li>
@@ -50,77 +50,49 @@
                     </div>
                     <!-- end of dropdown list-->
                 </li>
-                <li>
+                <li class="active">
                     <a href="degree_list">Degree Program</a>
                 </li>
                 <li>
-                    <a href="help">Help</a>
+                    <a href="help.html">Help</a>
                 </li>
             </ul>
         </div>
         <!--menu bar结束-->
-
         <!--网页主体-->
         <div class="content">
             <!--添加按钮和搜索栏-->
             <div class="content_top">
-                <a class="float_left" href="createCourse">Add New Course</a>
-                <!--<span class="float_left text">Can't find the course? Search for it: </span>
-                <div class="float_left">
-                    <form>
-                        <input class="search_input" type="text">
-                        <select>
-                            <option>By Name</option>
-                            <option>By Number</option>
-                        </select>
-                        <input type="submit">
-                    </form>
-                </div>-->
+                <a class="float_left" href="createDegree">Add New Degree Program</a>
             </div>
             <!--添加按钮和搜索栏完了-->
 
             <!--列表 每列是一个div-->
             <div class="list">
-                	<div class="list_row" style="background-color:#EEE;">
+                <div class="list_row" style="background-color:#EEE;">
                     <ul>
-                        <li style="width:100px">
-                            Abbreviation
+                        <li style="width:760px">
+                            Title
                         </li>
-                        <li style="width:300px">
-                            Course Name
-                        </li>
-                        <li style="width:250px">
-                            Prerequisites
-                        </li>
+                       
                         <li style="width:200px">
-                            Corequisites
-                        </li>
-                        <li style="width:130px">
                             Options
                         </li>
                     </ul>
                 </div>
-                @for(course <- courses) {
+                @for(degree <- degrees) {
                 <div class="list_row">
                     <ul>
-                        <li style="width:100px">
-                            @course.getPrefix() @course.getNumber()
+                        <li style="width:760px">
+                            @degree.getTitle()
                         </li>
-                        <li style="width:300px">
-                            @course.getTitle()
-                        </li>
-                        <li style="width:250px">
-                            @course.getPrerequisite_ids()
-                        </li>
+                        
                         <li style="width:200px">
-                            @course.getCorequisite_ids()
-                        </li>
-                        <li style="width:130px">
-                            <form style="float:left" action="@routes.CourseController.requestEditCoursePage(course.getId())" method="post">
+                            <form style="float:left" action="@routes.DegreeController.requestEditDegreePage(degree.getId())" method="post">
 								<a href="javascript:{}" onclick="submit();">edit</a>
 							</form>
         					<span style="float:left">&nbsp;/&nbsp;</span> 
-							<form style="float:left" action="@routes.CourseController.deleteCourse(course.getId())" method="post">
+							<form style="float:left" action="@routes.DegreeController.deleteDegree(degree.getId())" method="post">
 								<a href="javascript:{}" onclick="onDelConf(this.parentElement);">delete</a>
 							</form>
                         </li>
@@ -129,57 +101,33 @@
                 }
                 <!--<div class="list_row"  style="background-color:#F8F8F8;">
                     <ul>
-                        <li style="width:100px">
-                            CS 146
+                        <li style="width:760px">
+                            H1L02
                         </li>
-                        <li style="width:300px">
-                            Web Foundation
-                        </li>
-                        <li style="width:250px">
-                            None
-                        </li>
+                        
                         <li style="width:200px">
-                            None
-                        </li>
-                        <li style="width:130px">
                             Edit / Delete
                         </li>
                     </ul>
                 </div>
                 <div class="list_row">
                     <ul>
-                        <li style="width:100px">
-                            CS 146
+                        <li style="width:760px">
+                            H1L02
                         </li>
-                        <li style="width:300px">
-                            Web Foundation
-                        </li>
-                        <li style="width:250px">
-                            None
-                        </li>
+                        
                         <li style="width:200px">
-                            None
-                        </li>
-                        <li style="width:130px">
                             Edit / Delete
                         </li>
                     </ul>
                 </div>
                 <div class="list_row"  style="background-color:#F8F8F8;">
                     <ul>
-                        <li style="width:100px">
-                            CS 146
+                        <li style="width:760px">
+                            H1L02
                         </li>
-                        <li style="width:300px">
-                            Web Foundation
-                        </li>
-                        <li style="width:250px">
-                            None
-                        </li>
+                        
                         <li style="width:200px">
-                            None
-                        </li>
-                        <li style="width:130px">
                             Edit / Delete
                         </li>
                     </ul>

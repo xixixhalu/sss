@@ -1,0 +1,48 @@
+@charset "UTF-8";
+/* CSS Document */
+.top{
+	width:960px;
+	float:left;
+	margin-left:15px;
+}
+.title{
+	margin-left:50px;
+}
+.title input{
+	width:500px;
+}
+.course_list{
+	width:410px;
+	height: 500px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #bbb;
+	margin-bottom: 50px;
+	margin-top: 15px;
+	padding-top: 10px;
+	padding-left: 20px;
+	color: #999;
+	overflow: scroll;
+}
+.course_list li{
+	clear:both;
+}
+.search{
+	width:960px;
+	margin-top:20px;
+	padding-left:15px;
+	float:left;
+}
+.search input{
+	width:230px;
+	margin-right:10px;
+}
+.middle{
+	height:280px;
+	width:30px;
+	margin-bottom: 50px;
+	margin-top: 15px;
+	margin-left:40px;
+	padding-top: 230px;
+	float:left;
+}
