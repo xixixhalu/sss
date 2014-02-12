@@ -29,7 +29,7 @@ public class CourseController extends Controller {
     	Form<CourseEditForm> filledForm = Form.form(CourseEditForm.class).bindFromRequest();
     	
     	if(filledForm.hasErrors()) {
-    		return badRequest("Wrong");
+    		return badRequest("Wrong agian and agian!");
     	} 
     	else {
     		CourseEditForm courseForm = filledForm.get();
