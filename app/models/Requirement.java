@@ -120,7 +120,7 @@ public class Requirement extends Model{
 	        
 	        for(int i=0;i<idList.length;i++){
 	        	titleList[i]=Sr.findById(Integer.parseInt(idList[i])).getTitle();
-	        	relationList[i]="and";
+	        	relationList[i]="AND";
 	        	priorityList[i]="1";
 	        }
 	        
@@ -135,7 +135,7 @@ public class Requirement extends Model{
 		        	json_srArray.put(json_sr);
 	        	}
 				
-			} catch (JSONException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
