@@ -68,7 +68,7 @@
             <form action="@routes.RequirementController.updateRequirement(requirement.getId())" method="post" onsubmit="doSubmit()">
                 <div class="top">
                     <div>
-                        <span>Title:
+                        <span>Title:@requirement.getSr_ids()
                             <input type="text" name="title" value="@requirement.getTitle()">
                         </span>
                     </div>

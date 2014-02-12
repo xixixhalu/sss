@@ -120,7 +120,7 @@ public class Requirement extends Model{
 	        
 	        for(int i=0;i<idList.length;i++){
 	        	titleList[i]=Sr.findById(Integer.parseInt(idList[i])).getTitle();
-	        	relationList[i]="AND";
+	        	relationList[i]="and";
 	        	priorityList[i]="1";
 	        }
 	        
