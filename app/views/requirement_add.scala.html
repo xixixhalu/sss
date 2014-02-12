@@ -64,7 +64,7 @@
             <div class="location">
                 <span><a href="requirement_list">Requirement </a>-></span><span> New Requrirement</span>
             </div>
-            <form action="@routes.RequirementController.addRequirement()" method="post">
+            <form action="@routes.RequirementController.addRequirement()" method="post" onsubmit="doSubmit()">
                 <div class="top">
                     <div>
                         <span>Title:
