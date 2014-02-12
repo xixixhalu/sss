@@ -94,7 +94,7 @@
                 @for(course <- courses){
                     <li>
                         <input type="checkbox" name="courses" value="@course.getId()">
-                        <span>@course.getPrefix() @course.getNumber()</span>
+                        <span>@course.getPrefix() @course.getNumber() @course.getTitle()</span>
                     </li>
                     }
                     <!--<li>
@@ -121,7 +121,10 @@
 					@for(course_id <- cg.getCourse_ids()){
                     <li>
                         <input type="checkbox" name="courses" value="@course_id">
-                        <span>@Course.findById(Integer.parseInt(course_id)).getPrefix()</span>
+                        <span>@Course.findById(Integer.parseInt(course_id)).getPrefix()
+                        		@Course.findById(Integer.parseInt(course_id)).getNumber()
+                        		@Course.findById(Integer.parseInt(course_id)).getTitle()
+                        </span>
                     </li>
                     }
                 </ul>
