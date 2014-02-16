@@ -113,7 +113,7 @@ public class Requirement extends Model{
 	
 	public String getSr_ids() {
 		 String simple_req=this.entity.getSr_ids();
-	        String[] idList=simple_req.split("AND");
+	        String[] idList=simple_req.split("and");
 	        String[] titleList=new String[idList.length];
 	        String[] relationList=new String[idList.length];
 	        String[] priorityList=new String[idList.length];
