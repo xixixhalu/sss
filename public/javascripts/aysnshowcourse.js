@@ -1,23 +1,30 @@
 /**
  * @author Bohan Zheng
  */
-function generateURL() {
+function generateURL(url) {
     var id = document.getElementById("changeCg").value;
-    var url = "file://localhost/Users/bohan/Documents/workspace/Student_Scheduling_System/app/views/testdata.html";
+
     return url;
 }
 
-function change(){
-    alert(1);
-    $.get(generateURL(), function(data,status){
-        var courses=eval("("+data+")");
-        var ul=document.getElementById("courseingroup");
-        for(i=0;i<courses.length;i++){
+function change(url) {
+    // alert(1);
+    // var jsonData;
+    // $.get(url, function(data, status) {
+        // jsonData = data;
+// 
+    // });
+
+    // var courses = eval("(" + jsonData + ")");
+    var courses=url.courses;
+    var ul = document.getElementById("courseingroup");
+    while (ul.firstChild) {
+    ul.removeChild(ul.firstChild);
+    }
+    for ( i = 0; i < courses.length; i++) {
         var li = document.createElement("li");
-        li.innerHTML=courses[i].prifex+" - "+courses[i].name;
+        li.innerHTML = courses[i].prifex + " - " + courses[i].name;
         ul.appendChild(li);
-        }
-    });
-    
+    }
 }
 

@@ -67,5 +67,14 @@ public class CourseController extends Controller {
     	course.save();
     	return redirect(routes.CourseController.retrieveCourses());
     }
+    
+    public static String retrieveTestdata() {
+       String s= "{\"courses\":[" +
+                    "{\"prifex\":\"CS101\",\"name\":\"Computer Science 101\"}," +
+                    "{\"prifex\":\"CS102\",\"name\":\"Computer Science 102\"}," +
+                    "{\"prifex\":\"CS103\",\"name\":\"Computer Science 103\"}" +
+                    "]}";
+        return s;
+    }
            
 }

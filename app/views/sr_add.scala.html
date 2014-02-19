@@ -1,4 +1,5 @@
 @(cgs: List[Cg], srAddForm: Form[controllers.forms.SrAddForm])
+@import controllers.CourseController;
 
 <!doctype html>
 <html>
@@ -78,7 +79,7 @@
                 <div class="float_left left">
                     <form>
                         <span>Please choose a course group: </span>
-                        <select name="cg_id" id="changeCg" onchange="change()">
+                        <select name="cg_id" id="changeCg" onchange="change(@CourseController.retrieveTestdata())">
                             @for( cg <- cgs) {
                             <option value="@cg.getId()">@cg.getPrefix()</option>
                             }
