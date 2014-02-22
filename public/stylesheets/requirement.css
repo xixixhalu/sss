@@ -55,23 +55,27 @@
 .s_list li a {
 	background-image: url(../images/icons.png);
 	background-position: 0px 0px;
-	height:18px;
-	width:18px;
-		margin-top:2px;
-	margin-right:5px;
+	height: 18px;
+	width: 18px;
+	margin-top: 2px;
+	margin-right: 5px;
 	float: left;
 	cursor: pointer;
 }
 .s_list li a:hover {
 	background-image: url(../images/icons.png);
 	background-position: 18px 0px;
-		height:18px;
-	width:18px;
-	margin-top:2px;
-	margin-right:5px;
+	height: 18px;
+	width: 18px;
+	margin-top: 2px;
+	margin-right: 5px;
 	float: left;
 	cursor: pointer;
 }
 .s_list li select {
+	float: left;
+}
+.s_list li input {
+	width: 25px;
 	float: left;
 }
