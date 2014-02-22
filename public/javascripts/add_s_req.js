@@ -78,7 +78,8 @@ function generateJsonObj(simpleReqObjs) {
     for ( i = 0; i < simpleReqObjs.length; i++) {
         //create a course object
         var id = document.getElementsByName("simpleReqId")[i].value;
-        var name = simpleReqObjs[i].Children[3].innerHTML;
+        var nameobj = simpleReqObjs[i];
+        var name=nameobj.children[3].innerHTML;
         var relation = document.getElementsByName("simpleReqRel")[i].value;
         var group = document.getElementsByName("simpleReqGroup")[i].value;
         var req = new courseObj(id, name, relation, group);
