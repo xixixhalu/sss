@@ -21,7 +21,7 @@ public class CourseController extends Controller {
     
     public static Result requestEditCoursePage(Integer id){
     	Form<CourseEditForm> form = Form.form(CourseEditForm.class);
-    	play.Logger.debug("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxcvbnhhkhkjhkjhkjhk");
+    	
     	return ok(views.html.course_edit.render(Course.findById(id), form));
     }
     
