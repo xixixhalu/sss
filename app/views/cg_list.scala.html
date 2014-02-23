@@ -94,7 +94,7 @@
                         </li>
                         <li style="width:130px">
                             <form style="float:left" action="@routes.CgController.requestEditCgPage(cg.getId())" method="post">
-								<a href="javascript:{}" onclick="submit();">edit</a>
+								<a href="javascript:{}" onclick="submit(this.parentElement);">edit</a>
 							</form>
         					<span style="float:left">&nbsp;/&nbsp;</span> 
 							<form style="float:left" action="@routes.CgController.deleteCg(cg.getId())" method="post">

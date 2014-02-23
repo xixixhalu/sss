@@ -79,7 +79,7 @@
                 <div class="float_left left">
                     <form>
                         <span>Please choose a course group: </span>
-                        <select name="cg_id" id="changeCg" onchange="change(@CourseController.retrieveTestdata())">
+                        <select name="cg_id" id="changeCg" onchange='change()'>
                             @for( cg <- cgs) {
                             <option value="@cg.getId()">@cg.getPrefix()</option>
                             }
