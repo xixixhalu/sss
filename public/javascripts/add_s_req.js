@@ -93,7 +93,7 @@ function doSubmit() {
     hidden.type = "hidden";
     var simpleReqObjs = new Array;
     simpleReqObjs = document.getElementById("s_list").getElementsByTagName("li");
-    hidden.value = generateJsonObj(simpleReqObjs);
+    hidden.value = JSON.stringify(generateJsonObj(simpleReqObjs));
     hidden.name = "sr_ids";
     document.getElementById("s_submit").appendChild(hidden);
 }

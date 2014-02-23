@@ -117,12 +117,13 @@
                         </li>
                         <li style="width:130px">
                             <form style="float:left" action="@routes.CourseController.requestEditCoursePage(course.getId())" method="post">
-								<a href="javascript:{}" onclick="submit();">edit</a>
-							</form>
-        					<span style="float:left">&nbsp;/&nbsp;</span> 
-							<form style="float:left" action="@routes.CourseController.deleteCourse(course.getId())" method="post">
-								<a href="javascript:{}" onclick="onDelConf(this.parentElement);">delete</a>
-							</form>
+                                <a href="javascript:{}" onclick="this.parentElement.submit();">edit</a>
+                            </form>
+                            <span style="float:left">&nbsp;/&nbsp;</span>
+                            <form style="float:left" action="@routes.CourseController.deleteCourse(course.getId())" method="post">
+                                <a href="javascript:{}" onclick="onDelConf(this.parentElement)">delete</a>
+                            </form>
+
                         </li>
                     </ul>
                 </div>
