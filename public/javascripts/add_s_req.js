@@ -85,6 +85,9 @@ function generateJsonObj(simpleReqObjs) {
         var req = new courseObj(id, name, relation, group);
         temp.push(req);
     }
+    var coursesObj={};
+    coursesObj.courses=temp;
+    var j=coursesObj.toJSONString;
     return temp;
 }
 
