@@ -85,9 +85,6 @@ function generateJsonObj(simpleReqObjs) {
         var req = new courseObj(id, name, relation, group);
         temp.push(req);
     }
-    var coursesObj={};
-    coursesObj.courses=temp;
-    var j=coursesObj.toJSONString;
     return temp;
 }
 
@@ -96,7 +93,7 @@ function doSubmit() {
     hidden.type = "hidden";
     var simpleReqObjs = new Array;
     simpleReqObjs = document.getElementById("s_list").getElementsByTagName("li");
-    hidden.value = generateJsonObj(simpleReqObjs);
+    hidden.value = JSON.stringify(generateJsonObj(simpleReqObjs));
     hidden.name = "sr_ids";
     document.getElementById("s_submit").appendChild(hidden);
 }
