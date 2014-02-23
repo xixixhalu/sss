@@ -21,7 +21,7 @@ public class CourseController extends Controller {
     
     public static Result requestEditCoursePage(Integer id){
     	Form<CourseEditForm> form = Form.form(CourseEditForm.class);
-    	
+    	play.Logger.debug("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxcvbnhhkhkjhkjhkjhk");
     	return ok(views.html.course_edit.render(Course.findById(id), form));
     }
     
@@ -66,6 +66,16 @@ public class CourseController extends Controller {
 		course.setOnline(courseForm.online);
     	course.save();
     	return redirect(routes.CourseController.retrieveCourses());
+    }
+    
+    public static Result retrieveTestdata(Integer id) {
+        
+       String s= "{\"courses\":[" +
+                    "{\"prifex\":\"CS"+id.toString()+"\",\"name\":\"Computer Science 101\"}," +
+                    "{\"prifex\":\"CS102\",\"name\":\"Computer Science 102\"}," +
+                    "{\"prifex\":\"CS103\",\"name\":\"Computer Science 103\"}" +
+                    "]}";
+        return ok(s);
     }
            
 }
