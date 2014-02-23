@@ -67,21 +67,21 @@
                 <a class="float_left" href="createCourse">Add New Course</a>
                 <!--<span class="float_left text">Can't find the course? Search for it: </span>
                 <div class="float_left">
-                <form>
-                <input class="search_input" type="text">
-                <select>
-                <option>By Name</option>
-                <option>By Number</option>
-                </select>
-                <input type="submit">
-                </form>
+                    <form>
+                        <input class="search_input" type="text">
+                        <select>
+                            <option>By Name</option>
+                            <option>By Number</option>
+                        </select>
+                        <input type="submit">
+                    </form>
                 </div>-->
             </div>
             <!--添加按钮和搜索栏完了-->
 
             <!--列表 每列是一个div-->
             <div class="list">
-                <div class="list_row" style="background-color:#EEE;">
+                	<div class="list_row" style="background-color:#EEE;">
                     <ul>
                         <li style="width:100px">
                             Abbreviation
@@ -117,72 +117,72 @@
                         </li>
                         <li style="width:130px">
                             <form style="float:left" action="@routes.CourseController.requestEditCoursePage(course.getId())" method="post">
-                                <a href="" onclick="this.parentElement.submit();">edit</a>
-                            </form>
-                            <span style="float:left">&nbsp;/&nbsp;</span>
-                            <form style="float:left" action="@routes.CourseController.deleteCourse(course.getId())" method="post">
-                                <a href="javascript:{}" onclick="onDelConf(this.parentElement)">delete</a>
-                            </form>
+								<a href="javascript:{}" onclick="submit();">edit</a>
+							</form>
+        					<span style="float:left">&nbsp;/&nbsp;</span> 
+							<form style="float:left" action="@routes.CourseController.deleteCourse(course.getId())" method="post">
+								<a href="javascript:{}" onclick="onDelConf(this.parentElement);">delete</a>
+							</form>
                         </li>
                     </ul>
                 </div>
                 }
                 <!--<div class="list_row"  style="background-color:#F8F8F8;">
-                <ul>
-                <li style="width:100px">
-                CS 146
-                </li>
-                <li style="width:300px">
-                Web Foundation
-                </li>
-                <li style="width:250px">
-                None
-                </li>
-                <li style="width:200px">
-                None
-                </li>
-                <li style="width:130px">
-                Edit / Delete
-                </li>
-                </ul>
+                    <ul>
+                        <li style="width:100px">
+                            CS 146
+                        </li>
+                        <li style="width:300px">
+                            Web Foundation
+                        </li>
+                        <li style="width:250px">
+                            None
+                        </li>
+                        <li style="width:200px">
+                            None
+                        </li>
+                        <li style="width:130px">
+                            Edit / Delete
+                        </li>
+                    </ul>
                 </div>
                 <div class="list_row">
-                <ul>
-                <li style="width:100px">
-                CS 146
-                </li>
-                <li style="width:300px">
-                Web Foundation
-                </li>
-                <li style="width:250px">
-                None
-                </li>
-                <li style="width:200px">
-                None
-                </li>
-                <li style="width:130px">
-                Edit / Delete
-                </li>
-                </ul>
+                    <ul>
+                        <li style="width:100px">
+                            CS 146
+                        </li>
+                        <li style="width:300px">
+                            Web Foundation
+                        </li>
+                        <li style="width:250px">
+                            None
+                        </li>
+                        <li style="width:200px">
+                            None
+                        </li>
+                        <li style="width:130px">
+                            Edit / Delete
+                        </li>
+                    </ul>
                 </div>
                 <div class="list_row"  style="background-color:#F8F8F8;">
-                <ul>
-                <li style="width:100px">
-                CS 146
-                </li>
-                <li style="width:300px">
-                Web Foundation
-                </li>
-                <li style="width:250px">
-                None
-                </li>
-                <li style="width:200px">
-                None
-                </li>
-                <li style="width:130px">
-                Edit / Delete
-                </li>
-                </ul>
+                    <ul>
+                        <li style="width:100px">
+                            CS 146
+                        </li>
+                        <li style="width:300px">
+                            Web Foundation
+                        </li>
+                        <li style="width:250px">
+                            None
+                        </li>
+                        <li style="width:200px">
+                            None
+                        </li>
+                        <li style="width:130px">
+                            Edit / Delete
+                        </li>
+                    </ul>
                 </div>-->
             </div>
 

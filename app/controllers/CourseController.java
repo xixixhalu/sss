@@ -68,14 +68,14 @@ public class CourseController extends Controller {
     	return redirect(routes.CourseController.retrieveCourses());
     }
     
-    public static String retrieveTestdata(Integer id) {
+    public static Result retrieveTestdata(Integer id) {
         
        String s= "{\"courses\":[" +
                     "{\"prifex\":\"CS"+id.toString()+"\",\"name\":\"Computer Science 101\"}," +
                     "{\"prifex\":\"CS102\",\"name\":\"Computer Science 102\"}," +
                     "{\"prifex\":\"CS103\",\"name\":\"Computer Science 103\"}" +
                     "]}";
-        return s;
+        return ok(s);
     }
            
 }
