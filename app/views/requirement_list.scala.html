@@ -89,7 +89,7 @@
                         
                         <li style="width:200px">
                             <form style="float:left" action="@routes.RequirementController.requestEditRequirementPage(requirement.getId())" method="post">
-								<a href="javascript:{}" onclick="submit();">edit</a>
+								<a href="javascript:{}" onclick="submit(this.parentElement);">edit</a>
 							</form>
         					<span style="float:left">&nbsp;/&nbsp;</span> 
 							<form style="float:left" action="@routes.RequirementController.deleteRequirement(requirement.getId())" method="post">

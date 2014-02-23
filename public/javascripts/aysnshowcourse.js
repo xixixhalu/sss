@@ -7,16 +7,19 @@ function generateURL(url) {
     return url;
 }
 
-function change(url) {
+function change() {
     // alert(1);
-    // var jsonData;
-    // $.get(url, function(data, status) {
-        // jsonData = data;
-// 
-    // });
+    var jsonData;
+    var id=document.getElementById("changeCg").value;
+    var url="http://localhost:9000/admin/retrieveTestData?id="+id;
+    var s;
+    $.get(url, function(data, status) {
+        s=status;
+        jsonData = data;
+    });
 
-    // var courses = eval("(" + jsonData + ")");
-    var courses=url.courses;
+    var courses = eval("(" + jsonData + ")");
+    // var courses=url.courses;
     var ul = document.getElementById("courseingroup");
     while (ul.firstChild) {
     ul.removeChild(ul.firstChild);

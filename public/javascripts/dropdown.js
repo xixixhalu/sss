@@ -16,3 +16,8 @@ function onDelConf(e){
 		e.submit();
 	}
 }
+
+function submit(node){
+    
+    node.submit();
+}

@@ -23,6 +23,8 @@ public class RequirementController extends Controller{
     
     public static Result requestEditRequirementPage(Integer id){
     	Form<RequirementEditForm> form = Form.form(RequirementEditForm.class);
+        play.Logger.debug("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxcvbnhhkhkjhkjhkjhk");
+
     	return ok(views.html.requirement_edit.render(Sr.getAll(), Requirement.findById(id), form));
     }
     
