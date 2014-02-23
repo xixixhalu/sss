@@ -1,6 +1,7 @@
 package controllers.forms;
 
 import play.data.validation.Constraints.Required;
+import java.util.*;
 
 public class CourseAddForm {
 	@Required
@@ -16,7 +17,7 @@ public class CourseAddForm {
 
 	public String corequisite_ids;
 
-	public String oncampus;
+	public ArrayList<String> oncampus;
 
-	public String online;
+	public ArrayList<String> online;
 }

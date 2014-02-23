@@ -143,7 +143,10 @@ public class Course extends Model{
 	}
 
 	public void setPrerequisite_ids(String prerequisite_ids) {
-		this.entity.setPrerequisite_ids(prerequisite_ids);
+		if(prerequisite_ids != "")
+			this.entity.setPrerequisite_ids(prerequisite_ids);
+		else
+			this.entity.setPrerequisite_ids("null");
 		return;
 	}
 
@@ -152,25 +155,91 @@ public class Course extends Model{
 	}
 
 	public void setCorequisite_ids(String corequisite_ids) {
-		this.entity.setCorequisite_ids(corequisite_ids);
+		if(corequisite_ids != "")
+			this.entity.setCorequisite_ids(corequisite_ids);
+		else
+			this.entity.setCorequisite_ids("null");
 		return;
 	}
 
-	public String getOncampus() {
-		return this.entity.getOncampus();
+	public ArrayList<String> getOncampus() {
+		ArrayList<String> OncampusList = new ArrayList<String>();
+		String oncampus = this.entity.getOncampus();
+		if(oncampus != "null")
+    	{
+    		String[] oncampusList = oncampus.split(",");
+    		int pos = 0;
+    		for(int i = 0; i < 4; i++)
+    		{
+    			if(pos < oncampusList.length && oncampusList[pos].equals(Integer.toString(i)))
+    				OncampusList.add(oncampusList[pos++]);
+    			else
+    				OncampusList.add(null);
+    		}
+    	}
+    	else
+    	{
+    		for(int i = 0; i < 4; i++)
+    			OncampusList.add(null);
+    	}
+		return OncampusList;
 	}
 
-	public void setOncampus(String oncampus) {
-		this.entity.setOncampus(oncampus);
+	public void setOncampus(ArrayList<String> oncampus) {
+		if(oncampus != null)
+		{
+			String campus = "";
+			for(int i = 0; i < oncampus.size(); i++)
+			{
+				if(oncampus.get(i) != null)
+					campus += Integer.toString(i) + ",";
+			}
+			campus = campus.substring(0, campus.length()-1);
+			this.entity.setOncampus(campus);
+		}
+		else
+			this.entity.setOncampus("null");
 		return;
 	}
 
-	public String getOnline() {
-		return this.entity.getOnline();
+	public ArrayList<String> getOnline() {
+		ArrayList<String> OnlineList = new ArrayList<String>();
+		String online = this.entity.getOnline();
+		if(online != "null")
+    	{
+    		String[] onlineList = online.split(",");
+    		int pos = 0;
+    		for(int i = 0; i < 4; i++)
+    		{
+    			if(pos < onlineList.length && onlineList[pos].equals(Integer.toString(i)))
+    				OnlineList.add(onlineList[pos++]);
+    			else
+    				OnlineList.add(null);
+    		}
+    	}
+    	else
+    	{
+    		for(int i = 0; i < 4; i++)
+    			OnlineList.add(null);
+    	}
+		return OnlineList;
 	}
 
-	public void setOnline(String online) {
-		this.entity.setOnline(online);
+	public void setOnline(ArrayList<String> online) {
+		if(online != null)
+		{
+			String line = "";
+			for(int i = 0; i < online.size(); i++)
+			{
+				if(online.get(i) != null)
+					line += Integer.toString(i) + ",";
+			}
+			line = line.substring(0, line.length()-1);
+			this.entity.setOnline(line);
+		}
+		else
+			this.entity.setOnline("null");
+
 		return;
 	}
 	
