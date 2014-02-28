@@ -6,3 +6,6 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.2.1")
+
+// Use the Play2War plugin for war
+addSbtPlugin("com.github.play2war" % "play2-war-plugin" % "1.2-beta4")
