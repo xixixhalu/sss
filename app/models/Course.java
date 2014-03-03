@@ -55,8 +55,8 @@ public class Course extends Model{
 	/** findById(Integer) : Course, 
 	 * Corresponding to select statement for one record*/
 	public static Course findById(Integer id){
-		ECourse course = Ebean.find(ECourse.class, id);
-		return wrap(course);
+			ECourse course = Ebean.find(ECourse.class, id);
+			return wrap(course);
 	}
 	
 	/** delete(Integer), 

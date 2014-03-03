@@ -12,57 +12,17 @@
         <link href="/assets/stylesheets/course_group.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
         <script src="/assets/javascripts/course_group.js"></script>
+        <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
+        <script> 
+			$(function(){
+  				$("#header").load("header"); 
+  				$("#footer").load("footer"); 
+			});
+		</script>
     </head>
 
     <body>
-        <!--最上面的导航栏-->
-        <div class="nav_bar">
-            <div class="block">
-                <div class="degree_bar">
-                    Username: &nbsp;&nbsp;&nbsp;Zheng Bohan &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; logout
-                </div>
-            </div>
-        </div>
-        <!--最上面的导航栏完了-->
-
-        <!--网站logo S. S. MS -->
-        <div class="logo"><img src="/assets/images/management logo.png" width="960px;"/>
-        </div>
-        <!--网站logo完了-->
-
-        <!--menu bar开始-->
-        <div class="menu_bar">
-            <ul>
-                <li>
-                    <a href="course_list">Course</a>
-                </li>
-                <li>
-                    <a href="cg_list">Course Group</a>
-                </li>
-                <li>
-                    <a href="javascript:dropdown()">Requirement</a>
-                    <!--dropdown list of requirement-->
-                    <div style="display:none;" class="dropdown" id="dropdown">
-                        <ul style="border: none;">
-                            <li>
-                                <a href="sr_list">Simple Requirement</a>
-                            </li>
-                            <li>
-                                <a href="requirement_list">Requirement</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- end of dropdown list-->
-                </li>
-                <li class="active">
-                    <a href="degree_list">Degree Program</a>
-                </li>
-                <li>
-                    <a href="help.html">Help</a>
-                </li>
-            </ul>
-        </div>
-        <!--menu bar结束-->
+        <div id="header"> </div>
         <!-- main content of the page -->
         <div class="content">
             <div class="location">
@@ -123,10 +83,6 @@
             </form>
         </div>
         <!-- end of main content -->
-        <div class="footer">
-            <span>Student Scheduling System in Stevens Institute of Technology</span>
-            <br>
-            <span>Copy right: Team #10</span>
-        </div>
+        <div id="footer"> </div>
     </body>
 </html>
