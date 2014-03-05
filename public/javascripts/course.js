@@ -96,6 +96,8 @@ function makeChoice2(evt) {
 
 function addReq(name, list) {
     var courseName = document.getElementById(name).value;
+    var i = courseName.indexOf(" -");
+    courseName = courseName.substring(0, i);
     var courseList = document.getElementById(list);
     var li = document.createElement("li");
     // alert(courseList.children.length);
@@ -104,10 +106,11 @@ function addReq(name, list) {
     } else {
         li.innerHTML = "<div><span>" + courseName + "</span><input type='text'/></div>";
     }
-    li.onclick = function() {
+    li.ondblclick = function() {
         remove(li, list);
     };
     courseList.appendChild(li);
+    document.getElementById(name).value="";
 }
 
 function remove(li, list) {
@@ -124,3 +127,25 @@ function remove(li, list) {
     }
 }
 
+function Course(id, relation, group) {
+    this.id = id;
+    this.relation = relation;
+    this.group = group;
+}
+
+function getReqCourses(req) {
+    var courses = new Array;
+    var reqlist=document.getElementById(req);
+    
+    return courses;
+}
+
+function doSubmit(form) {
+    var prereqs = getReqCourses("reqlist");
+    var coreqs = getReqCourses("coqlist");
+    var prereqString = JSON.stringify(prereqs);
+    var coreqString = JSON.stringify(coreqs);
+    document.getElementsByName("prerequisite_ids").value = prereqString;
+    document.getElementsByName("corequisite_ids").value = coreqString;
+    form.submit();
+}
