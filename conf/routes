@@ -12,6 +12,8 @@ POST	/admin/EditCourse				controllers.CourseController.requestEditCoursePage(id:
 POST	/admin/updateCourse				controllers.CourseController.updateCourse(id: Integer)
 GET		/admin/createCourse				controllers.CourseController.requestCreateCoursePage()
 POST	/admin/addCourse				controllers.CourseController.addCourse()
+GET		/admin/retrieveWholeCourses		controllers.CourseController.retrieveWholeCourses()
+
 
 #Course Group Operation
 GET		/admin/cg_list				controllers.CgController.retrieveCgs()

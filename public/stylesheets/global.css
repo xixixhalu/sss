@@ -11,6 +11,7 @@ body {
 a {
 	color: #575757;
 	text-decoration: none;
+	cursor: pointer;
 }
 div {
 	margin: 0 auto;
@@ -104,7 +105,7 @@ ul, li {
 	border-width: 1px;
 	border-color: #aaa;
 }
-.menu_bar ul li:hover{
+.menu_bar ul li:hover {
 	background-color: #DDD;
 }
 .active {
@@ -148,5 +149,5 @@ ul, li {
 	width: 960px;
 	float: left;
 	margin-top: 30px;
-	margin-bottom:40px;
+	margin-bottom: 40px;
 }

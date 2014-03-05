@@ -7,6 +7,9 @@ import play.mvc.*;
 import controllers.forms.CourseEditForm;
 import views.html.*;
 import controllers.forms.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.List;
 
 public class CourseController extends Controller {
 
@@ -108,5 +111,23 @@ public class CourseController extends Controller {
                     "]}";
         return ok(s);
     }
-           
+    
+    public static Result retrieveWholeCourses() {
+    	List<Course> list = Course.getAll();
+    	
+    	JSONArray carray = new JSONArray();
+    	
+    	for (int i = 0; i < list.size(); ++i) {
+	    	JSONObject cjson = new JSONObject();
+	    	cjson.put("name", list.get(i).getPrefix() + String.valueOf(list.get(i).getNumber()));
+	    	cjson.put("title", list.get(i).getTitle());
+	    	carray.put(cjson);
+    	}
+    	
+    	JSONObject cajson = new JSONObject();
+    	cajson.put("courses", carray);
+    	
+    	return ok(cajson.toString());
+    }
+    
 }
