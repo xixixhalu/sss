@@ -125,12 +125,4 @@ public class Sr extends Model{
 		this.entity.setCg_id(cg_id);
 	}
 
-	public String getNot() {
-		return this.entity.getNot();
-	}
-
-	public void setNot(String not) {
-		this.entity.setNot(not);
-	}
-
 }
