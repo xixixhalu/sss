@@ -142,9 +142,9 @@
                 <div class="bottom">
                     <div>
                         <div class="float_left">
-                            <span>The prerequisites of the course :</span>
+                            <span onclick="doSubmit()">The prerequisites of the course :</span>
                             <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off">
-                            <input type="hidden" name="prerequisite_ids"  value=""/>
+                            <input type="hidden" id="prerequisite_id"  value=""/>
                             <a onclick="addReq('prereq','reqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
@@ -168,7 +168,7 @@
                         <div class="float_left" >
                             <span>The corequisites of the course : &nbsp;</span>
                             <input type="text" class="b_text" id="coreq" placeholder="null" autocomplete="off">
-                             <input type="hidden" name="corequisite_ids"  value=""/>
+                            <input type="hidden" id="corequisite_id"  value=""/>
                             <a onclick="addReq('coreq','coqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"

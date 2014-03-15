@@ -87,6 +87,7 @@ public class CourseController extends Controller {
     	
     	for (int i = 0; i < list.size(); ++i) {
 	    	JSONObject cjson = new JSONObject();
+            cjson.put("id", list.get(i).getId());
 	    	cjson.put("name", list.get(i).getPrefix() + String.valueOf(list.get(i).getNumber()));
 	    	cjson.put("title", list.get(i).getTitle());
 	    	carray.put(cjson);
