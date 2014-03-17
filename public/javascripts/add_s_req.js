@@ -89,13 +89,17 @@ function generateJsonObj(simpleReqObjs) {
 }
 
 function doSubmit() {
-    var hidden = document.createElement("input");
-    hidden.type = "hidden";
-    var simpleReqObjs = new Array;
-    simpleReqObjs = document.getElementById("s_list").getElementsByTagName("li");
-    hidden.value = JSON.stringify(generateJsonObj(simpleReqObjs));
-    hidden.name = "sr_ids";
-    document.getElementById("s_submit").appendChild(hidden);
+	if (checkRequirementForm()) {
+	    var hidden = document.createElement("input");
+	    hidden.type = "hidden";
+	    var simpleReqObjs = new Array;
+	    simpleReqObjs = document.getElementById("s_list").getElementsByTagName("li");
+	    hidden.value = JSON.stringify(generateJsonObj(simpleReqObjs));
+	    hidden.name = "sr_ids";
+	    document.getElementById("s_submit").appendChild(hidden);
+	    return true;
+ 	} else
+ 		return false;
 }
 
 function init(simpleReqs) {

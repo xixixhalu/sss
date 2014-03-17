@@ -41,3 +41,23 @@ conf/application.conf
 .target/views/course_list.scala.html
 
 .target/views/course_list.scala.html
+
+.target/IntegrationTest$1.class
+
+*.class
+
+*.class
+
+.target/IntegrationTest.class
+
+.target/models/Course.class
+
+.target/models/Course.class
+
+.target/models/entities/ECourse.class
+
+.target/models/entities/ECourse.class
+
+.target/views/course_list.scala.html
+
+.target/views/course_list.scala.html

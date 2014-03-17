@@ -70,8 +70,8 @@
 	width: 80px;
 }
 .b_text {
-	width: 500px;
-	margin-right: 50px;
+	width: 460px;
+	margin-right: 20px;
 	margin-left: 30px;
 }
 .help_img {
@@ -79,14 +79,28 @@
 }
 .req_list {
 	width: 970px;
-	height: 70px;
+	height: 50px;
 	margin-top: 15px;
 	margin-left: 10px;
 	float: left;
 	overflow: none;
 }
-.req_list span {
-	margin-left: 15px;
+.req_list li div {
+	margin-left: 10px;
+	border: 1px solid #cccccc;
+	width: 100px;
+	float: left;
+	text-align: center;
+}
+
+.req_list li div input {
+	margin-left: 5px;
+	width: 22px;
+	float: left;
+}
+.req_list li select {
+	margin-left: 10px;
+	float: left;
 }
 .req {
 	border-width: 1px;
@@ -103,3 +117,37 @@
 .semesters label {
 	margin-right: 15px;
 }
+/* popup css */
+.popups {
+	position: relative;
+	top: -187px;
+	left: 238px;
+}
+.popups_co {
+	position: relative;
+	top: -73px;
+	left: -228px;
+}
+.auto_complete {
+	background-color: #FFFFFF;
+	width: 464px;
+}
+.border {
+	border: 1px solid #CCC;
+}
+.auto_complete li {
+	width: 464px;
+	float: left
+}
+
+.b_text_error {
+	width: 460px;
+	margin-right: 20px;
+	margin-left: 30px;
+	color: red;
+}
+
+.auto_complete li:hover {
+	background-color: #69F;
+}
+
