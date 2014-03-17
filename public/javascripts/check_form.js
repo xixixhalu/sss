@@ -27,8 +27,6 @@ function checkCourseForm() {
 	var number = document.getElementsByName("number")[0].value;
 	var title = document.getElementsByName("title")[0].value;
 	var credit = document.getElementsByName("credit")[0].value;
-	var prereq = document.getElementById("prereq").value;
-	var coreq = document.getElementById("coreq").value;
 	
 	if (prefix == "") {
 		alert("Please enter a prefix for the course!");
@@ -46,14 +44,7 @@ function checkCourseForm() {
 		alert("Please enter a credit for the course!");
 		return false;
 	}
-	if (prereq == "") {
-		alert("Please enter a prerequisite for the course!");
-		return false;
-	}
-	if (coreq == "") {
-		alert("Please enter a corequisite for the course!");
-		return false;
-	}
+	
 	return true;
 }
 
