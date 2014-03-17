@@ -95,7 +95,11 @@
 
 .req_list li div input {
 	margin-left: 5px;
+<<<<<<< HEAD
 	width: 12px;
+=======
+	width: 22px;
+>>>>>>> origin/Bohan-Zheng
 	float: left;
 }
 .req_list li select {
@@ -151,6 +155,9 @@
 	background-color: #69F;
 }
 
+<<<<<<< HEAD
 #searchField.error {
 	background-color: #FFC;
 }
+=======
+>>>>>>> origin/Bohan-Zheng

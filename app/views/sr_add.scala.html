@@ -18,6 +18,7 @@
   				$("#footer").load("footer"); 
 			});
 		</script>
+        <script src="/assets/javascripts/check_form.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -28,7 +29,7 @@
             <div class="location">
                 <span><a href="sr_list">Simple Requirement </a>-></span><span> New Simple Requrirement</span>
             </div>
-            <form action="@routes.SrController.addSr()" method="post">
+            <form action="@routes.SrController.addSr()" method="post" onsubmit="return checkSrForm()">
                 <div class="top">
                     <div>
                         <span>Title:

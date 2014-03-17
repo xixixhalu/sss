@@ -16,6 +16,7 @@
   				$("#footer").load("footer"); 
 			});
 		</script>
+        <script src="/assets/javascripts/check_form.js" type="text/javascript"></script>
     </head>
 
 	<!--[{"id" : "1","name" : "simple requirement 1","relation" : "and","priority" : "1"}, {"id" : "2","name" : "simple requirement 2","relation" : "and","priority" : "1"}, {"id" : "3","name" : "simple requirement 3","relation" : "","priority" : "1"}]-->
@@ -25,7 +26,7 @@
             <div class="location">
                 <span><a href="requirement_list">Requirement </a>-></span><span> @requirement.getTitle()</span>
             </div>
-            <form action="@routes.RequirementController.updateRequirement(requirement.getId())" method="post" onsubmit="doSubmit()">
+            <form action="@routes.RequirementController.updateRequirement(requirement.getId())" method="post" onsubmit="return doSubmit()">
                 <div class="top">
                     <div>
                         <span>Title:
