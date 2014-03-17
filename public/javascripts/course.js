@@ -88,15 +88,7 @@ function searchSuggest(value, div, keyCode) {
         }
 
         var foundCt = document.getElementById(div).childNodes.length;
-<<<<<<< HEAD
-		if (foundCt == 0) {
-			document.getElementById("searchField").className = "error";
-		}
-		if (foundCt == 1 && keyCode != 8) {
-			document.getElementById(value).value = document.getElementById(div).firstChild.innerHTML;
-			document.getElementById(div).innerHTML = "";
-		}
-=======
+
         if (foundCt == 0) {
             document.getElementById(value).className = "error";
         }
@@ -108,7 +100,7 @@ function searchSuggest(value, div, keyCode) {
                 document.getElementById("corequisite_id").value = document.getElementById(div).firstChild.getElementsByTagName("input")[0].value;
             document.getElementById(div).innerHTML = "";
         }
->>>>>>> FETCH_HEAD
+
     } else {
         document.getElementById(div).innerHTML = "";
     }
