@@ -10,6 +10,7 @@
         <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
         <script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
         <script src="/assets/javascripts/course.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/check_form.js" type="text/javascript"></script>
         <!--<script src="/assets/javascripts/insertitem.js" type="text/javascript"></script>-->
     </head>
 
@@ -69,7 +70,7 @@
                 <span><a href="course_list">Course </a>-></span><span> Add new course </span>
             </div>
             <!--课程号课程名学分-->
-            <form action="@routes.CourseController.addCourse()" method="post">
+            <form action="@routes.CourseController.addCourse()" method="post" onsubmit="return checkCourseForm()">
                 <div class="top">
 
                     <div>

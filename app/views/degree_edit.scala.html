@@ -11,7 +11,8 @@
         <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/course_group.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
-        <script src="/assets/javascripts/course_group.js"></script>
+        <script src="/assets/javascripts/course_group.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/check_form.js" type="text/javascript"></script>    
     </head>
 
     <body>
@@ -68,7 +69,7 @@
             <div class="location">
                 <span><a href="degree_list">Degree Program </a>-></span><span> @degree.getTitle()</span>
             </div>
-            <form action="@routes.DegreeController.updateDegree(degree.getId())" method="post">
+            <form action="@routes.DegreeController.updateDegree(degree.getId())" method="post" onsubmit="return checkDegreeForm()">
                 <div class="top">
                     <div>
 

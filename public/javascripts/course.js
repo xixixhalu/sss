@@ -6,10 +6,10 @@ window.onload = initAll;
 
 function initAll() {
     document.getElementById("prereq").onkeyup = function() {
-        searchSuggest("prereq", "popups_pre");
+        searchSuggest("prereq", "popups_pre", event.keyCode);
     };
     document.getElementById("coreq").onkeyup = function() {
-        searchSuggest("coreq", "popups_co");
+        searchSuggest("coreq", "popups_co", event.keyCode);
     };
 
     if (window.XMLHttpRequest) {
@@ -47,7 +47,7 @@ function getCoursesArray() {
     return coursesArray;
 }
 
-function searchSuggest(value, div) {
+function searchSuggest(value, div, keyCode) {
 
     var coursesArray = getCoursesArray();
     var curCoursesArray = new Array();
@@ -77,6 +77,13 @@ function searchSuggest(value, div) {
         }
 
         var foundCt = document.getElementById(div).childNodes.length;
+		if (foundCt == 0) {
+			document.getElementById("searchField").className = "error";
+		}
+		if (foundCt == 1 && keyCode != 8) {
+			document.getElementById(value).value = document.getElementById(div).firstChild.innerHTML;
+			document.getElementById(div).innerHTML = "";
+		}
     } else {
         document.getElementById(div).innerHTML = "";
     }
