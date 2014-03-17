@@ -31,11 +31,9 @@
                 <span><a href="course_list">Course </a>-></span><span> Add new course </span>
             </div>
             <!--课程号课程名学分-->
-<<<<<<< HEAD
-            <form action="@routes.CourseController.addCourse()" method="post">
-=======
+
             <form action="@routes.CourseController.addCourse()" method="post" onsubmit="return checkCourseForm()">
->>>>>>> origin/Bohan-Zheng
+
                 <div class="top">
 
                     <div>
@@ -108,15 +106,11 @@
                 <div class="bottom">
                     <div>
                         <div class="float_left">
-<<<<<<< HEAD
-                            <span>The prerequisites of the course :</span>
-                            <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off">
-                            <input type="hidden" name="prerequisite_ids"  value=""/>
-=======
+
                             <span onclick="doSubmit()">The prerequisites of the course :</span>
                             <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off">
                             <input type="hidden" id="prerequisite_id"  value=""/>
->>>>>>> origin/Bohan-Zheng
+
                             <a onclick="addReq('prereq','reqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
@@ -140,11 +134,9 @@
                         <div class="float_left" >
                             <span>The corequisites of the course : &nbsp;</span>
                             <input type="text" class="b_text" id="coreq" placeholder="null" autocomplete="off">
-<<<<<<< HEAD
-                             <input type="hidden" name="corequisite_ids"  value=""/>
-=======
+
                             <input type="hidden" id="corequisite_id"  value=""/>
->>>>>>> origin/Bohan-Zheng
+
                             <a onclick="addReq('coreq','coqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
@@ -179,17 +171,8 @@
             </form>
         </div>
         <!--主体结束-->
-<<<<<<< HEAD
 
         <div id="footer"> </div>
-=======
-        <div class="footer">
-            <span>Student Scheduling System in Stevens Institute of Technology</span>
-            <br>
-            <span>Copy right: Team #10</span>
-
-        </div>
->>>>>>> origin/Bohan-Zheng
 
     </body>
 </html>
