@@ -22,7 +22,7 @@
         </script>
     </head>
 
-    <body>
+    <body onload="initEdit()">
         <div id="header"></div>
 
         <!--网页主体-->
@@ -105,8 +105,8 @@
                     <div>
                         <div class="float_left">
                             <span onclick="">The prerequisites of the course :</span>
-                            <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off" value="@course.getPrerequisite_ids()">
-                            <input type="hidden" id="prerequisite_id" name="prerequisite_ids" value=""/>
+                            <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off">
+                            <input type="hidden" id="prerequisite_id" name="prerequisite_ids" value="@course.getPrerequisite_ids()"/>
 
                             <a onclick="addReq('prereq','reqlist')"> ADD </a>
                         </div>
@@ -129,8 +129,8 @@
                     <div>
                         <div class="float_left" >
                             <span>The corequisites of the course : &nbsp;</span>
-                            <input type="text" class="b_text" id="coreq" placeholder="null" autocomplete="off" value="@course.getCorequisite_ids()">
-                            <input type="hidden" id="corequisite_id" name="corequisite_ids" value=""/>
+                            <input type="text" class="b_text" id="coreq" placeholder="null" autocomplete="off">
+                            <input type="hidden" id="corequisite_id" name="corequisite_ids" value="@course.getCorequisite_ids()"/>
 
                             <a onclick="addReq('coreq','coqlist')"> ADD </a>
                         </div>
