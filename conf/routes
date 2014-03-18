@@ -49,7 +49,7 @@ POST	/admin/addDegree			controllers.DegreeController.addDegree()
 
 #GET		/admin/help					controllers.Application.help()
 
-GET		/admin/retrieveTestData/:id		controllers.CourseController.retrieveTestdata(id: Integer)
+GET		/admin/retrieveCgCourses/:id		controllers.CgController.retrieveCgCourses(id: Integer)
 
 GET		/admin/header				controllers.Utility.getHeader()
 GET		/admin/footer				controllers.Utility.getFooter()

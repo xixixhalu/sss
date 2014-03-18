@@ -40,6 +40,7 @@
                     <form>
                         <span>Please choose a course group: </span>
                         <select name="cg_id" id="changeCg" onchange='change()'>
+                        	<option value="">(Please choose course group)</option>
                             @for( cg <- cgs) {
                             <option value="@cg.getId()">@cg.getPrefix()</option>
                             }
@@ -55,7 +56,7 @@
                 </div>
                 <div class="right float_right">
                     <div class="list_head">
-                        Courses in (Course Group 1) <a>Edit</a>
+                        <h3>Courses in the course group</h3>
                     </div>
                     <ul id="courseingroup" class="courseingroup">
                         

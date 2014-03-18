@@ -70,10 +70,10 @@
                             @course.getTitle()
                         </li>
                         <li style="width:250px">
-                            @course.getPrerequisite_ids()
+                            @course.getPrereq()
                         </li>
                         <li style="width:200px">
-                            @course.getCorequisite_ids()
+                            @course.getCoreq()
                         </li>
                         <li style="width:130px">
                             <form style="float:left" action="@routes.CourseController.requestEditCoursePage(course.getId())" method="post">
@@ -83,7 +83,6 @@
                             <form style="float:left" action="@routes.CourseController.deleteCourse(course.getId())" method="post">
                                 <a href="javascript:{}" onclick="onDelConf(this.parentElement)">delete</a>
                             </form>
-
                         </li>
                     </ul>
                 </div>
