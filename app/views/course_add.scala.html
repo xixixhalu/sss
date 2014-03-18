@@ -10,7 +10,6 @@
         <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
         <script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
         <script src="/assets/javascripts/course.js" type="text/javascript"></script>
-
         <script src="/assets/javascripts/check_form.js" type="text/javascript"></script>
         <!--<script src="/assets/javascripts/insertitem.js" type="text/javascript"></script>-->
         <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
@@ -32,7 +31,7 @@
             </div>
             <!--课程号课程名学分-->
 
-            <form action="@routes.CourseController.addCourse()" method="post" onsubmit="return checkCourseForm()">
+            <form action="@routes.CourseController.addCourse()" method="post" onsubmit="return doSubmit()">
 
                 <div class="top">
 
@@ -107,9 +106,9 @@
                     <div>
                         <div class="float_left">
 
-                            <span onclick="doSubmit()">The prerequisites of the course :</span>
+                            <span onclick="">The prerequisites of the course :</span>
                             <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off">
-                            <input type="hidden" id="prerequisite_id"  value=""/>
+                            <input type="hidden" id="prerequisite_id" name="prerequisite_ids" value=""/>
 
                             <a onclick="addReq('prereq','reqlist')"> ADD </a>
                         </div>
@@ -135,7 +134,7 @@
                             <span>The corequisites of the course : &nbsp;</span>
                             <input type="text" class="b_text" id="coreq" placeholder="null" autocomplete="off">
 
-                            <input type="hidden" id="corequisite_id"  value=""/>
+                            <input type="hidden" id="corequisite_id" name="corequisite_ids" value=""/>
 
                             <a onclick="addReq('coreq','coqlist')"> ADD </a>
                         </div>

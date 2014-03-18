@@ -188,11 +188,16 @@ function getReqCourses(req) {
 }
 
 function doSubmit(form) {
-    var prereqs = getReqCourses("reqlist");
-    var coreqs = getReqCourses("coqlist");
-    var prereqString = JSON.stringify(prereqs);
-    var coreqString = JSON.stringify(coreqs);
-    document.getElementById("prerequisite_id").value = prereqString;
-    document.getElementById("corequisite_id").value = coreqString;
+	if(checkCourseForm()){
+    	var prereqs = getReqCourses("reqlist");
+	    var coreqs = getReqCourses("coqlist");
+	    var prereqString = JSON.stringify(prereqs);
+	    var coreqString = JSON.stringify(coreqs);
+	    document.getElementById("prerequisite_id").value = prereqString;
+	    document.getElementById("corequisite_id").value = coreqString;
+	    return true;
+	 }
+	 else
+	 	return false;	    
     //form.submit();
 }
