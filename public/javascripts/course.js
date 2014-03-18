@@ -30,6 +30,7 @@ function initAll() {
     } else {
         alert("Sorry, but I couldn't create an XMLHttpRequest");
     }
+    initEdit();
 }
 
 function getCoursesArray() {
