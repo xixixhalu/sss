@@ -127,8 +127,8 @@ function addReq(name, list) {
     var courseName = document.getElementById(name).value;
 
     if (courseName == "") {
-    	alert("Please enter the course name!");
-    	return;
+        alert("Please enter the course name!");
+        return;
     }
     var i = courseName.indexOf(" -");
     courseName = courseName.substring(0, i);
@@ -185,7 +185,7 @@ function getReqCourses(req) {
     for ( i = 0; i < lis.length; i++) {
         var id = lis[i].lastChild.value;
         var group = lis[i].getElementsByTagName("div")[0].getElementsByTagName("input")[0].value;
-        if ( i == 0)
+        if (i == 0)
             var relation = "";
         else
             var relation = lis[i].getElementsByTagName("select")[0].value.toLowerCase();
@@ -196,16 +196,19 @@ function getReqCourses(req) {
 }
 
 function doSubmit(form) {
-	if(checkCourseForm()){
-    	var prereqs = getReqCourses("reqlist");
-	    var coreqs = getReqCourses("coqlist");
-	    var prereqString = JSON.stringify(prereqs);
-	    var coreqString = JSON.stringify(coreqs);
-	    document.getElementById("prerequisite_id").value = prereqString;
-	    document.getElementById("corequisite_id").value = coreqString;
-	    return true;
-	 }
-	 else
-	 	return false;	
+    if (checkCourseForm()) {
+        var prereqs = getReqCourses("reqlist");
+        var coreqs = getReqCourses("coqlist");
+        var prereqString = JSON.stringify(prereqs);
+        var coreqString = JSON.stringify(coreqs);
+        document.getElementById("prerequisite_id").value = prereqString;
+        document.getElementById("corequisite_id").value = coreqString;
+        return true;
+    } else
+        return false;
     //form.submit();
+}
+
+function initEdit() {
+    
 }
