@@ -12,26 +12,41 @@ import play.mvc.Result;
 public class SrController extends Controller{
 	
 	public static Result retrieveSrs() {
-        return ok(views.html.sr_list.render(Sr.getAll()));
+		try{
+			return ok(views.html.sr_list.render(Sr.getAll()));
+		}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render("Cannot retrieve simple requirement list"));
+    	}
     }
 	
 	public static Result deleteSr(Integer id){
-    	Sr.delete(id);
-    	return redirect(routes.SrController.retrieveSrs());
+		try{
+	    	Sr.delete(id);
+	    	return redirect(routes.SrController.retrieveSrs());
+		}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render("Cannot delete simple requirement"));
+    	}
     }
     
     public static Result requestEditSrPage(Integer id){
-    	Form<SrEditForm> form = Form.form(SrEditForm.class);
-    	return ok(views.html.sr_edit.render(Cg.getAll(), Sr.findById(id), form));
+    	try{
+	    	Form<SrEditForm> form = Form.form(SrEditForm.class);
+	    	return ok(views.html.sr_edit.render(Cg.getAll(), Sr.findById(id), form));
+    	}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render("Cannot find simple requirement information"));
+    	}
     }
     
     public static Result updateSr(Integer id){
     	Form<SrEditForm> filledForm = Form.form(SrEditForm.class).bindFromRequest();
     	
     	if(filledForm.hasErrors()) {
-    		return badRequest("Wrong");
+    		return badRequest("Not all mandatory fields correct or entered.");
     	} 
-    	else {
+    	try{
     		SrEditForm srForm = filledForm.get();
 			Sr sr = Sr.findById(id);
 			sr.setTitle(srForm.title);
@@ -41,23 +56,39 @@ public class SrController extends Controller{
 			sr.update();
     		return redirect(routes.SrController.retrieveSrs());
     	}
+    	catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render(e.toString()));
+    	}
     }
     
     public static Result requestCreateSrPage(){
-    	Form<SrAddForm> form = Form.form(SrAddForm.class);
-    	return ok(views.html.sr_add.render(Cg.getAll(), form));
+    	try{
+	    	Form<SrAddForm> form = Form.form(SrAddForm.class);
+	    	return ok(views.html.sr_add.render(Cg.getAll(), form));
+    	}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render(e.toString()));
+    	}
     }
     
     public static Result addSr(){
     	Form<SrAddForm> filledForm = Form.form(SrAddForm.class).bindFromRequest();
-    	SrAddForm srForm = filledForm.get();
-    	Sr sr = Sr.createNewEntity();
-    	sr.setTitle(srForm.title);
-		sr.setCg_id(srForm.cg_id);
-		sr.setRequired_num(srForm.required_num);
-		//sr.setNot(srForm.not);
-    	sr.save();
-    	return redirect(routes.SrController.retrieveSrs());
+    	if (filledForm.hasErrors())
+			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));
+    	try{
+	    	SrAddForm srForm = filledForm.get();
+	    	Sr sr = Sr.createNewEntity();
+	    	sr.setTitle(srForm.title);
+			sr.setCg_id(srForm.cg_id);
+			sr.setRequired_num(srForm.required_num);
+			//sr.setNot(srForm.not);
+	    	sr.save();
+	    	return redirect(routes.SrController.retrieveSrs());
+    	}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render(e.toString()));
+    	}
     } 
     
 }

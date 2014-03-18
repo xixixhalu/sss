@@ -1,11 +1,16 @@
 package models;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.avaje.ebean.Ebean;
 
+import play.Logger;
 import play.db.ebean.*;
 import models.Course;
 import models.entities.ECourse;
@@ -55,8 +60,14 @@ public class Course extends Model{
 	/** findById(Integer) : Course, 
 	 * Corresponding to select statement for one record*/
 	public static Course findById(Integer id){
-		ECourse course = Ebean.find(ECourse.class, id);
-		return wrap(course);
+		try{
+			ECourse course = Ebean.find(ECourse.class, id);
+			return wrap(course);
+		}catch(Exception e)
+		{
+			play.Logger.debug(e.toString());
+			return wrap(new ECourse());
+		}
 	}
 	
 	/** delete(Integer), 
@@ -243,4 +254,65 @@ public class Course extends Model{
 		return;
 	}
 	
+	public JSONObject toJson(CourseWrapper cw) {
+		JSONObject json = new JSONObject();
+		JSONArray ja = null;
+		
+		if (cw.id)
+			json.put("id", this.entity.getId());
+		if (cw.prefix)
+			json.put("prefix", this.entity.getPrefix());
+		if (cw.number)
+			json.put("num", this.entity.getNumber());
+		if (cw.title)
+			json.put("title", this.entity.getTitle());
+		if (cw.credit)
+			json.put("credit", this.entity.getCredit());
+		if (cw.prereq) {
+			try {
+				ja = new JSONArray(this.entity.getPrerequisite_ids());
+			} catch (ParseException e) {
+				Logger.debug(e.toString());
+				e.printStackTrace();
+			}
+			json.put("prereq", ja);
+		}
+		if (cw.coreq) {
+			try {
+				ja = new JSONArray(this.entity.getCorequisite_ids());
+			} catch (ParseException e) {
+				Logger.debug(e.toString());
+				e.printStackTrace();
+			}
+			json.put("coreq", ja);
+		}
+		if (cw.oncampus)
+			json.put("oncampus", this.entity.getOncampus());
+		if (cw.online)
+			json.put("online", this.entity.getOnline());
+		
+		return json;
+	}
+	
+	public String getPrereq () {
+		String str = null;
+		try {
+			JSONArray ja = new JSONArray(this.entity.getPrerequisite_ids());
+			JSONObject json = null;
+			for (int i = 0; i < ja.length(); i++) {
+				json = (JSONObject)ja.get(i);
+				str += (String) json.get("title");
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return str;
+	}
+	
+	public String getCoreq() {
+		String str = new String("null");
+		return str;
+	}
 }

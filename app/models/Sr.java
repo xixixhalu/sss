@@ -54,8 +54,14 @@ public class Sr extends Model{
 	/** findById(Integer) : Sr, 
 	 * Corresponding to select statement for one record*/
 	public static Sr findById(Integer id){
-		ESr sr = Ebean.find(ESr.class, id);
-		return wrap(sr);
+		try{
+			ESr sr = Ebean.find(ESr.class, id);
+			return wrap(sr);
+		}catch(Exception e)
+		{
+			play.Logger.debug(e.toString());
+			return wrap(new ESr());
+		}
 	}
 	
 	/** delete(Integer), 
@@ -123,14 +129,6 @@ public class Sr extends Model{
 
 	public void setCg_id(Integer cg_id) {
 		this.entity.setCg_id(cg_id);
-	}
-
-	public String getNot() {
-		return this.entity.getNot();
-	}
-
-	public void setNot(String not) {
-		this.entity.setNot(not);
 	}
 
 }

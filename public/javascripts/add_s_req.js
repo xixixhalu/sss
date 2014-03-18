@@ -89,37 +89,20 @@ function generateJsonObj(simpleReqObjs) {
 }
 
 function doSubmit() {
-    var hidden = document.createElement("input");
-    hidden.type = "hidden";
-    var simpleReqObjs = new Array;
-    simpleReqObjs = document.getElementById("s_list").getElementsByTagName("li");
-    hidden.value = JSON.stringify(generateJsonObj(simpleReqObjs));
-    hidden.name = "sr_ids";
-    document.getElementById("s_submit").appendChild(hidden);
+	if (checkRequirementForm()) {
+	    var hidden = document.createElement("input");
+	    hidden.type = "hidden";
+	    var simpleReqObjs = new Array;
+	    simpleReqObjs = document.getElementById("s_list").getElementsByTagName("li");
+	    hidden.value = JSON.stringify(generateJsonObj(simpleReqObjs));
+	    hidden.name = "sr_ids";
+	    document.getElementById("s_submit").appendChild(hidden);
+	    return true;
+ 	} else
+ 		return false;
 }
 
 function init(simpleReqs) {
-    var simpleReqs = [{
-        "id" : "1",
-        "name" : "simple requirement 1",
-        "relation" : "",
-        "group" : "1"
-    }, {
-        "id" : "2",
-        "name" : "simple requirement 2",
-        "relation" : "and",
-        "group" : "1"
-    }, {
-        "id" : "3",
-        "name" : "simple requirement 3",
-        "relation" : "or",
-        "group" : "2"
-    }, {
-        "id" : "4",
-        "name" : "simple requirement 4",
-        "relation" : "and",
-        "group" : "2"
-    }];
 
     //var simpleReqs = eval("(" + simpleReqs + ")");
 

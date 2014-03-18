@@ -13,5 +13,4 @@ public class SrEditForm {
 	@Required
 	public Integer cg_id;
 	
-	public boolean not;
 }

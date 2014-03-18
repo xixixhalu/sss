@@ -23,9 +23,6 @@ public class ESr extends Model{
 	
 	@Column(name="sr_cg_ids")
 	private Integer cg_id;
-	
-	@Column(name="sr_not")
-	private String not;
 
 	/** Getter and Setter*/
 	public Integer getId() {
@@ -59,14 +56,5 @@ public class ESr extends Model{
 	public void setCg_id(Integer cg_id) {
 		this.cg_id = cg_id;
 	}
-
-	public String getNot() {
-		return not;
-	}
-
-	public void setNot(String not) {
-		this.not = not;
-	}
-
 }
 

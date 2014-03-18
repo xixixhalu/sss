@@ -8,6 +8,7 @@ import org.json.*;
 
 import com.avaje.ebean.Ebean;
 
+import play.Logger;
 import play.db.ebean.*;
 import models.entities.ERequirement;
 
@@ -56,8 +57,14 @@ public class Requirement extends Model{
 	/** findById(Integer) : Requirement, 
 	 * Corresponding to select statement for one record*/
 	public static Requirement findById(Integer id){
-		ERequirement requirement = Ebean.find(ERequirement.class, id);
-		return wrap(requirement);
+		try{
+			ERequirement requirement = Ebean.find(ERequirement.class, id);
+			return wrap(requirement);
+		}catch(Exception e)
+		{
+			play.Logger.debug(e.toString());
+			return wrap(new ERequirement());
+		}
 	}
 	
 	/** delete(Integer), 
@@ -112,39 +119,7 @@ public class Requirement extends Model{
 	}
 	
 	public String getSr_ids() {
-		 String simple_req=this.entity.getSr_ids();
-	        String[] idList=simple_req.split("and");
-	        String[] titleList=new String[idList.length];
-	        String[] relationList=new String[idList.length];
-	        String[] priorityList=new String[idList.length];
-	        
-	        for(int i=0;i<idList.length;i++){
-	        	titleList[i]=Sr.findById(Integer.parseInt(idList[i])).getTitle();
-	        	if(i==idList.length-1)
-	        		relationList[i]="";
-	        	else
-	        		relationList[i]="and";
-	        	priorityList[i]="1";
-	        }
-	        
-	        JSONArray json_srArray=new JSONArray();
-	        try {
-	        	for(int i=0; i<idList.length;i++){
-	    	        JSONObject json_sr=new JSONObject();
-		        	json_sr.put("id", idList[i]);
-		        	json_sr.put("name", titleList[i]);
-		        	json_sr.put("relation", relationList[i]);
-		        	json_sr.put("priority", priorityList[i]);
-		        	json_srArray.put(json_sr);
-	        	}
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        
-	        
-			return json_srArray.toString();
+		return this.entity.getSr_ids();
 
 	}
 

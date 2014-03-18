@@ -13,28 +13,41 @@ import play.mvc.Result;
 public class RequirementController extends Controller{
 	
 	public static Result retrieveRequirements() {
-        return ok(views.html.requirement_list.render(Requirement.getAll()));
+		try{
+			return ok(views.html.requirement_list.render(Requirement.getAll()));
+		}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render("Cannot retrieve requirement list"));
+    	}
     }
 	
 	public static Result deleteRequirement(Integer id){
-    	Requirement.delete(id);
-    	return redirect(routes.RequirementController.retrieveRequirements());
+		try{
+	    	Requirement.delete(id);
+	    	return redirect(routes.RequirementController.retrieveRequirements());
+		}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render("Cannot delete requirement"));
+    	}
     }
     
     public static Result requestEditRequirementPage(Integer id){
-    	Form<RequirementEditForm> form = Form.form(RequirementEditForm.class);
-        play.Logger.debug("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxcvbnhhkhkjhkjhkjhk");
-
-    	return ok(views.html.requirement_edit.render(Sr.getAll(), Requirement.findById(id), form));
+    	try{
+	    	Form<RequirementEditForm> form = Form.form(RequirementEditForm.class);
+	    	return ok(views.html.requirement_edit.render(Sr.getAll(), Requirement.findById(id), form));
+    	}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render("Cannot find requirement information"));
+    	}
     }
     
     public static Result updateRequirement(Integer id){
     	Form<RequirementEditForm> filledForm = Form.form(RequirementEditForm.class).bindFromRequest();
     	
     	if(filledForm.hasErrors()) {
-    		return badRequest("Wrong");
+    		return badRequest("Not all mandatory fields correct or entered.");
     	} 
-    	else {
+    	try{
     		RequirementEditForm requirementForm = filledForm.get();
 			Requirement requirement = Requirement.findById(id);
 			requirement.setTitle(requirementForm.title);
@@ -42,21 +55,38 @@ public class RequirementController extends Controller{
 			requirement.update();
     		return redirect(routes.RequirementController.retrieveRequirements());
     	}
+    	catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render(e.toString()));
+    	}
+    	
     }
     
     public static Result requestCreateRequirementPage(){
-    	Form<RequirementAddForm> form = Form.form(RequirementAddForm.class);
-    	return ok(views.html.requirement_add.render(Sr.getAll(), form));
+    	try{
+	    	Form<RequirementAddForm> form = Form.form(RequirementAddForm.class);
+	    	return ok(views.html.requirement_add.render(Sr.getAll(), form));
+    	}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render(e.toString()));
+    	}
     }
     
     public static Result addRequirement(){
     	Form<RequirementAddForm> filledForm = Form.form(RequirementAddForm.class).bindFromRequest();
-    	RequirementAddForm requirementForm = filledForm.get();
-    	Requirement requirement = Requirement.createNewEntity();
-    	requirement.setTitle(requirementForm.title);
-		requirement.setSr_ids(requirementForm.sr_ids);
-    	requirement.save();
-    	return redirect(routes.RequirementController.retrieveRequirements());
+    	if (filledForm.hasErrors())
+			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));
+    	try{
+	    	RequirementAddForm requirementForm = filledForm.get();
+	    	Requirement requirement = Requirement.createNewEntity();
+	    	requirement.setTitle(requirementForm.title);
+			requirement.setSr_ids(requirementForm.sr_ids);
+	    	requirement.save();
+	    	return redirect(routes.RequirementController.retrieveRequirements());
+    	}catch(Exception e)
+    	{
+    		return badRequest(views.html.error.render(e.toString()));
+    	}
     } 
     
 }
