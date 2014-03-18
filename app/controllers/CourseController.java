@@ -1,14 +1,17 @@
 package controllers;
 
 import models.Course;
+import models.CourseWrapper;
 import play.*;
 import play.data.Form;
 import play.mvc.*;
 import controllers.forms.CourseEditForm;
 import views.html.*;
 import controllers.forms.*;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.List;
 
 public class CourseController extends Controller {
@@ -79,29 +82,25 @@ public class CourseController extends Controller {
                     "]}";
         return ok(s);
     }
-<<<<<<< HEAD
-           
-}
-=======
     
     public static Result retrieveWholeCourses() {
     	List<Course> list = Course.getAll();
     	
     	JSONArray carray = new JSONArray();
     	
+//    	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
+//    			false, false, false, false, false);
+    	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
+    			false, false, false, false, false);
+    	
     	for (int i = 0; i < list.size(); ++i) {
-	    	JSONObject cjson = new JSONObject();
-	    	cjson.put("id", list.get(i).getId());
-	    	cjson.put("name", list.get(i).getPrefix() + String.valueOf(list.get(i).getNumber()));
-	    	cjson.put("title", list.get(i).getTitle());
-	    	carray.put(cjson);
+    		carray.put(list.get(i).toJson(cw));
     	}
     	
     	JSONObject cajson = new JSONObject();
     	cajson.put("courses", carray);
     	
     	return ok(cajson.toString());
-    }
     
+    }
 }
->>>>>>> Bohan-Zheng
