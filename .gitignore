@@ -67,3 +67,5 @@ conf/application.conf
 *.class
 
 *.class
+
+.target/models/Course.class

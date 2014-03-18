@@ -295,19 +295,19 @@ public class Course extends Model{
 	}
 	
 	public String getPrereq () {
-		String str = null;
-		try {
-			JSONArray ja = new JSONArray(this.entity.getPrerequisite_ids());
-			JSONObject json = null;
-			for (int i = 0; i < ja.length(); i++) {
-				json = (JSONObject)ja.get(i);
-				str += (String) json.get("title");
-			}
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String str = new String("null");
+//		try {
+//			JSONArray ja = new JSONArray(this.entity.getPrerequisite_ids());
+//			JSONObject json = null;
+//			for (int i = 0; i < ja.length(); i++) {
+//				json = (JSONObject)ja.get(i);
+//				str += (String) json.get("title");
+//			}
+//			
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return str;
 	}
 	
