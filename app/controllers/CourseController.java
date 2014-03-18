@@ -12,16 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.List;
-
 public class CourseController extends Controller {
 
     public static Result retrieveCourses() {
     	try{
-    		StudyPlanController.generateReq();
+    		//StudyPlanController.generateReq();
     		return ok(views.html.course_list.render(Course.getAll()));
     	}catch(Exception e)
     	{

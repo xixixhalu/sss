@@ -37,8 +37,7 @@ function checkCourseForm() {
 	for (var i = 0; i < 4; i++) {
 		if (document.getElementsByName("online[" + i + "]")[0].checked == true)
 			online++;
-	}
-	
+	}	
 	if (prefix == "") {
 		alert("Please enter a prefix for the course!");
 		return false;
@@ -62,8 +61,7 @@ function checkCourseForm() {
 	if (online == 0) {
 		alert("Please check at least one semester online for the course");
 		return false;
-	}
-	
+	}	
 	return true;
 }
 

@@ -55,8 +55,14 @@ public class Cg extends Model{
 	/** findById(Integer) : Cg, 
 	 * Corresponding to select statement for one record*/
 	public static Cg findById(Integer id){
-		ECg cg = Ebean.find(ECg.class, id);
-		return wrap(cg);
+		try{
+			ECg cg = Ebean.find(ECg.class, id);
+			return wrap(cg);
+		}catch(Exception e)
+		{
+			play.Logger.debug(e.toString());
+			return wrap(new ECg());
+		}
 	}
 	
 	/** delete(Integer), 
