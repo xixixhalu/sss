@@ -100,14 +100,8 @@ public class TestLinkList {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		boolean chooeseSuccess =false;//是否选课成功
-		TestLinkList list = new TestLinkList();// set
+		//TestLinkList list = new TestLinkList();// set
 
-		Linklist linkList1 = new Linklist();// requirement 链表
-		linkList1.addFirstNode(10);
-
-		linkList1.insertNode(1, 100);
-		linkList1.insertNode(2, 101);
-		linkList1.insertNode(3, 102);
 //		linkList1.addFirstNode("Requirement_1");
 //		
 //		linkList1.insertNode(1, "CS105");
@@ -118,49 +112,34 @@ public class TestLinkList {
 		// System.out.println("After deleting:");
 		// linkList.displayAllNodes();
 
-		Linklist linkList2 = new Linklist();
-		linkList2.addFirstNode(11);
-
-		linkList2.insertNode(1, 103);
-		linkList2.insertNode(1, 100);
-		linkList2.insertNode(1, 105);
+		
 //		linkList2.addFirstNode("Requirement_2");
 //		
 //		linkList2.insertNode(1, "CS135");
 //		linkList2.insertNode(1, "CS105");
 //		linkList2.insertNode(1, "CS455");
 
-		Linklist linkList3 = new Linklist();
-		linkList3.addFirstNode(12);
-		linkList3.insertNode(1, 100);
-		linkList3.insertNode(1, 103);
-		linkList3.insertNode(1, 104);
-		linkList3.insertNode(1, 105);
+
 //		linkList3.addFirstNode("Requirement_3");
 //		linkList3.insertNode(1, "CS105");
 //		linkList3.insertNode(1, "CS135");
 //		linkList3.insertNode(1, "CS404");
 //		linkList3.insertNode(1, "CS455");
 
-		Linklist linkList4 = new Linklist();
-		linkList4.addFirstNode(13);
-		linkList4.insertNode(1, 106);
-		linkList4.insertNode(1, 104);
-		linkList4.insertNode(1, 105);
 //		Linklist linkList4 = new Linklist();
 //		linkList4.addFirstNode("Requirement_4");
 //		linkList4.insertNode(1, "CS500");
 //		linkList4.insertNode(1, "CS404");
 //		linkList4.insertNode(1, "CS455");
 
-		list.course_list.add(linkList1);
-		list.course_list.add(linkList2);
-		list.course_list.add(linkList3);
-		list.course_list.add(linkList4);
-		
-		int size = list.course_list.size();
-		System.out.print("Size is: "+size);
-		System.out.println();
+//		list.course_list.add(linkList1);
+//		list.course_list.add(linkList2);
+//		list.course_list.add(linkList3);
+//		list.course_list.add(linkList4);
+//		
+//		int size = list.course_list.size();
+//		System.out.print("Size is: "+size);
+//		System.out.println();
 
 		//list.displayReqList();//显示requirement list
 
@@ -195,12 +174,12 @@ public class TestLinkList {
 		cLink_list6.insertNode(1, 12);
 		cLink_list6.insertNode(1, 13);
 
-		list.course_list2.add(cLink_list);
-		list.course_list2.add(cLink_list2);
-		list.course_list2.add(cLink_list3);
-		list.course_list2.add(cLink_list4);
-		list.course_list2.add(cLink_list5);
-		list.course_list2.add(cLink_list6);
+//		list.course_list2.add(cLink_list);
+//		list.course_list2.add(cLink_list2);
+//		list.course_list2.add(cLink_list3);
+//		list.course_list2.add(cLink_list4);
+//		list.course_list2.add(cLink_list5);
+//		list.course_list2.add(cLink_list6);
 		//list.displayCourseList();//显示course list
 		
 		//开始选课
