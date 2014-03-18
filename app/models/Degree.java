@@ -54,8 +54,14 @@ public class Degree extends Model{
 	/** findById(Integer) : Degree, 
 	 * Corresponding to select statement for one record*/
 	public static Degree findById(Integer id){
-		EDegree degree = Ebean.find(EDegree.class, id);
-		return wrap(degree);
+		try{
+			EDegree degree = Ebean.find(EDegree.class, id);
+			return wrap(degree);
+		}catch(Exception e)
+		{
+			play.Logger.debug(e.toString());
+			return wrap(new EDegree());
+		}
 	}
 	
 	/** delete(Integer), 

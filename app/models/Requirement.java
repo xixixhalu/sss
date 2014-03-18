@@ -56,8 +56,14 @@ public class Requirement extends Model{
 	/** findById(Integer) : Requirement, 
 	 * Corresponding to select statement for one record*/
 	public static Requirement findById(Integer id){
-		ERequirement requirement = Ebean.find(ERequirement.class, id);
-		return wrap(requirement);
+		try{
+			ERequirement requirement = Ebean.find(ERequirement.class, id);
+			return wrap(requirement);
+		}catch(Exception e)
+		{
+			play.Logger.debug(e.toString());
+			return wrap(new ERequirement());
+		}
 	}
 	
 	/** delete(Integer), 
