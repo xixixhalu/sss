@@ -40,10 +40,6 @@ public class CourseController extends Controller {
     }
     
     public static Result requestEditCoursePage(Integer id){
-<<<<<<< HEAD
-    	Form<CourseEditForm> form = Form.form(CourseEditForm.class);
-    	return ok(views.html.course_edit.render(Course.findById(id), form));
-=======
     	try{
     		Form<CourseEditForm> form = Form.form(CourseEditForm.class);
     		return ok(views.html.course_edit.render(Course.findById(id), form));
@@ -51,7 +47,6 @@ public class CourseController extends Controller {
     	{
     		return badRequest(views.html.error.render("Cannot find course information"));
     	}
->>>>>>> bowen
     }
     
     public static Result updateCourse(Integer id){
