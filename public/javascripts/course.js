@@ -59,7 +59,8 @@ function searchSuggest(value, div, keyCode) {
         document.getElementById(div).innerHTML = "";
 
         for (var i = 0, j = 0; i < coursesArray.length; i++) {
-            var thisCourse = coursesArray[i].name + " - " + coursesArray[i].title;
+            var thisCourse = coursesArray[i].prefix + coursesArray[i].num + " - " + coursesArray[i].title;
+
             if (thisCourse.toLowerCase().indexOf(str.toLowerCase()) == 0) {
                 curCoursesArray[j] = thisCourse;
                 curIdArray[j] = coursesArray[i].id;
@@ -90,7 +91,9 @@ function searchSuggest(value, div, keyCode) {
         var foundCt = document.getElementById(div).childNodes.length;
 
         if (foundCt == 0) {
-            document.getElementById(value).className = "error";
+            document.getElementById(value).className = "b_text_error";
+        } else {
+            document.getElementById(value).className = "b_text";
         }
         if (foundCt == 1 && keyCode != 8) {
             document.getElementById(value).value = document.getElementById(div).firstChild.getElementsByTagName("div")[0].innerHTML;
@@ -122,6 +125,11 @@ function makeChoice2(evt) {
 
 function addReq(name, list) {
     var courseName = document.getElementById(name).value;
+
+    if (courseName == "") {
+    	alert("Please enter the course name!");
+    	return;
+    }
     var i = courseName.indexOf(" -");
     courseName = courseName.substring(0, i);
     var courseList = document.getElementById(list);

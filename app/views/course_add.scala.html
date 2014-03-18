@@ -30,11 +30,8 @@
                 <span><a href="course_list">Course </a>-></span><span> Add new course </span>
             </div>
             <!--课程号课程名学分-->
-
             <form action="@routes.CourseController.addCourse()" method="post" onsubmit="return doSubmit()">
-
                 <div class="top">
-
                     <div>
                         <span class="title">Rrefix&amp;Number: </span>
                         <input type="text" name="prefix">
@@ -105,7 +102,6 @@
                 <div class="bottom">
                     <div>
                         <div class="float_left">
-
                             <span onclick="">The prerequisites of the course :</span>
                             <input type="text" class="b_text" id="prereq" placeholder="null" autocomplete="off">
                             <input type="hidden" id="prerequisite_id" name="prerequisite_ids" value=""/>
@@ -159,7 +155,6 @@
                 </div>
                 <div class="popups_co">
                     <ul class="auto_complete border" id="popups_co">
-
                     </ul>
                 </div>
                 <div class="submit">
