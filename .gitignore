@@ -68,3 +68,5 @@ conf/application.conf
 app/.DS_Store
 
 *.conf
+
+conf/application.conf
