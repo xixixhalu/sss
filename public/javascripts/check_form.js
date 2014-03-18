@@ -27,6 +27,7 @@ function checkCourseForm() {
 	var number = document.getElementsByName("number")[0].value;
 	var title = document.getElementsByName("title")[0].value;
 	var credit = document.getElementsByName("credit")[0].value;
+
 	var oncampus = 0;
 	for (var i = 0; i < 4; i++) {
 		if (document.getElementsByName("oncampus["+ i + "]")[0].checked == true)

@@ -13,5 +13,4 @@ public class SrAddForm {
 	@Required
 	public Integer cg_id;
 	
-	public boolean not;
 }
