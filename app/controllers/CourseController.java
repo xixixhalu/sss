@@ -128,7 +128,6 @@ public class CourseController extends Controller {
     	
     	JSONArray carray = new JSONArray();
     	
-<<<<<<< HEAD
 //    	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
 //    			false, false, false, false, false);
     	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
@@ -136,26 +135,12 @@ public class CourseController extends Controller {
     	
     	for (int i = 0; i < list.size(); ++i) {
     		carray.put(list.get(i).toJson(cw));
-=======
-    	for (int i = 0; i < list.size(); ++i) {
-	    	JSONObject cjson = new JSONObject();
-	    	cjson.put("id", list.get(i).getId());
-	    	cjson.put("name", list.get(i).getPrefix() + String.valueOf(list.get(i).getNumber()));
-	    	cjson.put("title", list.get(i).getTitle());
-	    	carray.put(cjson);
->>>>>>> bowen
     	}
     	
     	JSONObject cajson = new JSONObject();
     	cajson.put("courses", carray);
     	
     	return ok(cajson.toString());
-<<<<<<< HEAD
     
     }
 }
-=======
-    }
-    
-}
->>>>>>> bowen
