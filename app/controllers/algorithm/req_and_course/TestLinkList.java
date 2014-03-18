@@ -4,12 +4,20 @@ import java.util.ArrayList;
 
 public class TestLinkList {
 
+	public String degreeName;
 	public ArrayList<Linklist> course_list = new ArrayList<Linklist>(); //requirement list
 	public ArrayList<Course_LinkList> course_list2 = new ArrayList<Course_LinkList>(); //course list
  
-	//public ArrayList<Linklist> complexReq1 = new ArrayList<Linklist>();// complex requirement
 	
 	public ArrayList<ComplexReq> allComplexReq = new ArrayList<ComplexReq>();  //a set of all complex requirement
+	
+	public TestLinkList(){
+	}
+	
+	public TestLinkList(String degreeName){
+		this.degreeName = degreeName;
+	}
+	
 	
 	public void addComplexReq(ComplexReq c){
 		this.allComplexReq.add(c);
@@ -205,13 +213,17 @@ public class TestLinkList {
 //			System.out.print("failed");
 //		}
 		
-		int complexId = 1;
-		ComplexReq complexReq1 = new ComplexReq(complexId);
+//		int complexId = 1;
+//		ComplexReq complexReq1 = new ComplexReq(complexId);
+//		
+//		complexReq1.insertSimple(linkList2);
+//		
+//		list.addComplexReq(complexReq1);
+//		list.displayallComplexReq();
 		
-		complexReq1.insertSimple(linkList2);
 		
-		list.addComplexReq(complexReq1);
-		list.displayallComplexReq();
+		
+		
 	}
 
 }

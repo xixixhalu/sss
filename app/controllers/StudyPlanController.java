@@ -120,13 +120,13 @@ public class StudyPlanController extends Controller {
 //			System.out.print("failed");
 //		}
 		
-		int complexId = 1;
-		ComplexReq complexReq1 = new ComplexReq(complexId);  //add a complex requirement 
-		
-		complexReq1.insertSimple(linkList2);  //add a simple requirement into a complex requirement
-		
-		list.addComplexReq(complexReq1);   //add this complex requirement into complex_requirement list
-		list.displayallComplexReq();//dialplay all complex requirement
+//		int complexId = 1;
+//		ComplexReq complexReq1 = new ComplexReq(complexId);  //add a complex requirement 
+//		
+//		complexReq1.insertSimple(linkList2);  //add a simple requirement into a complex requirement
+//		
+//		list.addComplexReq(complexReq1);   //add this complex requirement into complex_requirement list
+//		list.displayallComplexReq();//dialplay all complex requirement
 		play.Logger.info("================================================");
 	}
 	

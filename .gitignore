@@ -61,3 +61,4 @@ conf/application.conf
 .target/views/course_list.scala.html
 
 .target/views/course_list.scala.html
+conf/application.conf
