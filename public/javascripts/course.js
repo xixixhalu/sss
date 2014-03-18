@@ -239,27 +239,30 @@ function initEdit() {
             li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
         }
         li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
-        li.ondblclick = function() {
-            remove(li, "reqlist");
+        li.ondblclick = function(evt) {
+            var li = (evt) ? evt.target : window.event.srcElement;
+            remove(li.parentElement.parentElement, "reqlist");
         };
         ul1.appendChild(li);
     }
+
     document.getElementById("corequisite_id").value = "";
-    var ul1 = document.getElementById("coqlist");
+    var ul2 = document.getElementById("coqlist");
     for ( i = 0; i < data.length; i++) {
         var li = document.createElement("li");
         var courseName = data[i].prefix + data[i].num;
         var course_id = data[i].id;
-        if (ul1.children.length > 0) {
+        if (ul2.children.length > 0) {
             li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
         } else {
             li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
         }
         li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
-        li.ondblclick = function() {
-            remove(li, "coqlist");
+        li.ondblclick = function(evt) {
+            var li = (evt) ? evt.target : window.event.srcElement;
+            remove(li.parentElement.parentElement, "coqlist");
         };
-        ul1.appendChild(li);
+        ul2.appendChild(li);
     }
     document.getElementById("corequisite_id").value = "";
 }
