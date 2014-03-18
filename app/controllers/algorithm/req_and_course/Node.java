@@ -23,6 +23,8 @@ public class Node {
 		this.cName = cName;
 	}
 	
+	
+	
 	public Node(int simpleReqID, String simpleReqName, int needFinish){
 		this.cName = simpleReqID;
 		this.courseName  = simpleReqName;

@@ -14,8 +14,13 @@ public class StudyPlanController extends Controller {
 		
 		
 		Linklist simpleReq1 = new Linklist(1,"simpleReq1",15);
-		simpleReq1.insertNode(1, 100); //the second parameter is the course id
-		simpleReq1.insertNode(1, 200);
+		
+		addCourse(degreeProgram, simpleReq1, 100);
+		
+		
+		 //the second parameter is the course id
+		//simpleReq1.insertNode(1, 200);
+		addCourse(degreeProgram, simpleReq1, 200);
 		
 		complexReq1.insertSimple(simpleReq1);
 		degreeProgram.addComplexReq(complexReq1);
@@ -122,6 +127,21 @@ public class StudyPlanController extends Controller {
 //		list.addComplexReq(complexReq1);   //add this complex requirement into complex_requirement list
 //		list.displayallComplexReq();//dialplay all complex requirement
 		play.Logger.info("================================================");
+	}
+	
+	
+	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID){
+		boolean ifCourseExist = degreeProgram.prepareInsertCourse(courseID);
+		//System.out.println(ifCourseExist);
+		if(ifCourseExist){	
+				simpleReq1.insertNode(degreeProgram.course.get(courseID));
+		}else{
+			//System.out.println("OK");
+			Node newCourse = new Node(courseID);
+			degreeProgram.course.put(100, newCourse);
+			simpleReq1.insertNode(newCourse);
+		}
+		return;
 	}
 	
 }

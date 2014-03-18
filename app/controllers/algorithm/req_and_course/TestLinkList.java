@@ -1,6 +1,7 @@
 package controllers.algorithm.req_and_course;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TestLinkList {
 
@@ -8,8 +9,20 @@ public class TestLinkList {
 	public ArrayList<Linklist> course_list = new ArrayList<Linklist>(); //requirement list
 	public ArrayList<Course_LinkList> course_list2 = new ArrayList<Course_LinkList>(); //course list
  
+	public HashMap<Integer, Node> course  = new HashMap<Integer, Node>();
 	
 	public ArrayList<ComplexReq> allComplexReq = new ArrayList<ComplexReq>();  //a set of all complex requirement
+	
+	
+	public void addCourse(int courseID){
+		Node course = new Node(courseID);
+		this.course.put(courseID, course);
+	}
+	
+	public boolean prepareInsertCourse(int courseID){
+		return this.course.containsKey(courseID);
+
+	}
 	
 	public TestLinkList(){
 	}

@@ -43,6 +43,16 @@ public class Linklist {
 
 	}
 
+	public void insertNode(Node course) { // cName here is course
+		// name
+		
+		Node current = first;
+
+		course.next = current.next;
+		current.next = course;
+
+	}
+	
 	public Node deleteByPos(int index) {
 		Node current = first;
 		Node previous = first;
