@@ -6,10 +6,45 @@ import controllers.algorithm.req_and_course.*;
 
 public class StudyPlanController extends Controller {
 	
-	public static void generateReq(){
+	public static void generateReq(Integer id){
 		boolean chooeseSuccess =false;//是否选课成功
 		//TestLinkList list = new TestLinkList();// set
-		
+//		Degree degree = Degree.findById(id);
+//		TestLinkList degreeProgram = new TestLinkList(degree.getTitle());	//add new degree
+//		List<String> complexIds = degree.getReq_ids();						//get Requirement ids
+//		for(String complexId : complexIds)
+//		{ 
+//			try{
+//				Requirement req = Requirement.findById(Integer.valueOf(complexId)); //get Requirement
+//				JSONArray srReqs = new JSONArray(req.getSr_ids());
+//				ComplexReq complexReq = null;
+//				if(srReqs.length() < 2)
+//					complexReq = new ComplexReq(Integer.valueOf(req.getId()), req.getTitle(), "or");
+//				else
+//					complexReq = new ComplexReq(Integer.valueOf(req.getId()), req.getTitle(), (String)((JSONObject)srReqs.get(1)).get("relation"));
+//				JSONObject srReqObject = null;
+//				for (int i = 0; i < srReqs.length(); i++) {
+//					srReqObject = (JSONObject) srReqs.get(i);
+//					int srId = srReqObject.getInt("id");					//get Simple Requirment
+//					Sr sr = Sr.findById(new Integer(srId));
+//					int cgId = Integer.valueOf(sr.getCg_id());
+//					int reqNum = Integer.valueOf(sr.getRequired_num());
+//					Linklist simpleReq = new Linklist(srId, sr.getTitle(), reqNum); //initiate simple requirement
+//					Cg cg = Cg.findById(new Integer(cgId));
+//					List<String> courseIds = cg.getCourse_ids();
+//					for(String courseId : courseIds)
+//					{
+//						simpleReq.insertNode(1, Integer.valueOf(courseId));	//add course
+//					}
+//					complexReq.insertSimple(simpleReq);
+//					degreeProgram.course_list.add(simpleReq);
+//				}
+//				degreeProgram.addComplexReq(complexReq);
+//			}catch(Exception e)
+//			{
+//				
+//			}	
+//		}
 		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
 		ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or"); 
 		
