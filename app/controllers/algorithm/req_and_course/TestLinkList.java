@@ -212,10 +212,7 @@ public class TestLinkList {
 //		
 //		list.addComplexReq(complexReq1);
 //		list.displayallComplexReq();
-		
-		
-		
-		
+				
 	}
 
 }
