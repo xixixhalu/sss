@@ -61,6 +61,7 @@ conf/application.conf
 .target/views/course_list.scala.html
 
 .target/views/course_list.scala.html
+
 conf/application.conf
 
 .DS_Store
@@ -69,4 +70,6 @@ app/.DS_Store
 
 *.conf
 
-conf/application.conf
+*.class
+
+

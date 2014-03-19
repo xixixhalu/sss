@@ -294,4 +294,73 @@ public class Course extends Model{
 		return json;
 	}
 	
+	public String getPrereq () {
+		StringBuffer str = new StringBuffer();
+		JSONArray ja = null;
+		JSONObject json = null;
+		
+		if (!this.entity.getPrerequisite_ids().equals("null")) {
+			try {
+				ja = new JSONArray(this.entity.getPrerequisite_ids());
+
+				int id = 0;
+				Course course = null;
+				for (int i = 0; i < ja.length(); i++) {
+					json = (JSONObject)ja.get(i);
+					id = json.getInt("id");
+					course = Course.findById(id);
+					
+					String relation = (String) json.get("relation");
+					if (relation.equals("and"))
+						relation = ",";
+					str.append(" " + relation + " ");
+					str.append(course.getPrefix() + course.getNumber());
+				}
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+//				Logger.debug(this.getPrefix() + this.getNumber() + this.getTitle());
+			}
+		} else {
+			str.append("-");
+		}
+		
+		return str.toString();
+	}
+	
+	public String getCoreq() {
+		StringBuffer str = new StringBuffer();
+		JSONArray ja = null;
+		JSONObject json = null;
+		
+		if (!this.entity.getCorequisite_ids().equals("null")) {
+			try {
+				ja = new JSONArray(this.entity.getCorequisite_ids());
+
+				int id = 0;
+				Course course = null;
+				for (int i = 0; i < ja.length(); i++) {
+					json = (JSONObject)ja.get(i);
+					id = (int) json.getInt("id");
+					course = Course.findById(id);
+					
+					String relation = (String) json.get("relation");
+					if (relation.equals("and"))
+						relation = ",";
+					str.append(" " + relation + " ");
+					str.append(course.getPrefix() + course.getNumber());
+				}
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+//				Logger.debug(this.getPrefix() + this.getNumber() + this.getTitle());
+			}
+		} else {
+			str.append("-");
+		}
+		
+		return str.toString();
+	}
 }

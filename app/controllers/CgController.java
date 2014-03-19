@@ -1,9 +1,15 @@
 package controllers;
 
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import controllers.forms.CgAddForm;
 import controllers.forms.CgEditForm;
 import models.Cg;
 import models.Course;
+import models.CourseWrapper;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -90,4 +96,24 @@ public class CgController extends Controller{
     		return badRequest(views.html.error.render(e.toString()));
     	}
     } 
+    
+
+    public static Result retrieveCgCourses(Integer id) {
+    	
+    	List<String> ids = Cg.findById(id).getCourse_ids();
+    	
+    	JSONArray carray = new JSONArray();
+    	
+    	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
+    			false, false, false, false, false);
+    	
+    	for (int i = 0; i < ids.size(); ++i) {
+    		carray.put(Course.findById(Integer.valueOf(ids.get(i))).toJson(cw));
+    	}
+    	
+    	JSONObject cajson = new JSONObject();
+    	cajson.put("courses", carray);
+    	
+    	return ok(cajson.toString());
+    }
 }
