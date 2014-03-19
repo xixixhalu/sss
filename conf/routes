@@ -47,7 +47,7 @@ POST	/admin/updateDegree			controllers.DegreeController.updateDegree(id: Integer
 GET		/admin/createDegree			controllers.DegreeController.requestCreateDegreePage()
 POST	/admin/addDegree			controllers.DegreeController.addDegree()
 
-#GET		/admin/help					controllers.Application.help()
+GET		/admin/help					controllers.Application.help()
 
 GET		/admin/retrieveCgCourses/:id		controllers.CgController.retrieveCgCourses(id: Integer)
 

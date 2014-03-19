@@ -307,7 +307,7 @@ public class Course extends Model{
 				Course course = null;
 				for (int i = 0; i < ja.length(); i++) {
 					json = (JSONObject)ja.get(i);
-					id = (int) json.getInt("id");
+					id = json.getInt("id");
 					course = Course.findById(id);
 					
 					String relation = (String) json.get("relation");
