@@ -1,6 +1,7 @@
 package controllers;
 
 import play.mvc.*;
+
 import controllers.algorithm.req_and_course.*;
 
 public class StudyPlanController extends Controller {
@@ -15,17 +16,23 @@ public class StudyPlanController extends Controller {
 		
 		Linklist simpleReq1 = new Linklist(1,"simpleReq1",15);
 		
+		//req1 -> course1->course2
 		addCourse(degreeProgram, simpleReq1, 100);
 		
-		
-		 //the second parameter is the course id
-		//simpleReq1.insertNode(1, 200);
+        //req1 -> course1->course2
 		addCourse(degreeProgram, simpleReq1, 200);
 		
 		complexReq1.insertSimple(simpleReq1);
 		degreeProgram.addComplexReq(complexReq1);
 		degreeProgram.course_list.add(simpleReq1);
+		
 		degreeProgram.displayallComplexReq();
+		
+		//course1 -> req1 ->re2
+		add2Course_List2(degreeProgram, simpleReq1,100);
+		add2Course_List2(degreeProgram, simpleReq1,200);
+		
+		degreeProgram.displayCourseList();
 		
 		//Linklist linkList1 = new Linklist();// simple_requirement 链表
 
@@ -142,6 +149,16 @@ public class StudyPlanController extends Controller {
 			simpleReq1.insertNode(newCourse);
 		}
 		return;
+	}
+	
+	
+	public static void add2Course_List2(TestLinkList degreeProgram, Linklist simpleReq1, int courseID){
+		Course_LinkList courseNode = new Course_LinkList(courseID);
+		int simpleReqName = simpleReq1.first.cName;
+		CourseNode simpleReq = new CourseNode(simpleReqName);
+		courseNode.insertNode(simpleReq);
+		degreeProgram.addReq2List(courseNode);
+		
 	}
 	
 }

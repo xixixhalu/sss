@@ -10,6 +10,10 @@ public class Course_LinkList {
 		this.first = null;
 	}
 
+	public Course_LinkList(int courseID) {
+		addFirstNode(courseID);
+	}
+
 	public void addFirstNode(int rName) {
 		CourseNode node = new CourseNode(rName);
 		node.beChosen = false;// initialize the course has not been selected by
@@ -24,19 +28,26 @@ public class Course_LinkList {
 		return tempnode;
 	}
 
-	public void insertNode(int index, int rName) {
-		CourseNode node = new CourseNode(rName);
-		CourseNode current = first;
-		CourseNode previous = first;
-		while (pos != index) {
-			previous = current;
-			current = current.next;
-			pos++;
-		}
+	// public void insertNode(int index, int rName) {
+	// CourseNode node = new CourseNode(rName);
+	// CourseNode current = first;
+	// CourseNode previous = first;
+	// while (pos != index) {
+	// previous = current;
+	// current = current.next;
+	// pos++;
+	// }
+	//
+	// node.next = current;
+	// previous.next = node;
+	// pos = 0;
+	//
+	// }
 
-		node.next = current;
-		previous.next = node;
-		pos = 0;
+	public void insertNode(CourseNode SimpleReq) {
+		CourseNode current = first;
+		SimpleReq.next = current.next;
+		current.next = SimpleReq;
 
 	}
 
@@ -84,7 +95,7 @@ public class Course_LinkList {
 		while (current != null) {
 			if (flag == 1) {
 				current.showFirstNode();
-				current=current.next;
+				current = current.next;
 				++flag;
 			} else {
 				current.showNode();
