@@ -1,12 +1,9 @@
 package controllers.algorithm.req_and_course;
 
+
 public class ComplexReq {
-	public ComplexReq_Node first;
-	public boolean satisfied;
-	public int required_num;
-	public int count = 0;
-	public String relation;
 	
+	public ComplexReq_Node first;
 
 //	public ComplexReq(String name){
 //		ComplexReq_Node c = new ComplexReq_Node();
@@ -19,12 +16,9 @@ public class ComplexReq {
 //	}
 	
 	
-	public ComplexReq(int id){
-		ComplexReq_Node c = new ComplexReq_Node(id);
+	public ComplexReq(int id, String Complex_Req_Name, String relation){
+		ComplexReq_Node c = new ComplexReq_Node(id, Complex_Req_Name, relation);
 		this.first = c;
-		this.satisfied = false;
-		this.count = 0;
-		this.required_num = 0;
 		this.first.next = null;
 	}
 	
@@ -40,9 +34,6 @@ public class ComplexReq {
 		
 	}
 	
-	public void addRequired_num (int n){
-		this.required_num = n;
-	}
 	
 	public void displayComplexReq(){
 		ComplexReq_Node simpleReq = first.next;

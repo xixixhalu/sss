@@ -8,9 +8,14 @@ public class Linklist {
 	public Linklist() {
 		this.first = null;
 	}
+	
+	public Linklist(int simpleReqID, String simpleReqName, int needFinish){
+		this.first = null;
+		addFirstNode(simpleReqID, simpleReqName, needFinish);
+	}
 
-	public void addFirstNode(int cName) {// cName here is requirement name
-		Node node = new Node(cName);
+	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {// cName here is requirement name
+		Node node = new Node(simpleReqID, simpleReqName, needFinish);
 		node.next = first;
 		first = node;
 	}
@@ -38,6 +43,16 @@ public class Linklist {
 
 	}
 
+	public void insertNode(Node course) { // cName here is course
+		// name
+		
+		Node current = first;
+
+		course.next = current.next;
+		current.next = course;
+
+	}
+	
 	public Node deleteByPos(int index) {
 		Node current = first;
 		Node previous = first;
