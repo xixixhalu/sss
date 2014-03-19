@@ -61,6 +61,7 @@ conf/application.conf
 .target/views/course_list.scala.html
 
 .target/views/course_list.scala.html
+<<<<<<< HEAD
 
 conf/application.conf
 
@@ -69,3 +70,14 @@ conf/application.conf
 *.class
 
 .target/models/Course.class
+=======
+conf/application.conf
+
+.DS_Store
+
+app/.DS_Store
+
+*.conf
+
+conf/application.conf
+>>>>>>> shuaiwang
