@@ -41,7 +41,7 @@ public class StudyPlanController2 extends Controller {
 				json.append(course.toJson(cw).toString());
 			}
 			
-			return ok(views.html.course.render(degree, json.toString()));
+			return ok(views.html.stu_course.render(degree, json.toString()));
 		}catch(Exception e)
 		{
 			return badRequest(views.html.error.render("Cannot retrieve course list"));
