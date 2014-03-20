@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>course</title>
+        <meta name="author" content="Bohan Zheng" />
+        <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
+        <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
+        <script src="/assets/javascripts/action.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
+        <!-- Date: 2014-02-21 -->
+    </head>
+    <body>
+        <div class="nav_bar">
+            <div class="block">
+                <div class="degree_bar">
+                    Degree: BS in CS for students starting with CS115 entering in September 2012
+                </div>
+            </div>
+        </div>
+        <!-- end of top bar-->
+        <!-- step bar -->
+        <div class="step">
+            <ul>
+                <li class="active">
+                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                </li>
+                <li>
+                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                </li>
+                <li>
+                    <a>STEP 3 : Getting Study Plan</a>
+                </li>
+            </ul>
+        </div>
+        <!-- end of step bar -->
+        <div class="content">
+            <div class="left float_left">
+                <div class="head">
+                    COURSE BIN
+                </div>
+                <div class="left_list">
+                    <span onclick="getLikeCourses()">Want to take: </span>
+                    <ul id="wantTake"></ul>
+                </div>
+                <div class="left_list">
+                    <span onclick="getTakenCourses()">Already taken: </span>
+                    <ul id="alreadyTaken"></ul>
+                </div>
+                <div>
+                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                </div>
+            </div>
+            <div class="right float_right">
+                <ul class="req_list">
+                    <li id="req1">
+                        <div class="req_title" style="display: none;">
+                            Required Computer Science Courses <a onclick="dropDown('req1')">&oplus;</a>
+                        </div>
+                        <div class="right_list">
+                            <div class="req_title">
+                                Required Computer Science Courses<a onclick="dropDown('req1')">&otimes;</a>
+                            </div>
+                            <span>You must take all the courses listed below.</span>
+                            <span>You must take all the courses listed below.</span>
+                            <span>You must take all the courses listed below.</span>
+                            <div>
+                                <ul class="req_course_list">
+                                    <li>
+                                        CS 510 - Software Management and Economics<a onclick='addTakenCourse(1)'>&otimes;</a><a onclick='addLikeCourse(1)'>&oplus;</a>
+                                    </li>
+                                    <li>
+                                        CS 572 - Web Search Engine and Information Retrival<a onclick='addTakenCourse(2)'>&otimes;</a><a onclick='addLikeCourse(2)'>&oplus;</a>
+                                    </li>
+                                </ul>
+                                <ul class="req_course_list">
+                                    <li>
+                                        CS 577a - Software Engineering A<a onclick='addTakenCourse(3)'>&otimes;</a><a onclick='addLikeCourse(3)'>&oplus;</a>
+                                    </li>
+                                    <li>
+                                        CS 577b - Software Engineering B<a onclick='addTakenCourse(4)'>&otimes;</a><a onclick='addLikeCourse(4)'>&oplus;</a>
+                                    </li>
+                                </ul>
+                                <a class="auto button">AUTO</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <span>Student Scheduling System for Stevens Institute of Technology</span>
+            <br>
+            <span>Copy right: Team #10</span>
+        </div>
+    </body>
+</html>
+

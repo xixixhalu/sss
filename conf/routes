@@ -14,7 +14,6 @@ GET		/admin/createCourse				controllers.CourseController.requestCreateCoursePage
 POST	/admin/addCourse				controllers.CourseController.addCourse()
 GET		/admin/retrieveWholeCourses		controllers.CourseController.retrieveWholeCourses()
 
-
 #Course Group Operation
 GET		/admin/cg_list				controllers.CgController.retrieveCgs()
 POST    /admin/deleteCg				controllers.CgController.deleteCg(id: Integer)
@@ -48,11 +47,14 @@ GET		/admin/createDegree			controllers.DegreeController.requestCreateDegreePage(
 POST	/admin/addDegree			controllers.DegreeController.addDegree()
 
 GET		/admin/help					controllers.Application.help()
-
 GET		/admin/retrieveCgCourses/:id		controllers.CgController.retrieveCgCourses(id: Integer)
 
 GET		/admin/header				controllers.Utility.getHeader()
 GET		/admin/footer				controllers.Utility.getFooter()
+
+#student side
+GET		/student/index			controllers.StudyPlanController2.retrieveDegrees()
+POST	/student/course			controllers.StudyPlanController2.retrieveCourses()	
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
