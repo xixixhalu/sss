@@ -230,10 +230,10 @@ function initEdit() {
     var prereqs = eval("(" + prereqStr + ")");
     var coreqs = eval("(" + coreqStr + ")");
     var ul1 = document.getElementById("reqlist");
-    for ( i = 0; i < data.length; i++) {
+    for ( i = 0; i < prereqs.length; i++) {
         var li = document.createElement("li");
-        var courseName = data[i].prefix + data[i].num;
-        var course_id = data[i].id;
+        var courseName = prereqs[i].prefix + prereqs[i].num;
+        var course_id = prereqs[i].id;
         if (ul1.children.length > 0) {
             li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
         } else {
@@ -247,12 +247,11 @@ function initEdit() {
         ul1.appendChild(li);
     }
 
-    document.getElementById("corequisite_id").value = "";
     var ul2 = document.getElementById("coqlist");
-    for ( i = 0; i < data.length; i++) {
+    for ( i = 0; i < coreqs.length; i++) {
         var li = document.createElement("li");
-        var courseName = data[i].prefix + data[i].num;
-        var course_id = data[i].id;
+        var courseName = coreqs[i].prefix + coreqs[i].num;
+        var course_id = coreqs[i].id;
         if (ul2.children.length > 0) {
             li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
         } else {
@@ -265,5 +264,7 @@ function initEdit() {
         };
         ul2.appendChild(li);
     }
+    
+    document.getElementById("prerequisite_id").value = "";
     document.getElementById("corequisite_id").value = "";
 }

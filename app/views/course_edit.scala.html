@@ -31,7 +31,7 @@
                 <span><a href="course_list">Course </a>-></span><span> @course.getPrefix() - @course.getNumber() @course.getTitle()</span>
             </div>
             <!--课程号课程名学分-->
-            <form action="@routes.CourseController.updateCourse(course.getId())" method="post" onsubmit="return checkCourseForm()">
+            <form action="@routes.CourseController.updateCourse(course.getId())" method="post" onsubmit="return doSubmit()">
                 <div class="top">
 
                     <div>
