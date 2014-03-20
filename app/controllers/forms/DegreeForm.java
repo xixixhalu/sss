@@ -4,6 +4,6 @@ import play.data.validation.Constraints.Required;
 
 public class DegreeForm {
 	@Required
-	public String degreeId;
+	public Integer degreeId;
 	
 }

@@ -1,3 +1,14 @@
+@(degree : Degree, jsonData : String)
+@import models.Requirement;
+@import models.Cg;
+@import models.Course;
+@import models.Degree;
+@import models.Requirement;
+@import models.Sr;
+
+@import org.json.JSONArray;
+@import org.json.JSONObject;
+@import java.util.List;
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -16,7 +27,7 @@
         <div class="nav_bar">
             <div class="block">
                 <div class="degree_bar">
-                    Degree: BS in CS for students starting with CS115 entering in September 2012
+                    Degree: @degree.getTitle()
                 </div>
             </div>
         </div>
@@ -55,38 +66,53 @@
             </div>
             <div class="right float_right">
                 <ul class="req_list">
-                    <li id="req1">
-                        <div class="req_title" style="display: none;">
-                            Required Computer Science Courses <a onclick="dropDown('req1')">&oplus;</a>
-                        </div>
-                        <div class="right_list">
-                            <div class="req_title">
-                                Required Computer Science Courses<a onclick="dropDown('req1')">&otimes;</a>
-                            </div>
-                            <span>You must take all the courses listed below.</span>
-                            <span>You must take all the courses listed below.</span>
-                            <span>You must take all the courses listed below.</span>
-                            <div>
-                                <ul class="req_course_list">
-                                    <li>
-                                        CS 510 - Software Management and Economics<a onclick='addTakenCourse(1)'>&otimes;</a><a onclick='addLikeCourse(1)'>&oplus;</a>
-                                    </li>
-                                    <li>
-                                        CS 572 - Web Search Engine and Information Retrival<a onclick='addTakenCourse(2)'>&otimes;</a><a onclick='addLikeCourse(2)'>&oplus;</a>
-                                    </li>
-                                </ul>
-                                <ul class="req_course_list">
-                                    <li>
-                                        CS 577a - Software Engineering A<a onclick='addTakenCourse(3)'>&otimes;</a><a onclick='addLikeCourse(3)'>&oplus;</a>
-                                    </li>
-                                    <li>
-                                        CS 577b - Software Engineering B<a onclick='addTakenCourse(4)'>&otimes;</a><a onclick='addLikeCourse(4)'>&oplus;</a>
-                                    </li>
-                                </ul>
-                                <a class="auto button">AUTO</a>
-                            </div>
-                        </div>
-                    </li>
+                	@{var cont : Html = Html("");
+                		for(reqId <- degree.getReq_ids()){
+                		var req : Requirement = Requirement.findById(Integer.parseInt(reqId));
+                		
+                    cont += Html("<li id=\"req1\">");
+                        cont += Html("<div class=\"req_title\" style=\"display: none;\">");
+                        	cont += Html(req.getTitle());
+                            cont += Html(" <a onclick=\"dropDown('req1')\">&oplus;</a>");
+                        cont += Html("</div>");
+                        cont += Html("<div class=\"right_list\">");
+                            cont += Html("<div class=\"req_title\">");
+                            	cont += Html(req.getTitle());
+                                cont += Html(" <a onclick=\"dropDown('req1')\">&otimes;</a>");
+                            cont += Html("</div>");
+                            cont += Html("<span>You must take all the courses listed below.</span>");
+                            cont += Html("<div>");
+                            	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
+                            	for(i <- 0 to srReqs.length()-1)
+                            	{
+                            	var srReqObject : JSONObject = srReqs.get(i).asInstanceOf[JSONObject];
+								var srId : String = srReqObject.get("id").asInstanceOf[String];
+								var sr : Sr = Sr.findById(new Integer(srId));
+								var cgId : Integer = sr.getCg_id();
+								var reqNum : Integer = sr.getRequired_num();
+								var cg : Cg = Cg.findById(cgId);
+                                cont += Html("<ul class=\"req_course_list\">");
+                                	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
+                                	for(courseId <- cg.getCourse_ids()){
+                                    cont += Html("<li>");
+                                    	var course : Course = Course.findById(Integer.parseInt(courseId));
+                                    	cont += Html(course.getTitle());
+                                        cont += Html("<a onclick='addTakenCourse(1)'>&otimes;</a><a onclick='addLikeCourse(1)'>&oplus;</a>");
+                                    cont += Html("</li>");
+                                    }
+                                    //cont += Html("<li>");
+                                    //    cont += Html("CS 572 - Web Search Engine and Information Retrival<a onclick='addTakenCourse(2)'>&otimes;</a><a onclick='addLikeCourse(2)'>&oplus;</a>");
+                                    //cont += Html("</li>");
+                                cont += Html("</ul>");
+                                }
+                                cont += Html("<a class=\"auto button\">AUTO</a>");
+                            cont += Html("</div>");
+                        cont += Html("</div>");
+                    cont += Html("</li>");
+                    }
+                    cont;
+                   }
+                    <!--
                     <li>
                         <div class="req_title">
                             Required Computer Science Courses <a>&oplus;</a>
@@ -117,6 +143,7 @@
                         </div>
                         <div class="right_list"></div>
                     </li>
+                    -->
                 </ul>
             </div>
         </div>

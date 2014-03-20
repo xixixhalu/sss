@@ -1,7 +1,5 @@
 package controllers;
 
-import java.awt.List;
-
 import models.Degree;
 import play.data.Form;
 import play.mvc.*;
@@ -9,6 +7,8 @@ import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
 import controllers.forms.SrEditForm;
 import models.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudyPlanController2 extends Controller {	
 	
@@ -30,41 +30,18 @@ public class StudyPlanController2 extends Controller {
     	}
 		try{
 			DegreeForm degreeForm = filledForm.get();
-			String degreeId = degreeForm.degreeId;
+			Integer degreeId = degreeForm.degreeId;
+			Degree degree = Degree.findById(degreeId);
+			//get all courses JSON
+			StringBuffer json = new StringBuffer();
+			List<Course> courses = Course.getAll();
+			for (Course course : courses) {
+				CourseWrapper cw = new CourseWrapper(true, true, true, true,
+						true, true, true, true, true);
+				json.append(course.toJson(cw).toString());
+			}
 			
-//			Degree degree = Degree.findById(degreeId);
-//			TestLinkList degreeProgram = new TestLinkList(degree.getTitle());	//add new degree
-//			List<String> complexIds = degree.getReq_ids();						//get Requirement ids
-//			for(String complexId : complexIds)
-//			{ 
-//			
-//				Requirement req = Requirement.findById(Integer.valueOf(complexId)); //get Requirement
-//				JSONArray srReqs = new JSONArray(req.getSr_ids());
-//				ComplexReq complexReq = null;
-//				if(srReqs.length() < 2)
-//					complexReq = new ComplexReq(Integer.valueOf(req.getId()), req.getTitle(), "or");
-//				else
-//					complexReq = new ComplexReq(Integer.valueOf(req.getId()), req.getTitle(), (String)((JSONObject)srReqs.get(1)).get("relation"));
-//				JSONObject srReqObject = null;
-//				for (int i = 0; i < srReqs.length(); i++) {
-//					srReqObject = (JSONObject) srReqs.get(i);
-//					int srId = srReqObject.getInt("id");					//get Simple Requirment
-//					Sr sr = Sr.findById(new Integer(srId));
-//					int cgId = Integer.valueOf(sr.getCg_id());
-//					int reqNum = Integer.valueOf(sr.getRequired_num());
-//					Linklist simpleReq = new Linklist(srId, sr.getTitle(), reqNum); //initiate simple requirement
-//					Cg cg = Cg.findById(new Integer(cgId));
-//					List<String> courseIds = cg.getCourse_ids();
-//					for(String courseId : courseIds)
-//					{
-//						simpleReq.insertNode(1, Integer.valueOf(courseId));	//add course
-//					}
-//					complexReq.insertSimple(simpleReq);
-//					degreeProgram.course_list.add(simpleReq);
-//				}
-//				degreeProgram.addComplexReq(complexReq);		
-//			}
-			return ok(views.html.course.render());
+			return ok(views.html.course.render(degree, json.toString()));
 		}catch(Exception e)
 		{
 			return badRequest(views.html.error.render("Cannot retrieve course list"));
