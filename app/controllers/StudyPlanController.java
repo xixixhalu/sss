@@ -50,14 +50,11 @@ public class StudyPlanController extends Controller {
 					Linklist simpleReq = new Linklist(srId, sr.getTitle(), reqNum); //initiate simple requirement
 					Cg cg = Cg.findById(new Integer(cgId));
 					List<String> courseIds = cg.getCourse_ids();
-					
-					
 					for(String courseId : courseIds)
 					{
 						addCourse(degreeProgram, simpleReq, Integer.valueOf(courseId));	//add course
 						add2Course_List2(degreeProgram, simpleReq, Integer.valueOf(courseId));
 					}
-					
 					
 					complexReq.insertSimple(simpleReq);
 					degreeProgram.course_list.add(simpleReq);
