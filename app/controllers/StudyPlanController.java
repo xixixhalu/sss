@@ -67,10 +67,10 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-		allCross_relation.Display_All_Headnode();
-		allCross_relation.displayCrossLinkedList();
+//		allCross_relation.Display_All_Headnode();
+//		allCross_relation.displayCrossLinkedList();
 
-//		degreeProgram.displayallComplexReq();
+		degreeProgram.displayallComplexReq();
 //		degreeProgram.displayCourseList();
 //		degreeProgram.displayAllCourse();
 
@@ -113,8 +113,10 @@ public class StudyPlanController extends Controller {
 	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID){
 		boolean ifCourseExist = degreeProgram.prepareInsertCourse(courseID);
 		//System.out.println(ifCourseExist);
-		if(ifCourseExist){	
-				simpleReq1.insertNode(degreeProgram.course.get(courseID));
+		if(ifCourseExist){
+			Node course = new Node(courseID);
+			degreeProgram.course.put(courseID, course);
+			simpleReq1.insertNode(course);
 		}else{
 			//System.out.println("OK");
 			Node newCourse = new Node(courseID);
