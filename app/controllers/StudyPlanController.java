@@ -25,7 +25,7 @@ public class StudyPlanController extends Controller {
 	public static CrossLinkedList allCross_relation = new CrossLinkedList();
 	public static int redNode = 0;
 	
-	public static void generateReq(Integer id){
+	public static void CreateDegreeProgram(Integer id){
 		//boolean chooeseSuccess =false;//是否选课成功
 		Degree degree = Degree.findById(id);
 		TestLinkList degreeProgram = new TestLinkList(degree.getTitle());	//add new degree
@@ -70,8 +70,7 @@ public class StudyPlanController extends Controller {
 		//allCross_relation.Display_All_Headnode();
 		//allCross_relation.displayCrossLinkedList();
 
-		degreeProgram.displayallComplexReq();
-		degreeProgram.displayCourseList();
+		
 		degreeProgram.displayAllCourse();
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
@@ -105,17 +104,22 @@ public class StudyPlanController extends Controller {
 //		add2Course_List2(degreeProgram, simpleReq1,600);
 //		
 //		degreeProgram.displayCourseList();
-
+		
+		//mark student's  chosen course
+//		boolean  chooeseSuccess = degreeProgram.checkCourseIn_ReqList(10,108);
+//		if(chooeseSuccess){
+//			degreeProgram.displayallComplexReq();
+//			degreeProgram.displayCourseList();
+//		}
+		degreeProgram.displayallComplexReq();
+		//degreeProgram.displayCourseList();
 		play.Logger.info("================================================");
 	}
 	
 	
 	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID){
-		boolean ifCourseExist = degreeProgram.prepareInsertCourse(courseID);
 		//System.out.println(ifCourseExist);
-		if(ifCourseExist){	
-				simpleReq1.insertNode(degreeProgram.course.get(courseID));
-		}else{
+
 			//System.out.println("OK");
 			Node newCourse = new Node(courseID);
 			degreeProgram.course.put(courseID, newCourse);
@@ -212,7 +216,6 @@ public class StudyPlanController extends Controller {
 					}
 				}
 			}
-		}
 		return;
 	}
 	

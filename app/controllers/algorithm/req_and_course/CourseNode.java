@@ -14,7 +14,8 @@ public class CourseNode {
 	
 
 	public void showNode() {
-		System.out.println(rName + " ");
+		System.out.print("The course is chosen in this requirement: ");
+		System.out.println(rName + " " + beChosen+'\n');
 	}
 	public void showFirstNode(){
 		System.out.print(rName + " " + beChosen +'\n');

@@ -106,13 +106,12 @@ public class TestLinkList {
 			
 			ifFind = this.course_list.get(i).chooseCourse(reqName, courseName);
 			if (ifFind) {
-				break;
+				break;//Find this course in this requirement
 			}
 		}
 		if(!ifFind)
-			return false;
+			return false;  //error detection: if no this course in this requirement
 		
-		//int size = this.course_list2.size();  课程列表大小
 		for (; j < this.course_list2.size(); j++) {
 			if(this.course_list2.get(j).first.rName == courseName){
 				ifChosen = this.course_list2.get(j).checkChosen();
@@ -126,7 +125,12 @@ public class TestLinkList {
 		}
 		//选课
 		this.course_list.get(i).set2ChooseCourse(courseName); //在requirement链表中标记
-		this.course_list2.get(j).set_course_be_chosen(); //在课程表链表中标记
+		for(int k=0; k<this.course_list.size(); k++){
+			if(k!=i){
+				this.course_list.get(i).deleteByData(courseName);
+			}
+		}
+		this.course_list2.get(j).set_course_be_chosen(reqName); //在课程表链表中标记
 		
 		return true; // this course exists and has not been chosen.
 	}

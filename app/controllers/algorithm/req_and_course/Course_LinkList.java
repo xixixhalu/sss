@@ -131,8 +131,14 @@ public class Course_LinkList {
 	// function call
 	// this function to update the head node of "course link list" as true.
 
-	public void set_course_be_chosen() {
-		this.first.beChosen = true;
+	public void set_course_be_chosen(int reqID) {
+		CourseNode temp = this.first;
+		temp.beChosen = true;
+		while(temp.rName!=reqID){
+			temp=temp.next;
+		}
+		//this.first.beChosen = true;
+		temp.beChosen = true;
 
 	}
 
