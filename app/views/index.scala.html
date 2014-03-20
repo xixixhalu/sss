@@ -1,7 +1,31 @@
-@(message: String)
+@(degrees: List[Degree], degreeForm: Form[controllers.forms.DegreeForm])
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 
-@main("Welcome to Play") {
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>index</title>
+        <meta name="author" content="Bohan Zheng" />
+        <link href="/assets/stylesheets/index.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/global.css" type="text/css" rel="stylesheet"/>
+        <!-- Date: 2014-02-21 -->
+    </head>
+    <body>
+        <div class="content">
+            <img class="biglogo" src="/assets/images/biglogo.png">
+            <form action="course" method="POST">
+                <span>Choose your degree program: </span>
+                <select name="degreeId">
+                	@for(degree <- degrees){
+                    <option value="@degree.getId()">@degree.getTitle()</option>
+                   }
+                </select>
+                <div>
+                    <input type="submit" />
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
 
-    @play20.welcome(message, style = "Java")
-
-}
