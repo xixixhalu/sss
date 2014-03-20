@@ -167,8 +167,10 @@ function remove(li, list) {
     }
 }
 
-function Course(id, relation, group) {
+function Course(id, prefix, num, relation, group) {
     this.id = id;
+    this.prefix = prefix;
+    this.num = num;
     this.relation = relation;
     this.group = group;
 }
@@ -190,7 +192,9 @@ function getReqCourses(req) {
             var relation = "";
         else
             var relation = lis[i].getElementsByTagName("select")[0].value.toLowerCase();
-        var course = new Course(id, relation, group);
+        var prefix = lis[i].getElementsByTagName("div")[0].innerText.substring(0, 2);
+        var num = lis[i].getElementsByTagName("div")[0].innerText.substring(2);
+        var course = new Course(id, prefix, num, relation, group);
         courses.push(course);
     }
     return courses;
@@ -209,20 +213,6 @@ function doSubmit(form) {
         return false;
     //form.submit();
 }
-
-var data = [{
-    "id" : "74",
-    "prefix" : "CS",
-    "num" : "115",
-    "relation" : "",
-    "group" : "1"
-}, {
-    "id" : "180",
-    "prefix" : "CS",
-    "num" : "116",
-    "relation" : "and",
-    "group" : "1"
-}];
 
 function initEdit() {
     var prereqStr = document.getElementById("prerequisite_id").value;
@@ -264,7 +254,7 @@ function initEdit() {
         };
         ul2.appendChild(li);
     }
-    
+
     document.getElementById("prerequisite_id").value = "";
     document.getElementById("corequisite_id").value = "";
 }

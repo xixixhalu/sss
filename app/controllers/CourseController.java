@@ -109,9 +109,7 @@ public class CourseController extends Controller {
     	
     	JSONArray carray = new JSONArray();
     	
-//    	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
-//    			false, false, false, false, false);
-    	CourseWrapper cw = new CourseWrapper(false, true, true, true, 
+    	CourseWrapper cw = new CourseWrapper(true, true, true, true, 
     			false, false, false, false, false);
     	
     	for (int i = 0; i < list.size(); ++i) {
