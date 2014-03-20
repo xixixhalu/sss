@@ -64,12 +64,8 @@ conf/application.conf
 
 conf/application.conf
 
-.DS_Store
-
-app/.DS_Store
-
-*.conf
+*.class
 
 *.class
 
-
+.target/models/Course.class

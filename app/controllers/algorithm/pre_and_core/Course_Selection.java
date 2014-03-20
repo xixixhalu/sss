@@ -96,7 +96,7 @@ public class Course_Selection {
 
 		allCross_relation_example.Display_All_Headnode();
 
-		allCross_relation_example.setArcBox(115, 334, 1);
+		allCross_relation_example.setArcBox(115, 334, 1);// (course1_ID, course2_ID, relation)
 		allCross_relation_example.setArcBox(115,  284, 1);
 		allCross_relation_example.setArcBox(135, 334, 1);
 		allCross_relation_example.setArcBox(502, -1, 3);

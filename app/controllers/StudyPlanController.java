@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Cg;
+import models.Course;
 import models.Degree;
 import models.Requirement;
 import models.Sr;
@@ -11,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import play.mvc.Controller;
+import controllers.algorithm.pre_and_core.CrossLinkedList;
 import controllers.algorithm.req_and_course.ComplexReq;
 import controllers.algorithm.req_and_course.CourseNode;
 import controllers.algorithm.req_and_course.Course_LinkList;
@@ -20,6 +22,8 @@ import controllers.algorithm.req_and_course.TestLinkList;
 
 
 public class StudyPlanController extends Controller {
+	public static CrossLinkedList allCross_relation = new CrossLinkedList();
+	public static int redNode = 0;
 	
 	public static void generateReq(Integer id){
 		//boolean chooeseSuccess =false;//是否选课成功
@@ -59,13 +63,16 @@ public class StudyPlanController extends Controller {
 				degreeProgram.addComplexReq(complexReq);
 			}catch(Exception e)
 			{
-				
+				e.printStackTrace();
 			}	
 		}
 		
-		degreeProgram.displayallComplexReq();
-		degreeProgram.displayCourseList();
-		degreeProgram.displayAllCourse();
+		allCross_relation.Display_All_Headnode();
+		allCross_relation.displayCrossLinkedList();
+
+//		degreeProgram.displayallComplexReq();
+//		degreeProgram.displayCourseList();
+//		degreeProgram.displayAllCourse();
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
 //		ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or"); 
@@ -113,6 +120,98 @@ public class StudyPlanController extends Controller {
 			Node newCourse = new Node(courseID);
 			degreeProgram.course.put(courseID, newCourse);
 			simpleReq1.insertNode(newCourse);
+			
+			/**
+			 * @author tongrui
+			 * function: construct the crosslist
+			 */
+			allCross_relation.addCourse(Integer.valueOf(courseID));
+			Course course = Course.findById(courseID);
+			
+			String prereq = course.getPrereq(2);
+			String coreq = course.getCoreq(2);
+			
+			if (!prereq.trim().equals("-")) {
+				String[] prelist = prereq.split(" ");
+				
+				if (prelist.length - 2 == 1) {
+					allCross_relation.setArcBox(Integer.valueOf(prelist[2]), courseID, 1);
+				} else if (prelist.length - 2 == 3) {
+					if (prelist[3].equals(",")) {
+						allCross_relation.setArcBox(Integer.valueOf(prelist[2]), courseID, 1);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[4]), courseID, 1);
+					} else if (prelist[3].equals("or")) {
+						allCross_relation.addCourse(--redNode);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 3);
+					}
+				} else if (prelist.length - 2 == 5) {
+					if (prelist[3].equals(",")) {
+						allCross_relation.setArcBox(Integer.valueOf(prelist[2]), courseID, 1);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[4]), courseID, 1);
+						
+						if (prelist[5].equals("or")) {
+							// issue
+						} else if (prelist[5].equals(",")) {
+							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
+						}
+					} else if (prelist[3].equals("or")) {
+						allCross_relation.addCourse(--redNode);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 3);
+						
+						if (prelist[5].equals("or")) {
+							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
+						} else if (prelist[5].equals(",")) {
+							allCross_relation.setArcBox(redNode, courseID, 3);
+							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
+						}
+					}
+				}
+			}
+			
+			if (!coreq.trim().equals("-")) {
+				String[] colist = coreq.split(" ");
+				
+				if (colist.length - 2 == 1) {
+					allCross_relation.setArcBox(Integer.valueOf(colist[2]), courseID, 2);
+				} else if (colist.length - 2 == 3) {
+					if (colist[3].equals(",")) {
+						allCross_relation.setArcBox(Integer.valueOf(colist[2]), courseID, 2);
+						allCross_relation.setArcBox(Integer.valueOf(colist[4]), courseID, 2);
+					} else if (colist[3].equals("or")) {
+						allCross_relation.addCourse(--redNode);
+						allCross_relation.setArcBox(Integer.valueOf(colist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(colist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 3);
+					}
+				} else if (colist.length - 2 == 5) {
+					if (colist[3].equals(",")) {
+						allCross_relation.setArcBox(Integer.valueOf(colist[2]), courseID, 2);
+						allCross_relation.setArcBox(Integer.valueOf(colist[4]), courseID, 2);
+						
+						if (colist[5].equals("or")) {
+							// issue
+						} else if (colist[5].equals(",")) {
+							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
+						}
+					} else if (colist[3].equals("or")) {
+						allCross_relation.addCourse(--redNode);
+						allCross_relation.setArcBox(Integer.valueOf(colist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(colist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 3);
+						
+						if (colist[5].equals("or")) {
+							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
+						} else if (colist[5].equals(",")) {
+							allCross_relation.setArcBox(redNode, courseID, 3);
+							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
+						}
+					}
+				}
+			}
 		}
 		return;
 	}
