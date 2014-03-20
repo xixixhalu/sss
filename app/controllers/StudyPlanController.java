@@ -47,7 +47,7 @@ public class StudyPlanController extends Controller {
 					Sr sr = Sr.findById(new Integer(srId));
 					int cgId = Integer.valueOf(sr.getCg_id());
 					int reqNum = Integer.valueOf(sr.getRequired_num());
-					Linklist simpleReq = new Linklist(srId, sr.getTitle(), reqNum); //initiate simple requirement
+					Linklist simpleReq = find_or_create_simpleReq(degreeProgram,srId, sr.getTitle(), reqNum); //initiate simple requirement
 					Cg cg = Cg.findById(new Integer(cgId));
 					List<String> courseIds = cg.getCourse_ids();
 					for(String courseId : courseIds)
@@ -67,12 +67,12 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-		allCross_relation.Display_All_Headnode();
-		allCross_relation.displayCrossLinkedList();
+		//allCross_relation.Display_All_Headnode();
+		//allCross_relation.displayCrossLinkedList();
 
-//		degreeProgram.displayallComplexReq();
-//		degreeProgram.displayCourseList();
-//		degreeProgram.displayAllCourse();
+		degreeProgram.displayallComplexReq();
+		degreeProgram.displayCourseList();
+		degreeProgram.displayAllCourse();
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
 //		ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or"); 
@@ -236,6 +236,21 @@ public class StudyPlanController extends Controller {
 			degreeProgram.addReq2List(courseNode);
 		}
 	
+	}
+	
+	public static Linklist find_or_create_simpleReq(TestLinkList degreeProgram, int srId, String srTitle, int reqNum){
+		boolean simpleReqExist = degreeProgram.prepareInsertSimple(srId);
+			if(simpleReqExist){
+				int i=0;
+				for(; i<degreeProgram.course_list.size();i++){
+					if(srId == degreeProgram.course_list.get(i).first.cName)
+						break;
+				}
+				return degreeProgram.course_list.get(i);
+			}else{
+				Linklist simpleReq = new Linklist(srId, srTitle, reqNum);
+				return simpleReq;
+			}
 	}
 	
 }

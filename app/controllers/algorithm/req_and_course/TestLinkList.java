@@ -27,6 +27,14 @@ public class TestLinkList {
 		this.course.put(courseID, course);
 	}
 	
+	public boolean prepareInsertSimple(int simpleReqID){
+		for(int i =0; i<this.course_list.size();i++){
+			if(simpleReqID == this.course_list.get(i).first.cName)
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean prepareInsertCourse(int courseID){
 		return this.course.containsKey(courseID);
 
