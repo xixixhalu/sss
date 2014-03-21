@@ -48,6 +48,10 @@ public class StudyPlanController2 extends Controller {
 		}
 	}
 	
+	public static Result assignSemester(){
+		return ok(views.html.stu_semester.render());
+	}
+	
 	public static void generateReq(Integer id){
 	}
 	
