@@ -220,39 +220,43 @@ function initEdit() {
     var prereqs = eval("(" + prereqStr + ")");
     var coreqs = eval("(" + coreqStr + ")");
     var ul1 = document.getElementById("reqlist");
-    for ( i = 0; i < prereqs.length; i++) {
-        var li = document.createElement("li");
-        var courseName = prereqs[i].prefix + prereqs[i].num;
-        var course_id = prereqs[i].id;
-        if (ul1.children.length > 0) {
-            li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
-        } else {
-            li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
-        }
-        li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
-        li.ondblclick = function(evt) {
-            var li = (evt) ? evt.target : window.event.srcElement;
-            remove(li.parentElement.parentElement, "reqlist");
-        };
-        ul1.appendChild(li);
+    if (prereqs != null) {
+	    for ( i = 0; i < prereqs.length; i++) {
+	        var li = document.createElement("li");
+	        var courseName = prereqs[i].prefix + prereqs[i].num;
+	        var course_id = prereqs[i].id;
+	        if (ul1.children.length > 0) {
+	            li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+	        } else {
+	            li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+	        }
+	        li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
+	        li.ondblclick = function(evt) {
+	            var li = (evt) ? evt.target : window.event.srcElement;
+	            remove(li.parentElement.parentElement, "reqlist");
+	        };
+	        ul1.appendChild(li);
+	    }
     }
 
     var ul2 = document.getElementById("coqlist");
-    for ( i = 0; i < coreqs.length; i++) {
-        var li = document.createElement("li");
-        var courseName = coreqs[i].prefix + coreqs[i].num;
-        var course_id = coreqs[i].id;
-        if (ul2.children.length > 0) {
-            li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
-        } else {
-            li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
-        }
-        li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
-        li.ondblclick = function(evt) {
-            var li = (evt) ? evt.target : window.event.srcElement;
-            remove(li.parentElement.parentElement, "coqlist");
-        };
-        ul2.appendChild(li);
+    if (coreqs != null) {
+	    for ( i = 0; i < coreqs.length; i++) {
+	        var li = document.createElement("li");
+	        var courseName = coreqs[i].prefix + coreqs[i].num;
+	        var course_id = coreqs[i].id;
+	        if (ul2.children.length > 0) {
+	            li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+	        } else {
+	            li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+	        }
+	        li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
+	        li.ondblclick = function(evt) {
+	            var li = (evt) ? evt.target : window.event.srcElement;
+	            remove(li.parentElement.parentElement, "coqlist");
+	        };
+	        ul2.appendChild(li);
+	    }
     }
 
     document.getElementById("prerequisite_id").value = "";

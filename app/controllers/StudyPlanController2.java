@@ -43,7 +43,6 @@ public class StudyPlanController2 extends Controller {
 				CourseWrapper cw = new CourseWrapper(true, true, true, true,
 						true, true, true, false, false);
 				json.put(course.toJson(cw).getString("id"), course.toJson(cw));
-
 			}
 			
 			return ok(views.html.stu_course.render(degree, json.toString()));
