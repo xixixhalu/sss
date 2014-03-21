@@ -68,8 +68,8 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-		allCross_relation.Display_All_Headnode();
-		allCross_relation.displayCrossLinkedList();
+//		allCross_relation.Display_All_Headnode();
+//		allCross_relation.displayCrossLinkedList();
 
 
 //		degreeProgram.displayallComplexReq();
@@ -116,8 +116,8 @@ public class StudyPlanController extends Controller {
 //			degreeProgram.displayCourseList();
 //		}
 //		degreeProgram.displayallComplexReq();
-		degreeProgram.displayCourseList();
-		play.Logger.info("================================================");
+//		degreeProgram.displayCourseList();
+//		play.Logger.info("================================================");
 	}
 	
 	
