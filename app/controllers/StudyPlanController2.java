@@ -7,8 +7,11 @@ import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
 import controllers.forms.SrEditForm;
 import models.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
@@ -33,13 +36,14 @@ public class StudyPlanController2 extends Controller {
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
 			//get all courses JSON
-			StringBuffer json = new StringBuffer();
+			JSONObject json = new JSONObject();
 			List<Course> courses = Course.getAll();
-			//for (Course course : courses) {
-			for(int i = 0; i < 2; i++){
+			for (Course course : courses) {
+			
 				CourseWrapper cw = new CourseWrapper(true, true, true, true,
-						true, true, true, false, false);
-				json.append(courses.get(i).toJson(cw).toString());
+						true, true, true, true, true);
+				json.put(course.toJson(cw).getString("id"), course.toJson(cw).toString());
+
 			}
 			
 			return ok(views.html.stu_course.render(degree, json.toString()));
