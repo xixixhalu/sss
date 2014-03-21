@@ -39,8 +39,9 @@ public class StudyPlanController2 extends Controller {
 			JSONObject json = new JSONObject();
 			List<Course> courses = Course.getAll();
 			for (Course course : courses) {
+			
 				CourseWrapper cw = new CourseWrapper(true, true, true, true,
-						true, true, true, true, true);
+						true, true, true, false, false);
 				json.put(course.toJson(cw).getString("id"), course.toJson(cw));
 			}
 			
