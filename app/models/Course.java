@@ -304,7 +304,7 @@ public class Course extends Model{
 		JSONArray ja = null;
 		JSONObject json = null;
 		
-		if (!this.entity.getPrerequisite_ids().equals("null")) {
+		if (!this.entity.getPrerequisite_ids().equals("[]")) {
 			try {
 				ja = new JSONArray(this.entity.getPrerequisite_ids());
 
@@ -347,7 +347,7 @@ public class Course extends Model{
 		JSONArray ja = null;
 		JSONObject json = null;
 		
-		if (!this.entity.getCorequisite_ids().equals("null")) {
+		if (!this.entity.getCorequisite_ids().equals("[]")) {
 			try {
 				ja = new JSONArray(this.entity.getCorequisite_ids());
 
