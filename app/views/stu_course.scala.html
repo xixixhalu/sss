@@ -70,15 +70,15 @@
                 		for(reqId <- degree.getReq_ids()){
                 		var req : Requirement = Requirement.findById(Integer.parseInt(reqId));
                 		
-                    cont += Html("<li id='"+ req.getId() +"'>");
+                    cont += Html("<li id='req_"+ req.getId() +"'>");
                         cont += Html("<div class=\"req_title\" style=\"display: block;\">");
                         	cont += Html(req.getTitle());
-                            cont += Html(" <a onclick=\"dropDown('" + req.getId() +"')\">&oplus;</a>");
+                            cont += Html(" <a onclick=\"dropDown('req_" + req.getId() +"')\">&oplus;</a>");
                         cont += Html("</div>");
                         cont += Html("<div class=\"right_list\" style=\"display: none;\">");
                             cont += Html("<div class=\"req_title\">");
                             	cont += Html(req.getTitle());
-                                cont += Html(" <a onclick=\"dropDown('"+ req.getId() +"')\">&otimes;</a>");
+                                cont += Html(" <a onclick=\"dropDown('req_"+ req.getId() +"')\">&otimes;</a>");
                             cont += Html("</div>");
                             cont += Html("<span>You must take all the courses listed below.</span>");
                             cont += Html("<div>");
@@ -91,7 +91,7 @@
 								var cgId : Integer = sr.getCg_id();
 								var reqNum : Integer = sr.getRequired_num();
 								var cg : Cg = Cg.findById(cgId);
-                                cont += Html("<ul class=\"req_course_list\">");
+                                cont += Html("<ul class=\"req_course_list\" id=\"sr_" + srId + "\">");
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li>");
@@ -148,10 +148,12 @@
             </div>
         </div>
         <div class="footer">
+            
             <span>Student Scheduling System for Stevens Institute of Technology</span>
             <br>
             <span>Copy right: Team #10</span>
         </div>
+        <div id="jsonData">@jsonData</div>
     </body>
 </html>
 
