@@ -68,13 +68,10 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-//		allCross_relation.Display_All_Headnode();
-//		allCross_relation.displayCrossLinkedList();
 
 
-		degreeProgram.displayallComplexReq();
+//		degreeProgram.displayallComplexReq();
 //		degreeProgram.displayCourseList();
-		degreeProgram.displayAllCourse();
 
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
@@ -110,13 +107,15 @@ public class StudyPlanController extends Controller {
 //		degreeProgram.displayCourseList();
 		
 		//mark student's  chosen course
-//		boolean  chooeseSuccess = degreeProgram.checkCourseIn_ReqList(10,108);
-//		if(chooeseSuccess){
-//			degreeProgram.displayallComplexReq();
-//			degreeProgram.displayCourseList();
-//		}
+		boolean  chooeseSuccess = degreeProgram.checkCourseIn_ReqList(10,108);
+		if(chooeseSuccess){
+			degreeProgram.displayallComplexReq();
+			degreeProgram.displayCourseList();
+		}
+		
 //		degreeProgram.displayallComplexReq();
-		degreeProgram.displayCourseList();
+//		degreeProgram.displayCourseList();
+		
 		play.Logger.info("================================================");
 	}
 	
