@@ -1,0 +1,162 @@
+.step {
+	width: 980px;
+	height: 32px;
+	margin-top: 30px;
+	margin-bottom: 40px;
+}
+.step ul {
+	border-style: solid;
+	border-left-width: 1px;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 0px;
+	border-color: #AAAAAA;
+	float: left;
+}
+.step ul li {
+	padding-top: 5px;
+	padding-bottom: 3px;
+	padding-left: 10px;
+	padding-right: 15px;
+	border-right: #AAAAAA 1px solid;
+}
+.content {
+	height: 500px;
+	height: auto !important;
+	min-height: 500px;
+}
+.left {
+	border: #AAAAAA 1px solid;
+	width: 360px;
+}
+.head {
+	padding-left: 30px;
+	margin-top: 20px;
+	margin-bottom: 6px;
+}
+.left_list {
+	height: 200px;
+	min-height: 200px;
+	height: auto !important;
+}
+.left_list span {
+	float: left;
+	clear: both;
+	padding-left: 20px;
+	padding-bottom: 4px;
+}
+.left_list ul {
+	margin-left: 8px;
+	float: left;
+	clear: both;
+	height: 200px;
+	min-height: 200px;
+	height: auto !important;
+}
+.left_list ul li {
+	width: 350px;
+	float: left;
+	clear: both;
+}
+.left_list ul li a {
+	float: right;
+}
+a {
+	cursor: pointer;
+}
+.right {
+	width: 550px;
+}
+.req_list li {
+	width: 550px;
+	border: #AAA 1px solid;
+	margin-bottom: 20px;
+}
+.req_list span {
+	margin-left: 10px;
+}
+.req_course_list {
+	border: 1px #AAA solid;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	width: 530px;
+}
+.req_course_list li {
+	margin-bottom: 0px;
+	padding-left: 10px;
+	border: none;
+	width: 510px;
+}
+.req_course_list li a {
+	float: right;
+	margin-left: 10px;
+}
+.req_title {
+	padding-top: 8px;
+	padding-bottom: 6px;
+	padding-left: 10px;
+	font-size: 22px;
+	font-weight: 500;
+}
+.req_title a {
+	float: right;
+	margin-right: 15px;
+}
+.auto {
+	float: right;
+	margin-right: 8px;
+	margin-bottom: 10px;
+	width: 48px;
+	text-align: center;
+	border: 1px #AAAAAA solid;
+}
+.button {
+	width: 48px;
+	text-align: center;
+	border: 1px #AAAAAA solid;
+}
+.button:hover {
+	background-color: #DDD;
+	cursor: pointer;
+}
+.left_auto {
+	float: left;
+	margin-left: 60px;
+	margin-bottom: 15px;
+	margin-top: 10px;
+}
+.left_next {
+	margin-bottom: 15px;
+	margin-top: 10px;
+	margin-left: 120px;
+	float: left;
+}
+.sem_title {
+	padding-top: 8px;
+	padding-bottom: 6px;
+	padding-left: 30px;
+	font-size: 22px;
+	font-weight: 500;
+}
+.sem_title a {
+	float: right;
+	margin-right: 15px;
+}
+.addsemester {
+	text-align: center;
+	cursor: pointer;
+}
+.addsemester:hover {
+	background-color: #DDD;
+	cursor: pointer;
+}
+.credits input {
+	width: 20px;
+	margin-left: 8px;
+	float: left;
+}
+.credits span {
+	float: left;
+	margin-left: 20px;
+}

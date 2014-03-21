@@ -1,0 +1,157 @@
+@(degree : Degree, jsonData : String)
+@import models.Requirement;
+@import models.Cg;
+@import models.Course;
+@import models.Degree;
+@import models.Requirement;
+@import models.Sr;
+
+@import org.json.JSONArray;
+@import org.json.JSONObject;
+@import java.util.List;
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>course</title>
+        <meta name="author" content="Bohan Zheng" />
+        <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
+        <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
+        <script src="/assets/javascripts/action.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
+        <!-- Date: 2014-02-21 -->
+    </head>
+    <body>
+        <div class="nav_bar">
+            <div class="block">
+                <div class="degree_bar">
+                    Degree: @degree.getTitle()
+                </div>
+            </div>
+        </div>
+        <!-- end of top bar-->
+        <!-- step bar -->
+        <div class="step">
+            <ul>
+                <li class="active">
+                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                </li>
+                <li>
+                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                </li>
+                <li>
+                    <a>STEP 3 : Getting Study Plan</a>
+                </li>
+            </ul>
+        </div>
+        <!-- end of step bar -->
+        <div class="content">
+            <div class="left float_left">
+                <div class="head">
+                    COURSE BIN
+                </div>
+                <div class="left_list">
+                    <span onclick="getLikeCourses()">Want to take: </span>
+                    <ul id="wantTake"></ul>
+                </div>
+                <div class="left_list">
+                    <span onclick="getTakenCourses()">Already taken: </span>
+                    <ul id="alreadyTaken"></ul>
+                </div>
+                <div>
+                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                </div>
+            </div>
+            <div class="right float_right">
+                <ul class="req_list">
+                	@{var cont : Html = Html("");
+                		for(reqId <- degree.getReq_ids()){
+                		var req : Requirement = Requirement.findById(Integer.parseInt(reqId));
+                		
+                    cont += Html("<li id='"+ req.getId() +"'>");
+                        cont += Html("<div class=\"req_title\" style=\"display: block;\">");
+                        	cont += Html(req.getTitle());
+                            cont += Html(" <a onclick=\"dropDown('" + req.getId() +"')\">&oplus;</a>");
+                        cont += Html("</div>");
+                        cont += Html("<div class=\"right_list\" style=\"display: none;\">");
+                            cont += Html("<div class=\"req_title\">");
+                            	cont += Html(req.getTitle());
+                                cont += Html(" <a onclick=\"dropDown('"+ req.getId() +"')\">&otimes;</a>");
+                            cont += Html("</div>");
+                            cont += Html("<span>You must take all the courses listed below.</span>");
+                            cont += Html("<div>");
+                            	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
+                            	for(i <- 0 to srReqs.length()-1)
+                            	{
+                            	var srReqObject : JSONObject = srReqs.get(i).asInstanceOf[JSONObject];
+								var srId : String = srReqObject.get("id").asInstanceOf[String];
+								var sr : Sr = Sr.findById(new Integer(srId));
+								var cgId : Integer = sr.getCg_id();
+								var reqNum : Integer = sr.getRequired_num();
+								var cg : Cg = Cg.findById(cgId);
+                                cont += Html("<ul class=\"req_course_list\">");
+                                	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
+                                	for(courseId <- cg.getCourse_ids()){
+                                    cont += Html("<li>");
+                                    	var course : Course = Course.findById(Integer.parseInt(courseId));
+                                    	cont += Html(course.getTitle());
+                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +")'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +")'>&oplus;</a>");
+                                    cont += Html("</li>");
+                                    }
+                                    //cont += Html("<li>");
+                                    //    cont += Html("CS 572 - Web Search Engine and Information Retrival<a onclick='addTakenCourse(2)'>&otimes;</a><a onclick='addLikeCourse(2)'>&oplus;</a>");
+                                    //cont += Html("</li>");
+                                cont += Html("</ul>");
+                                }
+                                cont += Html("<a class=\"auto button\">AUTO</a>");
+                            cont += Html("</div>");
+                        cont += Html("</div>");
+                    cont += Html("</li>");
+                    }
+                    cont;
+                   }
+                    <!--
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    <li>
+                        <div class="req_title">
+                            Required Computer Science Courses <a>&oplus;</a>
+                        </div>
+                        <div class="right_list"></div>
+                    </li>
+                    -->
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <span>Student Scheduling System for Stevens Institute of Technology</span>
+            <br>
+            <span>Copy right: Team #10</span>
+        </div>
+    </body>
+</html>
+

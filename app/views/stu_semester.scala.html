@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>semester</title>
+        <meta name="author" content="Bohan Zheng" />
+        <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
+        <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
+        <link href="/assets/stylesheets/popwindow.css" rel="stylesheet" type="text/css">
+        <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
+        <script src="/assets/javascripts/semester.js"></script>
+        <!-- Date: 2014-02-21 -->
+    </head>
+    <body>
+
+        <div id="pop_back" class="pop_back" style="display: none;"></div>
+        <div class="pop_window" id="pop_window" style="display: none;">
+            <div id="pop_content_a" style="display: none;">
+                <span>How many semesters you want to add: </span>
+                <select id="semesterNum">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                </select>
+            </div>
+            <div id="pop_content_b" style="display: none;">
+                <table id="semesterTable"></table>
+            </div>
+            <div>
+                <button onclick="cancel()">
+                    Cancel
+                </button>
+                <button onclick="add()">
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="nav_bar">
+            <div class="block">
+                <div class="degree_bar">
+                    Degree: BS in CS for students starting with CS115 entering in September 2012
+                </div>
+            </div>
+        </div>
+        <!-- end of top bar-->
+        <!-- step bar -->
+        <div class="step">
+            <ul>
+                <li>
+                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                </li>
+                <li class="active">
+                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                </li>
+                <li>
+                    <a>STEP 3 : Getting Study Plan</a>
+                </li>
+            </ul>
+        </div>
+        <!-- end of step bar -->
+        <div class="content">
+            <div class="left float_left">
+                <div class="head">
+                    COURSE BIN
+                </div>
+                <div class="left_list">
+                    <span>Want to take: </span>
+                    <ul id="wantTake">
+
+                        <li id="1">
+                            CS 577a - Software Engineering A<a>&oplus;</a>
+                        </li>
+                        <li id="2">
+                            CS 577b - Software Engineering B<a>&oplus;</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="left_list">
+                    <span>Already taken: </span>
+                    <ul id="alreadyTaken">
+                        <li id="3">
+                            CS 510 - Software Management and Economics<a>&oplus;</a>
+                        </li>
+                        <li id="4">
+                            CS 572 - Web Search Engine and Information Retrival<a>&oplus;</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                </div>
+            </div>
+            <div class="right float_right">
+                <ul class="req_list" id="req_list">
+                    <li>
+                        <div class="addsemester sem_title" onclick="addSemesters()">
+                            ADD NEW SEMESTERS
+                        </div>
+                    </li>
+                    <!-- <li>
+                        <div class="right_list">
+                            <div class="sem_title">
+                                Fall 2013<a>&oplus;</a>
+                            </div>
+                            <div style="display: none;">
+                                <ul class="req_course_list">
+                                    <li>
+                                        CS 510 - Software Management and Economics<a>&otimes;</a>
+                                    </li>
+                                    <li>
+                                        CS 510 - Software Management and Economics<a>&otimes;</a>
+                                    </li>
+                                </ul>
+                                <div class="credits">
+                                    <span>Total Credits:</span>
+                                    <input type="text"/>
+                                    <span>Minimun Credits:</span>
+                                    <input type="text"/>
+                                    <span>Maximun Credits:</span>
+                                    <input type="text"/>
+                                    <a class="auto button">AUTO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li> -->
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>Student Scheduling System for Stevens Institute of Technology</span>
+            <br>
+            <span>Copy right: Team #10</span>
+        </div>
+    </body>
+</html>
+

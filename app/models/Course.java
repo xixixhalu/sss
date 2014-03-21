@@ -294,7 +294,12 @@ public class Course extends Model{
 		return json;
 	}
 	
-	public String getPrereq () {
+	/**
+	 * @author tongrui
+	 * @return something like "CS115, CS184" or "id, id"
+	 * @param choice = 1 (prefix+number), choice = 2 (id), otherwise nothing
+	 */
+	public String getPrereq (int choice) {
 		StringBuffer str = new StringBuffer();
 		JSONArray ja = null;
 		JSONObject json = null;
@@ -307,14 +312,17 @@ public class Course extends Model{
 				Course course = null;
 				for (int i = 0; i < ja.length(); i++) {
 					json = (JSONObject)ja.get(i);
-					id = (int) json.getInt("id");
+					id = json.getInt("id");
 					course = Course.findById(id);
 					
 					String relation = (String) json.get("relation");
 					if (relation.equals("and"))
 						relation = ",";
 					str.append(" " + relation + " ");
-					str.append(course.getPrefix() + course.getNumber());
+					if (choice == 1)
+						str.append(course.getPrefix() + course.getNumber());
+					else if (choice == 2)
+						str.append(id);
 				}
 				
 			} catch (ParseException e) {
@@ -329,7 +337,12 @@ public class Course extends Model{
 		return str.toString();
 	}
 	
-	public String getCoreq() {
+	/**
+	 * @author tongrui
+	 * @return something like "CS115 or CS184"
+	 * @param choice = 1 (prefix+number), choice = 2 (id), otherwise nothing
+	 */
+	public String getCoreq(int choice) {
 		StringBuffer str = new StringBuffer();
 		JSONArray ja = null;
 		JSONObject json = null;
@@ -349,7 +362,10 @@ public class Course extends Model{
 					if (relation.equals("and"))
 						relation = ",";
 					str.append(" " + relation + " ");
-					str.append(course.getPrefix() + course.getNumber());
+					if (choice == 1)
+						str.append(course.getPrefix() + course.getNumber());
+					else if (choice == 2)
+						str.append(id);
 				}
 				
 			} catch (ParseException e) {
