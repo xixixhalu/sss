@@ -40,7 +40,7 @@ function addLikeCourse(id) {
     var wantTake = document.getElementById("wantTake");
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].number + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     wantTake.appendChild(courseLi);
 }
 
@@ -61,7 +61,7 @@ function addTakenCourse(id) {
     var wantTake = document.getElementById("alreadyTaken");
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].number + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     wantTake.appendChild(courseLi);
 }
 

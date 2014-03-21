@@ -41,8 +41,8 @@ public class StudyPlanController2 extends Controller {
 			for (Course course : courses) {
 			
 				CourseWrapper cw = new CourseWrapper(true, true, true, true,
-						true, true, true, true, true);
-				json.put(course.toJson(cw).getString("id"), course.toJson(cw).toString());
+						true, true, true, false, false);
+				json.put(course.toJson(cw).getString("id"), course.toJson(cw));
 
 			}
 			
