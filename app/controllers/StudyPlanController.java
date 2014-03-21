@@ -71,9 +71,11 @@ public class StudyPlanController extends Controller {
 //		allCross_relation.Display_All_Headnode();
 //		allCross_relation.displayCrossLinkedList();
 
+
 		degreeProgram.displayallComplexReq();
 //		degreeProgram.displayCourseList();
 		degreeProgram.displayAllCourse();
+
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
 //		ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or"); 
@@ -113,8 +115,8 @@ public class StudyPlanController extends Controller {
 //			degreeProgram.displayallComplexReq();
 //			degreeProgram.displayCourseList();
 //		}
-		degreeProgram.displayallComplexReq();
-		//degreeProgram.displayCourseList();
+//		degreeProgram.displayallComplexReq();
+		degreeProgram.displayCourseList();
 		play.Logger.info("================================================");
 	}
 	
