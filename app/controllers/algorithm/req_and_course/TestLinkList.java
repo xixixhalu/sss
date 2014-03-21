@@ -97,7 +97,7 @@ public class TestLinkList {
 	// First, we need to find this course in a specific requirement. Given a
 	// requirement and a course,
 	// we need to find them first and than choose them.
-	public boolean checkCourseIn_ReqList(int reqName, int courseName) {
+	public boolean checkCourseIn_ReqList(int reqName, int courseID) {
 		boolean ifFind = false;
 		boolean ifChosen = false;
 	
@@ -105,7 +105,7 @@ public class TestLinkList {
 		int j = 0; //记录课程链表的index，第几个课程链表，找到后直接修改/判断头结点
 		for (; i < course_list.size(); i++) {
 			
-			ifFind = this.course_list.get(i).chooseCourse(reqName, courseName);
+			ifFind = this.course_list.get(i).chooseCourse(reqName, courseID);
 			if (ifFind) {
 				break;//Find this course in this requirement
 			}
@@ -114,7 +114,7 @@ public class TestLinkList {
 			return false;  //error detection: if no this course in this requirement
 		
 		for (; j < this.course_list2.size(); j++) {
-			if(this.course_list2.get(j).first.rName == courseName){
+			if(this.course_list2.get(j).first.rName == courseID){
 				ifChosen = this.course_list2.get(j).checkChosen();
 				
 				if (ifChosen) {
@@ -125,10 +125,10 @@ public class TestLinkList {
 			
 		}
 		//选课
-		this.course_list.get(i).set2ChooseCourse(courseName); //在requirement链表中标记
+		this.course_list.get(i).set2ChooseCourse(courseID); //在requirement链表中标记
 		for(int k=0; k<this.course_list.size(); k++){
 			if(k!=i){
-				this.course_list.get(i).deleteByData(courseName);
+				this.course_list.get(k).deleteByData(courseID);
 			}
 		}
 		this.course_list2.get(j).set_course_be_chosen(reqName); //在课程表链表中标记

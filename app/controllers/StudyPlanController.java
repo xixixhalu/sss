@@ -68,13 +68,13 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-//		allCross_relation.Display_All_Headnode();
-//		allCross_relation.displayCrossLinkedList();
+		allCross_relation.Display_All_Headnode();
+		allCross_relation.displayCrossLinkedList();
 
 
-		degreeProgram.displayallComplexReq();
+//		degreeProgram.displayallComplexReq();
 //		degreeProgram.displayCourseList();
-		degreeProgram.displayAllCourse();
+//		degreeProgram.displayAllCourse();
 
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
