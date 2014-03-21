@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Cg;
@@ -67,11 +68,14 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-		//allCross_relation.Display_All_Headnode();
-		//allCross_relation.displayCrossLinkedList();
+//		allCross_relation.Display_All_Headnode();
+//		allCross_relation.displayCrossLinkedList();
 
-		
-//		degreeProgram.displayAllCourse();
+
+		degreeProgram.displayallComplexReq();
+//		degreeProgram.displayCourseList();
+		degreeProgram.displayAllCourse();
+
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
 //		ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or"); 
@@ -121,9 +125,18 @@ public class StudyPlanController extends Controller {
 		//System.out.println(ifCourseExist);
 
 			//System.out.println("OK");
-			Node newCourse = new Node(courseID);
-			degreeProgram.course.put(courseID, newCourse);
-			simpleReq1.insertNode(newCourse);
+		
+			Node newNode = new Node(courseID);
+		
+			if (degreeProgram.course.containsKey(courseID)) {
+				degreeProgram.course.get(courseID).add(newNode);
+			} else {
+				ArrayList<Node> clist = new ArrayList<Node>();
+				clist.add(newNode);
+				degreeProgram.course.put(courseID, clist);
+			}
+			
+			simpleReq1.insertNode(newNode);
 			
 			/**
 			 * @author tongrui
