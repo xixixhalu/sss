@@ -35,10 +35,11 @@ public class StudyPlanController2 extends Controller {
 			//get all courses JSON
 			StringBuffer json = new StringBuffer();
 			List<Course> courses = Course.getAll();
-			for (Course course : courses) {
+			//for (Course course : courses) {
+			for(int i = 0; i < 2; i++){
 				CourseWrapper cw = new CourseWrapper(true, true, true, true,
-						true, true, true, true, true);
-				json.append(course.toJson(cw).toString());
+						true, true, true, false, false);
+				json.append(courses.get(i).toJson(cw).toString());
 			}
 			
 			return ok(views.html.stu_course.render(degree, json.toString()));
