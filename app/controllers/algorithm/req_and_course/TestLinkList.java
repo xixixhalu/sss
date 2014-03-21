@@ -11,20 +11,21 @@ public class TestLinkList {
 	public ArrayList<Linklist> course_list = new ArrayList<Linklist>(); //requirement list
 	public ArrayList<Course_LinkList> course_list2 = new ArrayList<Course_LinkList>(); //course list
  
-	public HashMap<Integer, Node> course  = new HashMap<Integer, Node>();
+	public HashMap<Integer, ArrayList<Node>> course  = new HashMap<Integer, ArrayList<Node>>();
 	
 	public ArrayList<ComplexReq> allComplexReq = new ArrayList<ComplexReq>();  //a set of all complex requirement
 	
 	public void displayAllCourse(){
 		for (Integer key : this.course.keySet()) {
-		    System.out.println("Key = " + key + " - " + this.course.get(key).cName);
+		    System.out.println("Key = " + key + " - " 
+		    		+ this.course.get(key).get(0).cName + " - "
+		    		+ this.course.get(key).size());
 		}
 	}
 	
 	
 	public void addCourse(int courseID){
-		Node course = new Node(courseID);
-		this.course.put(courseID, course);
+
 	}
 	
 	public boolean prepareInsertSimple(int simpleReqID){
