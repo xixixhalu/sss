@@ -30,6 +30,7 @@ function initAll() {
     } else {
         alert("Sorry, but I couldn't create an XMLHttpRequest");
     }
+    initEdit();
 }
 
 function getCoursesArray() {
@@ -127,8 +128,8 @@ function addReq(name, list) {
     var courseName = document.getElementById(name).value;
 
     if (courseName == "") {
-    	alert("Please enter the course name!");
-    	return;
+        alert("Please enter the course name!");
+        return;
     }
     var i = courseName.indexOf(" -");
     courseName = courseName.substring(0, i);
@@ -166,8 +167,10 @@ function remove(li, list) {
     }
 }
 
-function Course(id, relation, group) {
+function Course(id, prefix, num, relation, group) {
     this.id = id;
+    this.prefix = prefix;
+    this.num = num;
     this.relation = relation;
     this.group = group;
 }
@@ -185,27 +188,73 @@ function getReqCourses(req) {
     for ( i = 0; i < lis.length; i++) {
         var id = lis[i].lastChild.value;
         var group = lis[i].getElementsByTagName("div")[0].getElementsByTagName("input")[0].value;
-        if ( i == 0)
+        if (i == 0)
             var relation = "";
         else
             var relation = lis[i].getElementsByTagName("select")[0].value.toLowerCase();
-        var course = new Course(id, relation, group);
+        var prefix = lis[i].getElementsByTagName("div")[0].innerText.substring(0, 2);
+        var num = lis[i].getElementsByTagName("div")[0].innerText.substring(2);
+        var course = new Course(id, prefix, num, relation, group);
         courses.push(course);
     }
     return courses;
 }
 
 function doSubmit(form) {
-	if(checkCourseForm()){
-    	var prereqs = getReqCourses("reqlist");
-	    var coreqs = getReqCourses("coqlist");
-	    var prereqString = JSON.stringify(prereqs);
-	    var coreqString = JSON.stringify(coreqs);
-	    document.getElementById("prerequisite_id").value = prereqString;
-	    document.getElementById("corequisite_id").value = coreqString;
-	    return true;
-	 }
-	 else
-	 	return false;	
+    if (checkCourseForm()) {
+        var prereqs = getReqCourses("reqlist");
+        var coreqs = getReqCourses("coqlist");
+        var prereqString = JSON.stringify(prereqs);
+        var coreqString = JSON.stringify(coreqs);
+        document.getElementById("prerequisite_id").value = prereqString;
+        document.getElementById("corequisite_id").value = coreqString;
+        return true;
+    } else
+        return false;
     //form.submit();
+}
+
+function initEdit() {
+    var prereqStr = document.getElementById("prerequisite_id").value;
+    var coreqStr = document.getElementById("corequisite_id").value;
+    var prereqs = eval("(" + prereqStr + ")");
+    var coreqs = eval("(" + coreqStr + ")");
+    var ul1 = document.getElementById("reqlist");
+    for ( i = 0; i < prereqs.length; i++) {
+        var li = document.createElement("li");
+        var courseName = prereqs[i].prefix + prereqs[i].num;
+        var course_id = prereqs[i].id;
+        if (ul1.children.length > 0) {
+            li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+        } else {
+            li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+        }
+        li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
+        li.ondblclick = function(evt) {
+            var li = (evt) ? evt.target : window.event.srcElement;
+            remove(li.parentElement.parentElement, "reqlist");
+        };
+        ul1.appendChild(li);
+    }
+
+    var ul2 = document.getElementById("coqlist");
+    for ( i = 0; i < coreqs.length; i++) {
+        var li = document.createElement("li");
+        var courseName = coreqs[i].prefix + coreqs[i].num;
+        var course_id = coreqs[i].id;
+        if (ul2.children.length > 0) {
+            li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+        } else {
+            li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+        }
+        li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
+        li.ondblclick = function(evt) {
+            var li = (evt) ? evt.target : window.event.srcElement;
+            remove(li.parentElement.parentElement, "coqlist");
+        };
+        ul2.appendChild(li);
+    }
+
+    document.getElementById("prerequisite_id").value = "";
+    document.getElementById("corequisite_id").value = "";
 }

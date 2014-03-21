@@ -1,0 +1,14 @@
+.content {
+	text-align: center;
+}
+.biglogo {
+	width: 800px;
+	margin-top: 200px;
+	margin-bottom: 50px;
+}
+.content select {
+	width: 600px;
+	font-size: large;
+	margin-left:30px;
+	margin-bottom:20px;
+}

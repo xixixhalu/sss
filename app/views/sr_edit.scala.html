@@ -8,7 +8,8 @@
 		<link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
 		<link href="/assets/stylesheets/s_requirement.css" rel="stylesheet" type="text/css">
 		<script src="/assets/javascripts/dropdown.js" type="text/javascript"></script>
-		<script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/aysnshowcourse.js" type="text/javascript"></script>
 		<script> 
 			$(function(){
   				$("#header").load("header"); 
@@ -17,7 +18,7 @@
 		</script>
         <script src="/assets/javascripts/check_form.js" type="text/javascript"></script>
 </head>
-<body>
+<body onload="init(@sr.getCg_id())">
 <div id="header"> </div>
         
         <!--main content of the page-->
@@ -36,21 +37,27 @@
             <div class="float_left left">
             <form>
             	<span>Please choose a course group: </span>
-              	<select name="cg_id">
-              	@for( cg <- cgs) {
-              		<option value="@cg.getId()" @if(cg.getId().equals(sr.getCg_id())){selected}>@cg.getPrefix()</option>  
-              	}
-                 	<!--<option>course group 2</option>  
-                  <option>course group 3</option>  -->
-              	</select>
+              	 <select name="cg_id" id="changeCg" onchange='change()'>
+                            <option value="">(Please choose course group)</option>
+                            @for( cg <- cgs) {
+                            <option value="@cg.getId()">@cg.getPrefix()</option>
+                            }
+                            <!--<option>course group 2</option>
+                            <option>course group 3</option>  -->
+                        </select>
               	<input type="text" name="required_num" value="@sr.getRequired_num()">
               	<span> Courses are required in this group.</span>
               	<span class="s_submit"><input type="submit" value="submit"></span>
             </form>
             </div>
             <div class="right float_right">
-            	<div class="list_head"> Courses in (Course Group 1)  <a>Edit</a></div>
-            </div>
+                    <div class="list_head">
+                        <h3>Courses in the course group</h3>
+                    </div>
+                    <ul id="courseingroup" class="courseingroup">
+                        
+                    </ul>
+                </div>
             </form>
         </div>
         <!--end of main content-->
