@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import play.mvc.Controller;
 import controllers.algorithm.pre_and_core.CrossLinkedList;
 import controllers.algorithm.req_and_course.ComplexReq;
+import controllers.algorithm.req_and_course.ComplexReq_Node;
 import controllers.algorithm.req_and_course.CourseNode;
 import controllers.algorithm.req_and_course.Course_LinkList;
 import controllers.algorithm.req_and_course.Linklist;
@@ -107,14 +108,55 @@ public class StudyPlanController extends Controller {
 //		degreeProgram.displayCourseList();
 		
 		//mark student's  chosen course
-		boolean  chooeseSuccess = degreeProgram.checkCourseIn_ReqList(10,108);
-		if(chooeseSuccess){
-			degreeProgram.displayallComplexReq();
-			degreeProgram.displayCourseList();
-		}
+//		boolean  chooeseSuccess = degreeProgram.checkCourseIn_ReqList(10,108);
+//		if(chooeseSuccess){
+//			degreeProgram.displayallComplexReq();
+//			degreeProgram.displayCourseList();
+//		}
 		
-//		degreeProgram.displayallComplexReq();
-//		degreeProgram.displayCourseList();
+		//--------The first test case: one complex one simple
+		//74,84,85,86,87,88,89,90,92,93,94,95,96,97,98
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 74);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 84);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 85);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 86);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 87);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 88);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 89);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 90);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 92);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 93);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 94);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 95);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 96);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 97);
+//		CheckInSelectedCourse(degreeProgram, 17, 7, 98);
+		
+		//--------The second test case: one complex three simple or relation  correct
+//		CheckInSelectedCourse(degreeProgram, 20, 10, 106);
+//		CheckInSelectedCourse(degreeProgram, 20, 10, 107);
+//		CheckInSelectedCourse(degreeProgram, 20, 10, 108);
+		
+		//--------The third test case: one complex three simple and relation
+		// 1 of 2 in simple, 2 of 2 simple
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 189);
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 133);
+		
+		
+//		CheckInSelectedCourse(degreeProgram, 22, 18, 190);
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 189);
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 133);
+//		CheckInSelectedCourse(degreeProgram, 22, 16, 120);
+//		CheckInSelectedCourse(degreeProgram, 22, 16, 118);
+		
+//		CheckInSelectedCourse(degreeProgram, 23, 19, 164);
+//		CheckInSelectedCourse(degreeProgram, 23, 19, 102);
+		
+		
+		degreeProgram.CheckAllSimpleAndComplex();
+		
+		degreeProgram.displayallComplexReq();
+		//degreeProgram.displayCourseList();
 		
 		play.Logger.info("================================================");
 	}
@@ -266,6 +308,28 @@ public class StudyPlanController extends Controller {
 				Linklist simpleReq = new Linklist(srId, srTitle, reqNum);
 				return simpleReq;
 			}
+	}
+	
+	public static void CheckInSelectedCourse(TestLinkList degreeProgram,int complexID, int simpleID, int courseID){
+		for(int i =0;i<degreeProgram.allComplexReq.size();i++){
+			if(degreeProgram.allComplexReq.get(i).first.ComplexReq_Id == complexID){
+				ComplexReq  complexReq = degreeProgram.allComplexReq.get(i);
+				if(!complexReq.isNull()){ //if this complex has simples in it
+						for(int j = 0; j<degreeProgram.course_list.size();j++){
+							if(degreeProgram.course_list.get(j).first.cName==simpleID){
+								degreeProgram.checkCourseIn_ReqList(simpleID, courseID);
+								for(int k=0; k<allCross_relation.headNodeList.size();k++){
+									if(allCross_relation.headNodeList.get(k).courseID==courseID){
+										allCross_relation.headNodeList.get(k).assign=true;
+										break;
+									}
+								}
+							}
+					}
+				}
+				
+			}
+		}
 	}
 	
 }
