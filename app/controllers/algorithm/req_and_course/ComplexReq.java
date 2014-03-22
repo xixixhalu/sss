@@ -5,15 +5,7 @@ public class ComplexReq {
 	
 	public ComplexReq_Node first;
 
-//	public ComplexReq(String name){
-//		ComplexReq_Node c = new ComplexReq_Node();
-//		c.Complex_Req_Name = name;
-//		this.first = null;
-//		this.satisfied = false;
-//		this.count = 0;
-//		this.required_num = 0;
-//		
-//	}
+
 	public boolean isNull(){
 		ComplexReq_Node temp = first;
 		if(temp.next.SimpleReq.isNull()==false){
