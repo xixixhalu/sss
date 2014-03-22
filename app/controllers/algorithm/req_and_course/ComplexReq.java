@@ -14,7 +14,14 @@ public class ComplexReq {
 //		this.required_num = 0;
 //		
 //	}
-	
+	public boolean isNull(){
+		ComplexReq_Node temp = first;
+		if(temp.next.SimpleReq.isNull()==false){
+			return false;
+		}else{
+			return true;
+		}
+	}
 	
 	public ComplexReq(int id, String Complex_Req_Name, String relation){
 		ComplexReq_Node c = new ComplexReq_Node(id, Complex_Req_Name, relation);
@@ -36,6 +43,7 @@ public class ComplexReq {
 	
 	
 	public void displayComplexReq(){
+		System.out.println("This complex requirement has "+first.relation +" relation and status is "+first.satisfied +"\n");
 		ComplexReq_Node simpleReq = first.next;
 		while(simpleReq!=null){
 			simpleReq.SimpleReq.displayAllNodes();
