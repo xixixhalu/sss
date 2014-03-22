@@ -154,10 +154,11 @@ public class StudyPlanController extends Controller {
 //		CheckInSelectedCourse(degreeProgram, 23, 19, 102);
 		
 		
-		degreeProgram.CheckAllSimpleAndComplex();
+//		degreeProgram.CheckAllSimpleAndComplex();
 		
-		degreeProgram.displayallComplexReq();
-		//degreeProgram.displayCourseList();
+//		degreeProgram.displayallComplexReq();
+//		degreeProgram.displayCourseList();
+		allCross_relation.displayCrossLinkedList();
 		
 		play.Logger.info("================================================");
 
