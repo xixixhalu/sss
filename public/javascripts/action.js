@@ -25,16 +25,7 @@ function dropDown(id) {
 
 //adding course to want-to-take list
 function addLikeCourse(id) {
-    if (checkCourseExist(id)) {
-        alert("This course is already in the course bin!");
-        return null;
-    }
-    if (!checkPrereq(id)) {
-        alert("check the prerequisite constraints!");
-        return null;
-    }
-    if (!checkCoreq(id)) {
-        alert("check the corequisite constraints!");
+    if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("wantTake");
@@ -46,16 +37,7 @@ function addLikeCourse(id) {
 
 //adding course to already-taken list
 function addTakenCourse(id) {
-    if (checkCourseExist(id)) {
-        alert("This course is already in the course bin!");
-        return null;
-    }
-    if (!checkPrereq(id)) {
-        alert("check the prerequisite constraints!");
-        return null;
-    }
-    if (!checkCoreq(id)) {
-        alert("check the corequisite constraints!");
+    if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("alreadyTaken");
@@ -63,6 +45,31 @@ function addTakenCourse(id) {
     courseLi.id = id;
     courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     wantTake.appendChild(courseLi);
+}
+
+//check pre&corequisite constraints and if the the course is already in the course bin.
+function checkConstraints(id) {
+    if (checkCourseExist(id)) {
+        alert("This course is already in the course bin!");
+        return false;
+    }
+    if (!checkPrereq(id)) {
+        var str = "check the prerequisite constraints!\n";
+        var prereqs = courseObjs[id].prereq;
+        for ( i = 0; i < prereqs.length; i++)
+            str += " " + prereqs[i].relation + " " + prereqs[i].prefix + prereqs[i].num;
+        alert(str);
+        return false;
+    }
+    if (!checkCoreq(id)) {
+        var str = "check the corequisite constraints!\n";
+        var coreqs = courseObjs[id].coreq;
+        for ( i = 0; i < coreqs.length; i++)
+            str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+        alert(str);
+        return false;
+    }
+    return true;
 }
 
 //get all courses in the course bin want-to-take list
@@ -149,7 +156,6 @@ function checkPrereq(id) {
         }
         //先取出组之间的关系，便于以后处理
         var groupRelation = new Array;
-
         while (gs.length > 0) {
             //先处理prerequisite里的第一组
             var g = gs.shift();
@@ -162,7 +168,12 @@ function checkPrereq(id) {
             }
             var total = group.length;
             //判断第一组课之间的关系
-            var relation = group[1].relation;
+            try {
+                //如果这一组课里只有一门课,则无法取到这组课之间的关系，那么默认设置课之间的关系为or
+                var relation = group[1].relation;
+            } catch(e) {
+                var relation = "or";
+            }
             groupRelation.push(group[0].relation);
             if (relation == "or") {
                 for ( i = 0; i < prereqCourses.length; i++) {
@@ -236,18 +247,103 @@ function checkCoreq(id) {
 
     //check corequisites with the same pattern
     var coreqCourses = new Array;
+    //如果course bin里有这门课的corequisite则把这个corequisite添加到coreqCourses Array里
     for ( i = 0; i < courses.length; i++) {
         for ( reqNum = 0; reqNum < coreq.length; reqNum++) {
             if (courses[i] == coreq[reqNum].id)
                 coreqCourses.push(courses[i]);
         }
     }
+    //如果存在corequisite，处理，不存在则返回false；
     if (coreqCourses.length > 0) {
-        c = true;
+        //c = true;
+        //用来记录每组的条件是否满足
+        var ifsatisfy = new Array;
+        //找出一共有多少组
+        var gs = new Array;
+        for ( i = 0; i < coreq.length; i++) {
+            if (i == 0) {
+                gs.push(coreq[i].group);
+            } else {
+                if (coreq[i].group != coreq[i - 1].group) {
+                    gs.push(coreq[i].group);
+                }
+            }
+        }
+        //先取出组之间的关系，便于以后处理
+        var groupRelation = new Array;
+        while (gs.length > 0) {
+            //先处理第一组
+            var g = gs.shift();
+            //取出第一组的课
+            var group = new Array;
+            for ( i = 0; i < coreq.length; i++) {
+                if (coreq[i].group == g) {
+                    group.push(coreq[i]);
+                }
+            }
+            var total = group.length;
+            //判断第一组课之间的关系
+            try {
+                //如果这一组课里只有一门课,则无法取到这组课之间的关系，那么默认设置课之间的关系为or
+                var relation = group[1].relation;
+            } catch(e) {
+                var relation = "or";
+            }
+            groupRelation.push(group[0].relation);
+            if (relation == "or") {
+                for ( i = 0; i < coreqCourses.length; i++) {
+                    for ( j = 0; j < group.length; j++) {
+                        if (coreqCourses[i] == group[j].id) {
+                            total--;
+                        }
+                    }
+                }
+                if (total < group.length) {
+                    ifsatisfy.push(true);
+                } else
+                    ifsatisfy.push(false);
+            } else if (relation == "and") {
+                for ( i = 0; i < coreqCourses.length; i++) {
+                    for ( j = 0; j < group.length; j++) {
+                        if (coreqCourses[i] == group[j].id) {
+                            total--;
+                        }
+                    }
+                }
+                if (total == 0) {
+                    ifsatisfy.push(true);
+                } else
+                    ifsatisfy.push(false);
+            } else {
+                //留着处理not关系
+            }
+            //第一组处理完了，准备处理下一组
+        }
+        //处理组之间的关系
+        if (groupRelation.length == 1) {
+            //如果只有一组
+            return ifsatisfy[0];
+        } else {
+            //不止一组
+            if (groupRelation[1] == "or") {
+                var ret = false;
+                for ( i = 0; i < ifsatisfy.length; i++) {
+                    ret = ifsatisfy[i] || ret;
+                }
+            } else if (groupRelation[1] == "and") {
+                var ret = true;
+                for ( i = 0; i < ifsatisfy.length; i++) {
+                    ret = ifsatisfy[i] && ret;
+                }
+            } else {
+                //留着处理not关系
+            }
+        }
+        return ret;
     } else {
         return false;
     }
-    return c;
 }
 function wantTakeCourse(id,sid,cid){
 	this.id=id;
