@@ -28,16 +28,16 @@ function checkCourseForm() {
 	var title = document.getElementsByName("title")[0].value;
 	var credit = document.getElementsByName("credit")[0].value;
 
-	var oncampus = 0;
-	for (var i = 0; i < 4; i++) {
-		if (document.getElementsByName("oncampus["+ i + "]")[0].checked == true)
-			oncampus++;
-	}
-	var online = 0;
-	for (var i = 0; i < 4; i++) {
-		if (document.getElementsByName("online[" + i + "]")[0].checked == true)
-			online++;
-	}	
+	// var oncampus = 0;
+	// for (var i = 0; i < 4; i++) {
+		// if (document.getElementsByName("oncampus["+ i + "]")[0].checked == true)
+			// oncampus++;
+	// }
+	// var online = 0;
+	// for (var i = 0; i < 4; i++) {
+		// if (document.getElementsByName("online[" + i + "]")[0].checked == true)
+			// online++;
+	// }	
 	if (prefix == "") {
 		alert("Please enter a prefix for the course!");
 		return false;
@@ -54,14 +54,14 @@ function checkCourseForm() {
 		alert("Please enter a credit for the course!");
 		return false;
 	}
-	if (oncampus == 0) {
-		alert("Please check at least one semester on campus for the course!");
-		return false;
-	}
-	if (online == 0) {
-		alert("Please check at least one semester online for the course");
-		return false;
-	}	
+	// if (oncampus == 0) {
+		// alert("Please check at least one semester on campus for the course!");
+		// return false;
+	// }
+	// if (online == 0) {
+		// alert("Please check at least one semester online for the course");
+		// return false;
+	// }	
 	return true;
 }
 

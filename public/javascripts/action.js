@@ -1,41 +1,11 @@
 /**
  * @author Bohan Zheng
  */
-var courseObjs = {
-    1 : {
-        prefix : "CS",
-        number : "510",
-        title : "Software Management and Economics",
-    },
-    2 : {
-        prefix : "CS",
-        number : "572",
-        title : "Web Search Engine and Information Retrival"
-    },
-    3 : {
-        prefix : "CS",
-        number : "577a",
-        title : "Software Engineering A",
-        coreq : [{
-            id : "1",
-            relation : "",
-            group : "0"
-        }]
-    },
-    4 : {
-        prefix : "CS",
-        number : "577b",
-        title : "Software Engineering B",
-        prereq : [{
-            id : "3",
-            relation : "",
-            group : "0"
-        }, {
-            id : "2",
-            relation : "or",
-            group : "0"
-        }]
-    }
+var courseObjs;
+
+window.onload = function() {
+    var jsonData = document.getElementById("jsonData").innerText;
+    courseObjs = eval("(" + jsonData + ")");
 };
 
 //dropdown effect
@@ -70,7 +40,7 @@ function addLikeCourse(id) {
     var wantTake = document.getElementById("wantTake");
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].number + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     wantTake.appendChild(courseLi);
 }
 
@@ -91,7 +61,7 @@ function addTakenCourse(id) {
     var wantTake = document.getElementById("alreadyTaken");
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].number + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     wantTake.appendChild(courseLi);
 }
 

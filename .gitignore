@@ -14,9 +14,6 @@ dist
 /RUNNING_PID
 /.settings
 /.target
-conf/application.conf
-conf/application.conf
-conf/application.conf
 
 *.class
 
@@ -46,8 +43,6 @@ conf/application.conf
 
 *.class
 
-*.class
-
 .target/IntegrationTest.class
 
 .target/models/Course.class
@@ -62,10 +57,8 @@ conf/application.conf
 
 .target/views/course_list.scala.html
 
-conf/application.conf
-
-*.class
-
-*.class
-
 .target/models/Course.class
+
+.DS_Store
+
+app/.DS_Store

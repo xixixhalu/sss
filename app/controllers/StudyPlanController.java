@@ -73,6 +73,7 @@ public class StudyPlanController extends Controller {
 
 //		degreeProgram.displayallComplexReq();
 //		degreeProgram.displayCourseList();
+//		degreeProgram.displayAllCourse();
 
 
 //		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
@@ -159,6 +160,7 @@ public class StudyPlanController extends Controller {
 		//degreeProgram.displayCourseList();
 		
 		play.Logger.info("================================================");
+
 	}
 	
 	
