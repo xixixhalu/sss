@@ -96,7 +96,7 @@
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li>");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
-                                    	cont += Html(course.getTitle());
+                                    	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
                                         cont += Html("<a onclick='addTakenCourse(" + course.getId() +")'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +")'>&oplus;</a>");
                                     cont += Html("</li>");
                                     }
