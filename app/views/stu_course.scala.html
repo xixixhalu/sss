@@ -54,14 +54,21 @@
                 </div>
                 <div class="left_list">
                     <span onclick="getLikeCourses()">Want to take: </span>
-                    <ul id="wantTake"></ul>
+                    <ul id="wantTake">
+                    </ul>
                 </div>
                 <div class="left_list">
                     <span onclick="getTakenCourses()">Already taken: </span>
                     <ul id="alreadyTaken"></ul>
                 </div>
                 <div>
-                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
+                		<input type="hidden" value="" name="">
+                		
+                    	<a class="button left_auto">AUTO</a>
+                    	<a class="button left_next" href="javascript:{}"
+                    	   onclick='submit(this.parentElement)'>NEXT</a>
+                	</form>
                 </div>
             </div>
             <div class="right float_right">
@@ -96,8 +103,8 @@
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li>");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
-                                    	cont += Html(course.getTitle());
-                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +")'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +")'>&oplus;</a>");
+                                    	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
+                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
                                     cont += Html("</li>");
                                     }
                                     //cont += Html("<li>");
