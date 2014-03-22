@@ -54,8 +54,10 @@ GET		/admin/footer				controllers.Utility.getFooter()
 
 #student side
 GET		/student/index			controllers.StudyPlanController2.retrieveDegrees()
+GET		/student/course			controllers.StudyPlanController2.retrieveDegrees()
+GET		/student/semester		controllers.StudyPlanController2.retrieveDegrees()
 POST	/student/course			controllers.StudyPlanController2.retrieveCourses()
-GET		/student/semester		controllers.StudyPlanController2.assignSemester()
+POST	/student/semester		controllers.StudyPlanController2.assignSemester()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

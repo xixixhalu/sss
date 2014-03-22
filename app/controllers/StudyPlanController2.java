@@ -6,6 +6,7 @@ import play.mvc.*;
 import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
 import controllers.forms.SrEditForm;
+import controllers.forms.WantForm;
 import models.*;
 
 import java.util.ArrayList;
@@ -52,7 +53,15 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result assignSemester(){
-		return ok(views.html.stu_semester.render());
+		Form<WantForm> filledForm = Form.form(WantForm.class).bindFromRequest();
+		
+		try{
+			WantForm form = filledForm.get();
+			return ok(views.html.stu_semester.render(form.wantTakeCourses));
+		}catch(Exception e)
+		{
+			return badRequest(views.html.error.render("Some data cannot be obtained"));
+		}
 	}
 	
 	public static void generateReq(Integer id){
