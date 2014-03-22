@@ -17,8 +17,7 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result retrieveDegrees() {
 		try{
-			Form<DegreeForm> form = Form.form(DegreeForm.class);
-			return ok(views.html.index.render(Degree.getAll(), form));
+			return ok(views.html.index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
     		return badRequest(views.html.error.render("Cannot retrieve degree list"));
