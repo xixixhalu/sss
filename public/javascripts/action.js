@@ -24,27 +24,35 @@ function dropDown(id) {
 }
 
 //adding course to want-to-take list
-function addLikeCourse(id) {
+function addLikeCourse(id,curNode) {
     if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("wantTake");
-    var courseLi = document.createElement("li");
-    courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
-    wantTake.appendChild(courseLi);
+    wantTake.appendChild(generateLi(id,curNode));
 }
 
 //adding course to already-taken list
-function addTakenCourse(id) {
+function addTakenCourse(id,curNode) {
     if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("alreadyTaken");
+    wantTake.appendChild(generateLi(id,curNode));
+}
+
+function generateLi(id,curNode) {
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
-    wantTake.appendChild(courseLi);
+    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title;
+    var simpleReqId=curNode.parentElement.parentElement.id;
+    var complexReqId=curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    simpleReqId=simpleReqId.substring(3);
+    complexReqId=complexReqId.substring(4);
+    courseLi.innerHTML+="<input type='hidden' value='"+simpleReqId+"' name='simpleReqId'>";
+    courseLi.innerHTML+="<input type='hidden' value='"+complexReqId+"' name='complexReqId'>";
+    courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    return courseLi;
 }
 
 //check pre&corequisite constraints and if the the course is already in the course bin.
