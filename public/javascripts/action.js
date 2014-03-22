@@ -249,3 +249,31 @@ function checkCoreq(id) {
     }
     return c;
 }
+function wantTakeCourse(id,sid,cid){
+	this.id=id;
+	this.sid=sid;
+	this.cid=cid;
+}
+function submit(form)
+{
+	/* create hidden field of selected courses */
+	var acForm = document.getElementById("acForm");
+	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+
+	var dataArray=new Array;
+	for (i = 0; i < wantTake.length; i++) {
+		var id = wantTake[i].id;
+		var sid = wantTake[i].getElementsByTagName("input")[0].value;
+		var cid = wantTake[i].getElementsByTagName("input")[1].value;
+		dataArray.push(new wantTakeCourse(id,sid,cid));
+	}
+	var json=JSON.stringify(dataArray);
+	
+	var inp = document.createElement("input");
+	inp.setAttribute("type", "hidden");
+	inp.setAttribute("name", "wantTakeCourses");
+	inp.setAttribute("value", json);
+	acForm.appendChild(inp);
+	
+	form.submit();
+}

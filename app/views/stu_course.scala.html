@@ -54,14 +54,26 @@
                 </div>
                 <div class="left_list">
                     <span onclick="getLikeCourses()">Want to take: </span>
-                    <ul id="wantTake"></ul>
+                    <ul id="wantTake">
+                    	<li id="74">CS 115 - Introduction to Computer Science
+                    		<input name="simpleReq" value="14" type="hidden">
+                    		<input name="complexReq" value="7" type="hidden">
+                    		<a onclick="removeCourse(74)">⊗</a>
+                    	</li>
+                    </ul>
                 </div>
                 <div class="left_list">
                     <span onclick="getTakenCourses()">Already taken: </span>
                     <ul id="alreadyTaken"></ul>
                 </div>
                 <div>
-                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
+                		<input type="hidden" value="" name="">
+                		
+                    	<a class="button left_auto">AUTO</a>
+                    	<a class="button left_next" href="javascript:{}"
+                    	   onclick='submit(this.parentElement)'>NEXT</a>
+                	</form>
                 </div>
             </div>
             <div class="right float_right">
