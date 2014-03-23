@@ -15,13 +15,13 @@ import java.util.List;
 public class CourseController extends Controller {
 
     public static Result retrieveCourses() {
-    	try{
+    	//try{
     		StudyPlanController.CreateDegreeProgram(new Integer(5));
     		return ok(views.html.course_list.render(Course.getAll()));
-    	}catch(Exception e)
-    	{
-    		return badRequest(views.html.error.render("Cannot retrieve course list"));
-    	}
+    	//}catch(Exception e)
+    	//{
+    	//	return badRequest(views.html.error.render("Cannot retrieve course list: " + e.toString()));
+    	//}
     }
    
     public static Result deleteCourse(Integer id){
