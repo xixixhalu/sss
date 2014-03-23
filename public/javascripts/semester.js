@@ -4,6 +4,27 @@
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     var courseObjs = eval("(" + jsonData + ")");
+    var want = eval("(" + document.getElementById("want").innerText + ")");
+    var wantTakeUL = document.getElementById("wantTake");
+    for ( i = 0; i < want.length; i++) {
+        var li = document.createElement("li");
+        var id = want[i].id;
+        var prefix = courseObjs[id].prefix;
+        var num = courseObjs[id].num;
+        var title = courseObjs[id].title;
+        li.innerHTML = prefix + num + title + "<a>&oplus;</a>";
+        wantTakeUL.appendChild(li);
+    }
+    var alreadyTakenUL = document.getElementById("alreadyTaken");
+    for ( i = 0; i < want.length; i++) {
+        var li = document.createElement("li");
+        var id = want[i].id;
+        var prefix = courseObjs[id].prefix;
+        var num = courseObjs[id].num;
+        var title = courseObjs[id].title;
+        li.innerHTML = prefix + num + title + "<a>&oplus;</a>";
+        alreadyTakenUL.appendChild(li);
+    }
 };
 var f = 0;
 function addSemesters() {
