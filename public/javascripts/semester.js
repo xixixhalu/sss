@@ -1,6 +1,10 @@
 /**
  * @author Bohan Zheng
  */
+window.onload = function() {
+    var jsonData = document.getElementById("jsonData").innerText;
+    var courseObjs = eval("(" + jsonData + ")");
+};
 var f = 0;
 function addSemesters() {
     f = 0;

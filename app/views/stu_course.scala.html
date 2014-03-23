@@ -36,10 +36,10 @@
         <div class="step">
             <ul>
                 <li class="active">
-                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                    STEP 1 : Choosing Courses
                 </li>
                 <li>
-                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                    <a href="semester">STEP 2 : Scheduling Courses</a>
                 </li>
                 <li>
                     <a>STEP 3 : Getting Study Plan</a>
@@ -54,14 +54,21 @@
                 </div>
                 <div class="left_list">
                     <span onclick="getLikeCourses()">Want to take: </span>
-                    <ul id="wantTake"></ul>
+                    <ul id="wantTake">
+                    </ul>
                 </div>
                 <div class="left_list">
                     <span onclick="getTakenCourses()">Already taken: </span>
                     <ul id="alreadyTaken"></ul>
                 </div>
                 <div>
-                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
+                		<input type="hidden" value="" name="">
+                		
+                    	<a class="button left_auto">AUTO</a>
+                    	<a class="button left_next" href="javascript:{}"
+                    	   onclick='submitCourse(this.parentElement)'>NEXT</a>
+                	</form>
                 </div>
             </div>
             <div class="right float_right">
@@ -70,15 +77,15 @@
                 		for(reqId <- degree.getReq_ids()){
                 		var req : Requirement = Requirement.findById(Integer.parseInt(reqId));
                 		
-                    cont += Html("<li id=\"req1\">");
-                        cont += Html("<div class=\"req_title\" style=\"display: none;\">");
+                    cont += Html("<li id='req_"+ req.getId() +"'>");
+                        cont += Html("<div class=\"req_title\" style=\"display: block;\">");
                         	cont += Html(req.getTitle());
-                            cont += Html(" <a onclick=\"dropDown('req1')\">&oplus;</a>");
+                            cont += Html(" <a onclick=\"dropDown('req_" + req.getId() +"')\">&oplus;</a>");
                         cont += Html("</div>");
-                        cont += Html("<div class=\"right_list\">");
+                        cont += Html("<div class=\"right_list\" style=\"display: none;\">");
                             cont += Html("<div class=\"req_title\">");
                             	cont += Html(req.getTitle());
-                                cont += Html(" <a onclick=\"dropDown('req1')\">&otimes;</a>");
+                                cont += Html(" <a onclick=\"dropDown('req_"+ req.getId() +"')\">&otimes;</a>");
                             cont += Html("</div>");
                             cont += Html("<span>You must take all the courses listed below.</span>");
                             cont += Html("<div>");
@@ -91,13 +98,13 @@
 								var cgId : Integer = sr.getCg_id();
 								var reqNum : Integer = sr.getRequired_num();
 								var cg : Cg = Cg.findById(cgId);
-                                cont += Html("<ul class=\"req_course_list\">");
+                                cont += Html("<ul class=\"req_course_list\" id=\"sr_" + srId + "\">");
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li>");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
-                                    	cont += Html(course.getTitle());
-                                        cont += Html("<a onclick='addTakenCourse(1)'>&otimes;</a><a onclick='addLikeCourse(1)'>&oplus;</a>");
+                                    	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
+                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
                                     cont += Html("</li>");
                                     }
                                     //cont += Html("<li>");
@@ -148,10 +155,12 @@
             </div>
         </div>
         <div class="footer">
+            
             <span>Student Scheduling System for Stevens Institute of Technology</span>
             <br>
             <span>Copy right: Team #10</span>
         </div>
+        <div id="jsonData" style="display: none;">@jsonData</div>
     </body>
 </html>
 
