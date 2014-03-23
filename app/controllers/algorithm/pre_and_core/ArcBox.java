@@ -7,7 +7,7 @@ public class ArcBox {
 	public int headCourseID; //node at the head
 	public ArcBox tlink; //next arc with same tail
 	public ArcBox hlink; //next arc with same head
-	int info; //
+	public int info; //
 	
 	public ArcBox(){
 		this.headCourseID=0;

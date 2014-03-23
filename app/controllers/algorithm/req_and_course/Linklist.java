@@ -2,7 +2,7 @@ package controllers.algorithm.req_and_course;
 
 public class Linklist {
 	public Node first; // head node
-	public boolean satisfied = false;
+	//public boolean satisfied = false;
 
 	private int pos; // Node's position
 

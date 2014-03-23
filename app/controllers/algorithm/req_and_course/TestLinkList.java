@@ -128,7 +128,7 @@ public class TestLinkList {
 		this.course_list.get(i).set2ChooseCourse(courseID); //在requirement链表中标记
 		this.course_list.get(i).first.needFinish--;
 		if(this.course_list.get(i).first.needFinish==0){
-			this.course_list.get(i).satisfied=true;
+			this.course_list.get(i).first.statisfied=true;
 		}
 		for(int k=0; k<this.course_list.size(); k++){
 			if(k!=i){
@@ -141,7 +141,7 @@ public class TestLinkList {
 	}
 	
 
-	public void CheckAllSimpleAndComplex(){
+	public void CheckAllSimpleAndComplex(){  //check all simple and complex satisfaction
 		//int flag1=0;
 		//int flag2 = 0;
 		boolean ifBreak =false;
