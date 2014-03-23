@@ -31,12 +31,11 @@ import controllers.algorithm.req_and_course.TestLinkList;
 
 
 public class StudyPlanController extends Controller {
-	public static CrossLinkedList allCross_relation = new CrossLinkedList();
-	public static int redNode = 0;
 	public static Cal_Depth calSemester = new Cal_Depth();
+	public static int redNode = 0;
 	
 	
-	public static void GetCourseMaxDepthInGraph(){
+	public static void GetCourseMaxDepthInGraph(CrossLinkedList allCross_relation){
 		calSemester.allCross_relation_example = allCross_relation;
 		calSemester.BFS_Max();
 		//calSemester.BFS_Min();
@@ -51,6 +50,7 @@ public class StudyPlanController extends Controller {
 		Degree degree = Degree.findById(id);
 		TestLinkList degreeProgram = new TestLinkList(degree.getTitle());	//add new degree
 		List<String> complexIds = degree.getReq_ids();						//get Requirement ids
+		CrossLinkedList allCross_relation = new CrossLinkedList();
 		for(String complexId : complexIds)
 		{ 
 			try{
@@ -73,9 +73,10 @@ public class StudyPlanController extends Controller {
 					List<String> courseIds = cg.getCourse_ids();
 					for(String courseId : courseIds)
 					{
-						addCourse(degreeProgram, simpleReq, Integer.valueOf(courseId));	//add course
+						addCourse(degreeProgram, simpleReq, Integer.valueOf(courseId), allCross_relation);	//add course
 						add2Course_List2(degreeProgram, complexReq,simpleReq, Integer.valueOf(courseId));
 					}
+					allCross_relation.removeAloneNode();
 					
 					complexReq.insertSimple(simpleReq);
 					degreeProgram.course_list.add(simpleReq);
@@ -180,13 +181,13 @@ public class StudyPlanController extends Controller {
 //		degreeProgram.displayCourseList();
 //		degreeProgram.displayAllCourse();
 //		System.out.print("\n");
-		AutoFillCourseBin(degreeProgram);
+		AutoFillCourseBin(degreeProgram, allCross_relation);
 //		System.out.print("After AutoFill:");
 //		degreeProgram.displayallComplexReq();
 		//degreeProgram.displayCourseList();
 		//degreeProgram.displayAllCourse();
 		
-		//allCross_relation.Display_All_Headnode();
+		allCross_relation.Display_All_Headnode();
 		allCross_relation.displayCrossLinkedList();
 		
 		play.Logger.info("================================================");
@@ -194,7 +195,8 @@ public class StudyPlanController extends Controller {
 	}
 	
 	
-	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID){
+	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID
+			, CrossLinkedList allCross_relation){
 		//System.out.println(ifCourseExist);
 
 			//System.out.println("OK");
@@ -215,15 +217,14 @@ public class StudyPlanController extends Controller {
 			 * @author tongrui
 			 * function: construct the crosslist
 			 */
-			
+
+			allCross_relation.addCourse(Integer.valueOf(courseID));
 			Course course = Course.findById(courseID);
 			
 			String prereq = course.getPrereq(2);
 			String coreq = course.getCoreq(2);
 			
-			if (!prereq.trim().equals("-") || !coreq.trim().equals("-")) {
-				allCross_relation.addCourse(Integer.valueOf(courseID));
-			}
+		
 			
 			if (!prereq.trim().equals("-")) {
 				String[] prelist = prereq.split(" ");
@@ -348,7 +349,8 @@ public class StudyPlanController extends Controller {
 			}
 	}
 	
-	public static void CheckInSelectedCourse(TestLinkList degreeProgram,int complexID, int simpleID, int courseID){
+	public static void CheckInSelectedCourse(TestLinkList degreeProgram,int complexID, int simpleID, int courseID,
+			CrossLinkedList allCross_relation){
 		for(int i =0;i<degreeProgram.allComplexReq.size();i++){
 			if(degreeProgram.allComplexReq.get(i).first.ComplexReq_Id == complexID){
 				ComplexReq  complexReq = degreeProgram.allComplexReq.get(i);
@@ -372,8 +374,8 @@ public class StudyPlanController extends Controller {
 	
 	
 	
-	public static void AutoFillCourseBin(TestLinkList degreeProgram){
-		GetCourseMaxDepthInGraph(); //mark the min and max in nodeInGraph
+	public static void AutoFillCourseBin(TestLinkList degreeProgram, CrossLinkedList allCross_relation){
+		GetCourseMaxDepthInGraph(allCross_relation); //mark the min and max in nodeInGraph
 		for (int i = 0; i < calSemester.allCross_relation_example.headNodeList.size(); i++) { //in node graph find all value
 			NodeInGraph courseInGraph = calSemester.allCross_relation_example.headNodeList.get(i);
 			for(Integer key: degreeProgram.course.keySet()){
@@ -389,9 +391,9 @@ public class StudyPlanController extends Controller {
 		}
 		
 		
-		for(Integer key: degreeProgram.course.keySet()){
-			System.out.print("The course "+ degreeProgram.course.get(key).get(0).cName + " has max depth "+degreeProgram.course.get(key).get(0).maxDepth +"\n");
-		}
+//		for(Integer key: degreeProgram.course.keySet()){
+//			System.out.print("The course "+ degreeProgram.course.get(key).get(0).cName + " has max depth "+degreeProgram.course.get(key).get(0).maxDepth +"\n");
+//		}
 		
 		for(int i =0;i<degreeProgram.allComplexReq.size();i++){
 			ComplexReq  complexReq = degreeProgram.allComplexReq.get(i);

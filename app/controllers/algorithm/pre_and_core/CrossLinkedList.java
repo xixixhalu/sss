@@ -63,6 +63,15 @@ public class CrossLinkedList {
 			}
 		}
 	}
+	
+	public void removeAloneNode(){
+		for (int i = 0; i < this.headNodeList.size(); i++){
+			if(this.headNodeList.get(i).firstOut == null &&
+					this.headNodeList.get(i).firstIn == null){
+				this.headNodeList.remove(i);
+			}
+		}
+	}
 
 	// Display
 	public void displayCrossLinkedList() {
