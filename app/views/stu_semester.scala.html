@@ -1,3 +1,4 @@
+@(courseData : String)
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -13,8 +14,7 @@
         <script src="/assets/javascripts/semester.js"></script>
         <!-- Date: 2014-02-21 -->
     </head>
-    <body>
-
+    <body>@{var jsonCourseData : String = session().get("jsonCourseData"); jsonCourseData;}
         <div id="pop_back" class="pop_back" style="display: none;"></div>
         <div class="pop_window" id="pop_window" style="display: none;">
             <div id="pop_content_a" style="display: none;">
@@ -56,10 +56,10 @@
         <div class="step">
             <ul>
                 <li>
-                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                    <a href="course">STEP 1 : Choosing Courses</a>
                 </li>
                 <li class="active">
-                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                    STEP 2 : Scheduling Courses
                 </li>
                 <li>
                     <a>STEP 3 : Getting Study Plan</a>
