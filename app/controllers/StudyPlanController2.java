@@ -18,6 +18,8 @@ import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
+	public static StudyPlan studyplan;
+	
 	public static Result retrieveDegrees() {
 		try{
 			return ok(views.html.index.render(Degree.getAll()));
@@ -37,7 +39,12 @@ public class StudyPlanController2 extends Controller {
 			DegreeForm degreeForm = filledForm.get();
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
-			//get all courses JSON
+			studyplan = new StudyPlan();
+			
+			//Initialize study plan graph.
+			studyplan.CreateDegreeProgram(Integer.valueOf(degreeId));
+			
+			//get all courses' JSON
 			JSONObject json = new JSONObject();
 			List<Course> courses = Course.getAll();
 			for (Course course : courses) {
