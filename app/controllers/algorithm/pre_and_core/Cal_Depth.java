@@ -3,14 +3,14 @@ package controllers.algorithm.pre_and_core;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Cal_Depth {
-	ArrayBlockingQueue<ArcBox> level = new ArrayBlockingQueue<ArcBox>(256); // put
+	public ArrayBlockingQueue<ArcBox> level = new ArrayBlockingQueue<ArcBox>(256); // put
 																			// each
 																			// level
 																			// course
 																			// in
 																			// this
 																			// queue
-	CrossLinkedList allCross_relation_example = new CrossLinkedList();
+	public CrossLinkedList allCross_relation_example = new CrossLinkedList();
 
 	public void Create_Graph() {
 
@@ -53,20 +53,20 @@ public class Cal_Depth {
 
 	}
 
-	public void BFS() {
+	public void BFS_Min() {
 		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
 
-			Node course = this.allCross_relation_example.headNodeList.get(i);
+			NodeInGraph course = this.allCross_relation_example.headNodeList.get(i);
 			if (course.firstIn == null) {
 				if (course.assign == false) {
 					course.assign = true;
-					course.depth = 1;
+					course.minDepth = 1;
 					ArcBox arc = course.firstOut;
 					while(arc !=null){
 						level.add(arc);
 						arc = arc.tlink;
 					}
-					BFS_Travese();
+					BFS_Travese_Min();
 				}
 
 			}
@@ -74,14 +74,14 @@ public class Cal_Depth {
 
 	}
 
-	public void BFS_Travese() {
+	public void BFS_Travese_Min() {
 
 		ArrayBlockingQueue<ArcBox> next = new ArrayBlockingQueue<ArcBox>(50);
 
 		while (level.isEmpty() == false) {
 			while (level.isEmpty() == false) {
 				ArcBox tempCourse = level.poll();
-				Node temp = this.allCross_relation_example
+				NodeInGraph temp = this.allCross_relation_example
 						.findHeadCourse(tempCourse.headCourseID);
 				int stepLength=0;
 				if(tempCourse.info==1){
@@ -95,10 +95,10 @@ public class Cal_Depth {
 				if (temp.assign == false) {
 					temp.assign = true;
 					//all course depth is equal to its tail course's depth + 1
-					temp.depth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).depth + stepLength; 
+					temp.minDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength; 
 				} else { // courses in queue have been assigned with a depth
-					if (temp.depth > this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).depth + stepLength)
-						temp.depth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).depth + stepLength; 
+					if (temp.minDepth > this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength)
+						temp.minDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength; 
 
 				}
 			}
@@ -109,18 +109,82 @@ public class Cal_Depth {
 
 	}
 	
-	public void Display_All_Headnode() {
+	
+	
+	public void BFS_Max() {
+		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
+
+			NodeInGraph course = this.allCross_relation_example.headNodeList.get(i);
+			if (course.firstIn == null) {
+				if (course.assign == false) {
+					course.assign = true;
+					course.maxDepth = 1;
+					ArcBox arc = course.firstOut;
+					while(arc !=null){
+						level.add(arc);
+						arc = arc.tlink;
+					}
+					BFS_Travese_Max();
+				}
+
+			}
+		}
+
+	}
+
+	public void BFS_Travese_Max() {
+
+		ArrayBlockingQueue<ArcBox> next = new ArrayBlockingQueue<ArcBox>(50);
+
+		while (level.isEmpty() == false) {
+			while (level.isEmpty() == false) {
+				ArcBox tempCourse = level.poll();
+				NodeInGraph temp = this.allCross_relation_example
+						.findHeadCourse(tempCourse.headCourseID);
+				int stepLength=0;
+				if(tempCourse.info==1){
+					stepLength=1;
+				}
+				ArcBox arcOfTemp = temp.firstOut;
+				while (arcOfTemp != null) {
+					next.add(arcOfTemp);
+					arcOfTemp = arcOfTemp.tlink;
+				}
+				if (temp.assign == false) {
+					temp.assign = true;
+					//all course depth is equal to its tail course's depth + 1
+					temp.maxDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).maxDepth + stepLength; 
+				} else { // courses in queue have been assigned with a depth
+					if (temp.maxDepth < this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).maxDepth + stepLength)
+						temp.maxDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).maxDepth + stepLength; 
+
+				}
+			}
+			next.drainTo(level);
+			//level = next;
+			next.clear();
+		}
+
+	}
+	public void Display_All_Headnode_Min() {
 		System.out.print("Show all the head nodes: " + '\n');
 		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
-			this.allCross_relation_example.headNodeList.get(i).showNodeWithAssign();
+			this.allCross_relation_example.headNodeList.get(i).showNodeWithAssign_Min();
+		}
+	}
+	
+	public void Display_All_Headnode_Max() {
+		System.out.print("Show all the head nodes: " + '\n');
+		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
+			this.allCross_relation_example.headNodeList.get(i).showNodeWithAssign_Max();
 		}
 	}
 
 	public static void main(String args[]) {
 		Cal_Depth g = new Cal_Depth();
 		g.Create_Graph();
-		g.BFS();
-		g.Display_All_Headnode();
+		g.BFS_Min();
+		g.Display_All_Headnode_Min();
 
 	}
 }

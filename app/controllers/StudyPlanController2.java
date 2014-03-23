@@ -7,7 +7,7 @@ import play.mvc.*;
 import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
 import controllers.forms.SrEditForm;
-import controllers.forms.WantForm;
+import controllers.forms.TakeForm;
 import models.*;
 
 import java.util.ArrayList;
@@ -55,30 +55,44 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result assignSemester(){
-		Form<WantForm> filledForm = Form.form(WantForm.class).bindFromRequest();
+		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		
 		try{
-			WantForm form = filledForm.get();
+			TakeForm form = filledForm.get();
 			
 			String wantTakeCourses = form.wantTakeCourses;
+			String alreadyTakeCourses = form.alreadyTakenCourses;
+			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
+			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
 			JSONObject json = new JSONObject();
+			CourseWrapper cw = new CourseWrapper(true, true, true, true,
+						true, true, true, true, true);
+			
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
 				int sid = wantCourse.getInt("sid");
 				int cid = wantCourse.getInt("cid");
-				Logger.info(id + " " + sid + " " + cid + "\n");
 				session("jsonCourseData", wantTakeCourses);
 				
-				//get all courses JSON
-				CourseWrapper cw = new CourseWrapper(true, true, true, true,
-							true, true, true, true, true);
-				json.put(String.valueOf(id), Course.findById(id).toJson(cw));			
+				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
 			}
-			return ok(views.html.stu_semester.render(form.wantTakeCourses, json.toString()));
+
+			for (int i = 0; i < alreadyCourses.length(); i++) {
+				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
+				int id = alreadyCourse.getInt("id");
+				int sid = alreadyCourse.getInt("sid");
+				int cid = alreadyCourse.getInt("cid");
+				
+				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
+			}
+			
+			return ok(views.html.stu_semester.render(json.toString(), 
+					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)
 		{
+			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
 	}
