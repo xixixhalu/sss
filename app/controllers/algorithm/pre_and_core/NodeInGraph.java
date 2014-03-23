@@ -2,7 +2,7 @@ package controllers.algorithm.pre_and_core;
 
 
 //same as VexNode
-public class Node {
+public class NodeInGraph {
 	
 	public String courseName;
 	public int courseID;
@@ -11,13 +11,14 @@ public class Node {
 	public int credit;
 	public String semester[];
 	
-	public int depth = 10000; //
+	public int minDepth = 10000; //
+	public int maxDepth = 0;
 	public boolean assign = false;
 	public ArcBox firstIn, firstOut;
 	public boolean visited = false;  //course is marked, visited=true
 	public boolean finished = false; //course is selected successfully with pre/core-requisite finished = true ;
 	
-	public Node(){
+	public NodeInGraph(){
 		this.courseID=0;
 		this.courseName = "";
 		this.firstIn = null;
@@ -26,7 +27,7 @@ public class Node {
 	
 	
 	
-	public Node(int courseID){
+	public NodeInGraph(int courseID){
 		this.courseID=courseID;
 		this.firstIn = null;
 		this.firstOut=null;
@@ -38,10 +39,14 @@ public class Node {
 	
 	public void showNode(){
 		//System.out.println(courseName + " ");
-		System.out.println(courseID + " ");
+		System.out.println(courseID + " " +this.assign);
 	}
 	
-	public void showNodeWithAssign(){
-		System.out.println(courseID + ": " + depth);
+	public void showNodeWithAssign_Min(){
+		System.out.println("The" + courseID + " has the min depth: " + minDepth +"\n");
+	}
+	
+	public void showNodeWithAssign_Max(){
+		System.out.println("The" + courseID + " has the max depth: " + maxDepth +"\n");
 	}
 }

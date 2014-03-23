@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CrossLinkedList {
 	// store all head nodes;
-	public ArrayList<Node> headNodeList = new ArrayList<Node>();
+	public ArrayList<NodeInGraph> headNodeList = new ArrayList<NodeInGraph>();
 
 	// 默认的构造方法
 	public CrossLinkedList() {
@@ -12,7 +12,7 @@ public class CrossLinkedList {
 //		this.headNodeList.add(firstNode);
 	}
 	
-	public Node findHeadCourse(int courseID){
+	public NodeInGraph findHeadCourse(int courseID){
 		int size = this.headNodeList.size();
 		for(int i=0; i<size;i++){
 			if(this.headNodeList.get(i).courseID == courseID)
@@ -34,7 +34,7 @@ public class CrossLinkedList {
 //	}
 
 	public void addCourse(int courseID) {
-		Node node = new Node(courseID);
+		NodeInGraph node = new NodeInGraph(courseID);
 		this.headNodeList.add(node);
 	}
 
@@ -60,6 +60,15 @@ public class CrossLinkedList {
 			if (this.headNodeList.get(i).courseID==head) {
 				arc.hlink = this.headNodeList.get(i).firstIn;
 				this.headNodeList.get(i).firstIn = arc;
+			}
+		}
+	}
+	
+	public void removeAloneNode(){
+		for (int i = 0; i < this.headNodeList.size(); i++){
+			if(this.headNodeList.get(i).firstOut == null &&
+					this.headNodeList.get(i).firstIn == null){
+				this.headNodeList.remove(i);
 			}
 		}
 	}

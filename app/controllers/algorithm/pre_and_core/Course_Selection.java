@@ -7,7 +7,7 @@ public class Course_Selection {
 		CrossLinkedList cr = courseRelation;
 		int size = cr.headNodeList.size();
 		ArcBox tempArc = new ArcBox();
-		Node tempNode = new Node();
+		NodeInGraph tempNode = new NodeInGraph();
 		// int i = 0, j = 0; // 计数器
 		for (int i = 0; i < size; i++) {
 			tempNode = cr.headNodeList.get(i); // 找到这个将要被选的课程，开始回溯
@@ -20,7 +20,7 @@ public class Course_Selection {
 					if (relation_type == 3) {
 						for (int j = 0; j < size; j++) { // 这个for
 							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
-							Node tempNode2 = cr.headNodeList.get(j);
+							NodeInGraph tempNode2 = cr.headNodeList.get(j);
 							if (tempNode2.courseID==tempTailCourseID) { // for
 																				// loop只需要做if判断为正的时候的事情
 								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
@@ -42,7 +42,7 @@ public class Course_Selection {
 					} else {
 						for (int j = 0; j < size; j++) { // 这个for
 							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
-							Node tempNode2 = cr.headNodeList.get(j);
+							NodeInGraph tempNode2 = cr.headNodeList.get(j);
 							if (tempNode2.courseID==tempTailCourseID) { // for
 																				// loop只需要做if判断为正的时候的事情
 								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环

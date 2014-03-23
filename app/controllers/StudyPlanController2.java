@@ -7,7 +7,7 @@ import play.mvc.*;
 import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
 import controllers.forms.SrEditForm;
-import controllers.forms.WantForm;
+import controllers.forms.TakeForm;
 import models.*;
 
 import java.util.ArrayList;
@@ -55,14 +55,18 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result assignSemester(){
-		Form<WantForm> filledForm = Form.form(WantForm.class).bindFromRequest();
+		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		
 		try{
-			WantForm form = filledForm.get();
+			TakeForm form = filledForm.get();
 			
 			String wantTakeCourses = form.wantTakeCourses;
+			String alreadyTakeCourses = form.alreadyTakeCourses;
+			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONObject json = new JSONObject();
+			JSONObject json_ids = new JSONObject();
+			int[] ids = new int[wantCourses.length()];
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
@@ -74,9 +78,12 @@ public class StudyPlanController2 extends Controller {
 				//get all courses JSON
 				CourseWrapper cw = new CourseWrapper(true, true, true, true,
 							true, true, true, true, true);
-				json.put(String.valueOf(id), Course.findById(id).toJson(cw));			
+				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
+				
+				ids[i] = id;
 			}
-			return ok(views.html.stu_semester.render(form.wantTakeCourses, json.toString()));
+			json_ids.put("want", ids);
+			return ok(views.html.stu_semester.render(form.wantTakeCourses, json.toString(), json_ids.toString()));
 		}catch(Exception e)
 		{
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
