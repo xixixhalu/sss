@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Degree;
+import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import controllers.algorithm.req_and_course.*;
@@ -12,14 +13,14 @@ import models.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
 	public static Result retrieveDegrees() {
 		try{
-			Form<DegreeForm> form = Form.form(DegreeForm.class);
-			return ok(views.html.index.render(Degree.getAll(), form));
+			return ok(views.html.index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
     		return badRequest(views.html.error.render("Cannot retrieve degree list"));
@@ -58,7 +59,24 @@ public class StudyPlanController2 extends Controller {
 		
 		try{
 			WantForm form = filledForm.get();
-			return ok(views.html.stu_semester.render(form.wantTakeCourses));
+			
+			String wantTakeCourses = form.wantTakeCourses;
+			JSONArray wantCourses = new JSONArray(wantTakeCourses);
+			JSONObject json = new JSONObject();
+			for (int i = 0; i < wantCourses.length(); i++) {
+				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
+				int id = wantCourse.getInt("id");
+				int sid = wantCourse.getInt("sid");
+				int cid = wantCourse.getInt("cid");
+				Logger.info(id + " " + sid + " " + cid + "\n");
+				session("jsonCourseData", wantTakeCourses);
+				
+				//get all courses JSON
+				CourseWrapper cw = new CourseWrapper(true, true, true, true,
+							true, true, true, true, true);
+				json.put(String.valueOf(id), Course.findById(id).toJson(cw));			
+			}
+			return ok(views.html.stu_semester.render(form.wantTakeCourses, json.toString()));
 		}catch(Exception e)
 		{
 			return badRequest(views.html.error.render("Some data cannot be obtained"));

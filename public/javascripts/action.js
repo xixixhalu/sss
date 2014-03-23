@@ -358,7 +358,7 @@ function wantTakeCourse(id,sid,cid){
 	this.sid=sid;
 	this.cid=cid;
 }
-function submit(form)
+function submitCourse(form)
 {
 	/* create hidden field of selected courses */
 	var acForm = document.getElementById("acForm");
