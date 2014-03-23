@@ -61,7 +61,7 @@ public class StudyPlanController2 extends Controller {
 			TakeForm form = filledForm.get();
 			
 			String wantTakeCourses = form.wantTakeCourses;
-			String alreadyTakeCourses = form.alreadyTakeCourses;
+			String alreadyTakeCourses = form.alreadyTakenCourses;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
@@ -88,7 +88,8 @@ public class StudyPlanController2 extends Controller {
 				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
 			}
 			
-			return ok(views.html.stu_semester.render(json.toString(), wantCourses, alreadyCourses));
+			return ok(views.html.stu_semester.render(json.toString(), 
+					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
