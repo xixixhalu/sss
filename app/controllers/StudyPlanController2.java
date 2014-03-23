@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Degree;
+import play.Logger;
 import play.data.Form;
 import play.mvc.*;
 import controllers.algorithm.req_and_course.*;
@@ -12,6 +13,7 @@ import models.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
@@ -57,6 +59,16 @@ public class StudyPlanController2 extends Controller {
 		
 		try{
 			WantForm form = filledForm.get();
+			String wantTakeCourses = form.wantTakeCourses;
+			JSONArray courses = new JSONArray(wantTakeCourses);
+			for (int i = 0; i < courses.length(); i++) {
+				JSONObject course = (JSONObject) courses.get(i);
+				int id = course.getInt("id");
+				int sid = course.getInt("sid");
+				int cid = course.getInt("cid");
+				Logger.info(id + " " + sid + " " + cid + "\n");
+				session("jsonCourseData", wantTakeCourses);
+			}
 			return ok(views.html.stu_semester.render(form.wantTakeCourses));
 		}catch(Exception e)
 		{
