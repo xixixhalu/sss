@@ -59,17 +59,24 @@ public class StudyPlanController2 extends Controller {
 		
 		try{
 			WantForm form = filledForm.get();
+			
 			String wantTakeCourses = form.wantTakeCourses;
-			JSONArray courses = new JSONArray(wantTakeCourses);
-			for (int i = 0; i < courses.length(); i++) {
-				JSONObject course = (JSONObject) courses.get(i);
-				int id = course.getInt("id");
-				int sid = course.getInt("sid");
-				int cid = course.getInt("cid");
+			JSONArray wantCourses = new JSONArray(wantTakeCourses);
+			JSONObject json = new JSONObject();
+			for (int i = 0; i < wantCourses.length(); i++) {
+				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
+				int id = wantCourse.getInt("id");
+				int sid = wantCourse.getInt("sid");
+				int cid = wantCourse.getInt("cid");
 				Logger.info(id + " " + sid + " " + cid + "\n");
 				session("jsonCourseData", wantTakeCourses);
+				
+				//get all courses JSON
+				CourseWrapper cw = new CourseWrapper(true, true, true, true,
+							true, true, true, true, true);
+				json.put(String.valueOf(id), Course.findById(id).toJson(cw));			
 			}
-			return ok(views.html.stu_semester.render(form.wantTakeCourses));
+			return ok(views.html.stu_semester.render(form.wantTakeCourses, json.toString()));
 		}catch(Exception e)
 		{
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
