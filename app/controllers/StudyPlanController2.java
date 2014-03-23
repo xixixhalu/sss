@@ -66,6 +66,9 @@ public class StudyPlanController2 extends Controller {
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
 			JSONObject json = new JSONObject();
+			CourseWrapper cw = new CourseWrapper(true, true, true, true,
+						true, true, true, true, true);
+			
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
@@ -73,20 +76,22 @@ public class StudyPlanController2 extends Controller {
 				int cid = wantCourse.getInt("cid");
 				session("jsonCourseData", wantTakeCourses);
 				
-				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
-				int _id = alreadyCourse.getInt("id");
-				int _sid = alreadyCourse.getInt("sid");
-				int _cid = alreadyCourse.getInt("cid");
-				
-				//get all courses JSON
-				CourseWrapper cw = new CourseWrapper(true, true, true, true,
-							true, true, true, true, true);
 				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
-				json.put(String.valueOf(id), Course.findById(_id).toJson(cw));
 			}
+
+			for (int i = 0; i < alreadyCourses.length(); i++) {
+				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
+				int id = alreadyCourse.getInt("id");
+				int sid = alreadyCourse.getInt("sid");
+				int cid = alreadyCourse.getInt("cid");
+				
+				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
+			}
+			
 			return ok(views.html.stu_semester.render(json.toString(), wantCourses, alreadyCourses));
 		}catch(Exception e)
 		{
+			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
 	}

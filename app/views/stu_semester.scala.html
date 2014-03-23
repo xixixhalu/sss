@@ -1,4 +1,4 @@
-@(jsonData : String, json, want : String, already : String)
+@(jsonData : String, want : String, already : String)
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -14,7 +14,7 @@
         <script src="/assets/javascripts/semester.js"></script>
         <!-- Date: 2014-02-21 -->
     </head>
-    <body>@{var jsonCourseData : String = session().get("jsonCourseData"); jsonCourseData;}
+    <body>@jsonData, @want, @already
         <div id="pop_back" class="pop_back" style="display: none;"></div>
         <div class="pop_window" id="pop_window" style="display: none;">
             <div id="pop_content_a" style="display: none;">
