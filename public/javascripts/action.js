@@ -24,33 +24,33 @@ function dropDown(id) {
 }
 
 //adding course to want-to-take list
-function addLikeCourse(id,curNode) {
+function addLikeCourse(id, curNode) {
     if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("wantTake");
-    wantTake.appendChild(generateLi(id,curNode));
+    wantTake.appendChild(generateLi(id, curNode));
 }
 
 //adding course to already-taken list
-function addTakenCourse(id,curNode) {
+function addTakenCourse(id, curNode) {
     if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("alreadyTaken");
-    wantTake.appendChild(generateLi(id,curNode));
+    wantTake.appendChild(generateLi(id, curNode));
 }
 
-function generateLi(id,curNode) {
+function generateLi(id, curNode) {
     var courseLi = document.createElement("li");
     courseLi.id = id;
     courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title;
-    var simpleReqId=curNode.parentElement.parentElement.id;
-    var complexReqId=curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-    simpleReqId=simpleReqId.substring(3);
-    complexReqId=complexReqId.substring(4);
-    courseLi.innerHTML+="<input type='hidden' value='"+simpleReqId+"' name='simpleReqId'>";
-    courseLi.innerHTML+="<input type='hidden' value='"+complexReqId+"' name='complexReqId'>";
+    var simpleReqId = curNode.parentElement.parentElement.id;
+    var complexReqId = curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    simpleReqId = simpleReqId.substring(3);
+    complexReqId = complexReqId.substring(4);
+    courseLi.innerHTML += "<input type='hidden' value='" + simpleReqId + "' name='simpleReqId'>";
+    courseLi.innerHTML += "<input type='hidden' value='" + complexReqId + "' name='complexReqId'>";
     courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     return courseLi;
 }
@@ -353,31 +353,48 @@ function checkCoreq(id) {
         return false;
     }
 }
-function wantTakeCourse(id,sid,cid){
-	this.id=id;
-	this.sid=sid;
-	this.cid=cid;
-}
-function submitCourse(form)
-{
-	/* create hidden field of selected courses */
-	var acForm = document.getElementById("acForm");
-	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
 
-	var dataArray=new Array;
-	for (i = 0; i < wantTake.length; i++) {
-		var id = wantTake[i].id;
-		var sid = wantTake[i].getElementsByTagName("input")[0].value;
-		var cid = wantTake[i].getElementsByTagName("input")[1].value;
-		dataArray.push(new wantTakeCourse(id,sid,cid));
-	}
-	var json=JSON.stringify(dataArray);
-	
-	var inp = document.createElement("input");
-	inp.setAttribute("type", "hidden");
-	inp.setAttribute("name", "wantTakeCourses");
-	inp.setAttribute("value", json);
-	acForm.appendChild(inp);
-	
-	form.submit();
+function wantTakeCourse(id, sid, cid) {
+    this.id = id;
+    this.sid = sid;
+    this.cid = cid;
+}
+
+function submitCourse(form) {
+    /* create hidden field of selected courses */
+    var acForm = document.getElementById("acForm");
+    var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+    var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
+    
+    var dataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        dataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    var json = JSON.stringify(dataArray);
+
+    var inp = document.createElement("input");
+    inp.setAttribute("type", "hidden");
+    inp.setAttribute("name", "wantTakeCourses");
+    inp.setAttribute("value", json);
+    acForm.appendChild(inp);
+
+    var dataArray=new Array;
+    for ( i = 0; i < alreadyTaken.length; i++) {
+        var id = alreadyTaken[i].id;
+        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        dataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    var json = JSON.stringify(dataArray);
+
+    var inp = document.createElement("input");
+    inp.setAttribute("type", "hidden");
+    inp.setAttribute("name", "alreadyTakenCourses");
+    inp.setAttribute("value", json);
+    acForm.appendChild(inp);
+    
+    form.submit();
 }
