@@ -424,7 +424,7 @@ function autoCourse() {
 
 	/* null manipulation */
     if (true) {
-        var url = "/student/autofill/";
+        var url = "/student/autoFill/";
         $.post(url, json, function(data) {
         	alert(1);
             // var coursesObj = eval("(" + data + ")");
