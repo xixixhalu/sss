@@ -1,6 +1,7 @@
 package controllers.algorithm.pre_and_core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CrossLinkedList {
 	// store all head nodes;
@@ -65,12 +66,16 @@ public class CrossLinkedList {
 	}
 	
 	public void removeAloneNode(){
-		for (int i = 0; i < this.headNodeList.size(); i++){
-			if(this.headNodeList.get(i).firstOut == null &&
-					this.headNodeList.get(i).firstIn == null){
-				this.headNodeList.remove(i);
-			}
+		
+		Iterator<NodeInGraph> iter = this.headNodeList.iterator();
+		
+		while(iter.hasNext())
+		{
+			NodeInGraph course = iter.next();
+			if(course.firstOut == null && course.firstIn == null)
+				iter.remove();
 		}
+			
 	}
 
 	// Display

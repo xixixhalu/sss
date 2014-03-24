@@ -116,8 +116,42 @@ function checkCourseExist(id) {
 }
 
 //remove course from course bin
-function removeCourse(id) {
-    var courseLi = document.getElementById(id);
+function removeCourse(curId) {
+    //获取需要删除的节点
+    var courseLi = document.getElementById(curId);
+    //获取course bin中的所有课
+    var allCourses = getLikeCourses().concat(getTakenCourses());
+    //循环course bin中的所有课，
+    for ( i = 0; i < allCourses.length; i++) {
+        var id = allCourses[i];
+        var prereq = new Array;
+        var coreq = new Array;
+        //查看这门课是否有先行课
+        if (courseObjs[id].prereq) {
+            //如果有取出这门课的所有先行课，判断它的先行课中是否有需要删除的课
+            prereq = courseObjs[id].prereq;
+            for ( j = 0; j < prereq.length; j++) {
+                if (prereq[j].id == curId) {
+                    //如果有，提示用户不能删除
+                    var curCourse = courseObjs[id].prefix + courseObjs[id].num;
+                    alert("This course is the prerequisite of "+curCourse);
+                    return false;
+                }
+            }
+        }
+        //查看并行课
+        if (courseObjs[id].coreq) {
+            coreq = courseObjs[id].coreq;
+            for ( j = 0; j < coreq.length; j++) {
+                if (coreq[j].id == curId) {
+                    //如果有，提示用户不能删除
+                    var curCourse = courseObjs[id].prefix + courseObjs[id].num;
+                    alert("This course is the corequisite of "+curCourse);
+                    return false;
+                }
+            }
+        }
+    }
     courseLi.parentElement.removeChild(courseLi);
 }
 
@@ -365,7 +399,7 @@ function submitCourse(form) {
     var acForm = document.getElementById("acForm");
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
-    
+
     var dataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
@@ -381,7 +415,7 @@ function submitCourse(form) {
     inp.setAttribute("value", json);
     acForm.appendChild(inp);
 
-    var dataArray=new Array;
+    var dataArray = new Array;
     for ( i = 0; i < alreadyTaken.length; i++) {
         var id = alreadyTaken[i].id;
         var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
@@ -395,7 +429,7 @@ function submitCourse(form) {
     inp.setAttribute("name", "alreadyTakenCourses");
     inp.setAttribute("value", json);
     acForm.appendChild(inp);
-    
+
     form.submit();
 }
 

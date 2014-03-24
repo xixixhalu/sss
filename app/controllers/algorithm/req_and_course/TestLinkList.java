@@ -140,6 +140,60 @@ public class TestLinkList {
 		return true; // this course exists and has not been chosen.
 	}
 	
+	
+	
+	public boolean checker(){
+		for(ComplexReq complex: allComplexReq){
+			ComplexReq_Node simpleReq = complex.first.next;
+			if(complex.first.relation.equals("or")){
+				boolean ifBreakInOr = false;
+				while(simpleReq !=null){
+					int remainCourseInSimple=0;
+					Node course = simpleReq.SimpleReq.first.next;
+					while(course!=null && course.chosen==false){
+						remainCourseInSimple++;
+						course = course.next;
+					}
+					if(simpleReq.SimpleReq.first.needFinish<=remainCourseInSimple){
+						ifBreakInOr = true;
+						break;
+					}else{
+						simpleReq = simpleReq.next;
+					}
+				}
+				
+				if(ifBreakInOr==true){
+					continue;
+				}else{
+					return false;
+				}
+			}else if(complex.first.relation.equals("and")){ // complex has and relation
+				boolean ifBreakInAnd = false;
+				while(simpleReq!=null){
+					int remainCourseInSimple=0;
+					Node course = simpleReq.SimpleReq.first.next;
+					while(course!=null & course.chosen==false){
+						remainCourseInSimple++;
+						course = course.next;
+					}
+					
+					if(simpleReq.SimpleReq.first.needFinish<=remainCourseInSimple){
+						simpleReq = simpleReq.next;
+					}else{
+						ifBreakInAnd=true;
+						break;
+					}
+				}
+				
+				if(ifBreakInAnd==true){
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 
 	public void CheckAllSimpleAndComplex(){  //check all simple and complex satisfaction
 		//int flag1=0;
