@@ -2,8 +2,7 @@ package controllers.algorithm.req_and_course;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
 
 public class TestLinkList {
 
