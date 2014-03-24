@@ -1,12 +1,10 @@
-package controllers;
+package models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import models.Cg;
@@ -18,7 +16,6 @@ import models.Sr;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import play.mvc.Controller;
 import controllers.algorithm.pre_and_core.ArcBox;
 import controllers.algorithm.pre_and_core.Cal_Depth;
 import controllers.algorithm.pre_and_core.CrossLinkedList;
@@ -32,13 +29,14 @@ import controllers.algorithm.req_and_course.Node;
 import controllers.algorithm.req_and_course.TestLinkList;
 
 
-public class StudyPlanController extends Controller {
+public class StudyPlan{
 	
-	public static int redNode = 0;
-	public static TestLinkList degreeProgram;
+	public int redNode = 0;
+	public TestLinkList degreeProgram;
+	CrossLinkedList allCross_relation;
 	
 	
-	public static void GetCourseMaxDepthInGraph(Cal_Depth calSemester, CrossLinkedList allCross_relation){
+	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester){
 		calSemester.allCross_relation_example = allCross_relation;
 		calSemester.BFS_Max();
 		//calSemester.BFS_Min();
@@ -48,12 +46,12 @@ public class StudyPlanController extends Controller {
 	}
 	
 	
-	public static void CreateDegreeProgram(Integer id){
+	public void CreateDegreeProgram(Integer id){
 		//boolean chooeseSuccess =false;//是否选课成功
 		Degree degree = Degree.findById(id);
 		degreeProgram = new TestLinkList(degree.getTitle());	//add new degree
 		List<String> complexIds = degree.getReq_ids();						//get Requirement ids
-		CrossLinkedList allCross_relation = new CrossLinkedList();
+		allCross_relation = new CrossLinkedList();
 		for(String complexId : complexIds)
 		{ 
 			try{
@@ -71,13 +69,13 @@ public class StudyPlanController extends Controller {
 					Sr sr = Sr.findById(new Integer(srId));
 					int cgId = Integer.valueOf(sr.getCg_id());
 					int reqNum = Integer.valueOf(sr.getRequired_num());
-					Linklist simpleReq = find_or_create_simpleReq(degreeProgram,srId, sr.getTitle(), reqNum); //initiate simple requirement
+					Linklist simpleReq = find_or_create_simpleReq(srId, sr.getTitle(), reqNum); //initiate simple requirement
 					Cg cg = Cg.findById(new Integer(cgId));
 					List<String> courseIds = cg.getCourse_ids();
 					for(String courseId : courseIds)
 					{
-						addCourse(degreeProgram, simpleReq, Integer.valueOf(courseId), allCross_relation);	//add course
-						add2Course_List2(degreeProgram, complexReq,simpleReq, Integer.valueOf(courseId));
+						addCourse(simpleReq, Integer.valueOf(courseId));	//add course
+						add2Course_List2(complexReq,simpleReq, Integer.valueOf(courseId));
 					}
 					
 					complexReq.insertSimple(simpleReq);
@@ -92,94 +90,7 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
-		createCrossLinkedList(allCross_relation, degreeProgram.course);
-//		degreeProgram.displayAllCourse();
-//		allCross_relation.Display_All_Headnode();
-
-
-//		degreeProgram.displayallComplexReq();
-//		degreeProgram.displayCourseList();
-//		degreeProgram.displayAllCourse();
-
-
-//		TestLinkList degreeProgram  =new TestLinkList("degreeName1"); //need degreeName input
-//		ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or"); 
-//		
-//		
-//		Linklist simpleReq1 = new Linklist(1,"simpleReq1",15);
-//		
-//		//req1 -> course1->course2
-//		addCourse(degreeProgram, simpleReq1, 100);
-//		
-//        //req1 -> course1->course2
-//		addCourse(degreeProgram, simpleReq1, 200);
-//		addCourse(degreeProgram, simpleReq1, 300);
-//		addCourse(degreeProgram, simpleReq1, 400);
-//		addCourse(degreeProgram, simpleReq1, 500);
-//		addCourse(degreeProgram, simpleReq1, 600);
-//		
-//		complexReq1.insertSimple(simpleReq1);
-//		degreeProgram.addComplexReq(complexReq1);
-//		degreeProgram.course_list.add(simpleReq1);
-//		
-//		degreeProgram.displayallComplexReq();
-//		
-//		//course1 -> req1 ->re2
-//		add2Course_List2(degreeProgram, simpleReq1,100);
-//		add2Course_List2(degreeProgram, simpleReq1,200);
-//		add2Course_List2(degreeProgram, simpleReq1,300);
-//		add2Course_List2(degreeProgram, simpleReq1,400);
-//		add2Course_List2(degreeProgram, simpleReq1,500);
-//		add2Course_List2(degreeProgram, simpleReq1,600);
-//		
-//		degreeProgram.displayCourseList();
-		
-		//mark student's  chosen course
-//		boolean  chooeseSuccess = degreeProgram.checkCourseIn_ReqList(10,108);
-//		if(chooeseSuccess){
-//			degreeProgram.displayallComplexReq();
-//			degreeProgram.displayCourseList();
-//		}
-		
-		//--------The first test case: one complex one simple
-		//74,84,85,86,87,88,89,90,92,93,94,95,96,97,98
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 74);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 84);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 85);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 86);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 87);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 88);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 89);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 90);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 92);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 93);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 94);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 95);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 96);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 97);
-//		CheckInSelectedCourse(degreeProgram, 17, 7, 98);
-		
-		//--------The second test case: one complex three simple or relation  correct
-//		CheckInSelectedCourse(degreeProgram, 20, 10, 106);
-//		CheckInSelectedCourse(degreeProgram, 20, 10, 107);
-//		CheckInSelectedCourse(degreeProgram, 20, 10, 108);
-//		
-		//--------The third test case: one complex three simple and relation
-		// 1 of 2 in simple, 2 of 2 simple
-//		CheckInSelectedCourse(degreeProgram, 22, 17, 189);
-//		CheckInSelectedCourse(degreeProgram, 22, 17, 133);
-		
-		
-//		CheckInSelectedCourse(degreeProgram, 22, 18, 190);
-//		CheckInSelectedCourse(degreeProgram, 22, 17, 189);
-//		CheckInSelectedCourse(degreeProgram, 22, 17, 133);
-//		CheckInSelectedCourse(degreeProgram, 22, 16, 120);
-//		CheckInSelectedCourse(degreeProgram, 22, 16, 118);
-		
-//		CheckInSelectedCourse(degreeProgram, 23, 19, 164);
-//		CheckInSelectedCourse(degreeProgram, 23, 19, 102);
-		
-		
+		allCross_relation.removeAloneNode();
 		
 		degreeProgram.CheckAllSimpleAndComplex();
 		
@@ -189,21 +100,19 @@ public class StudyPlanController extends Controller {
 		//System.out.print("\n");
 		Cal_Depth calSemester = new Cal_Depth();
 		calSemester.allCross_relation_example = allCross_relation;
-		AutoFillCourseBin(calSemester, degreeProgram, allCross_relation);
+		//AutoFillCourseBin(calSemester);//********************************
 		//System.out.print("After AutoFill: \n");
-		degreeProgram.displayallComplexReq();
+		//degreeProgram.displayallComplexReq();
 		//degreeProgram.displayCourseList();
 		
-
-//		allCross_relation.Display_All_Headnode();
-//		allCross_relation.displayCrossLinkedList();
+		//allCross_relation.Display_All_Headnode();
+		//allCross_relation.displayCrossLinkedList();
 		
 		play.Logger.info("================================================");
 	}
 	
 	
-	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID
-			, CrossLinkedList allCross_relation){
+	public void addCourse(Linklist simpleReq1, int courseID){
 		//System.out.println(ifCourseExist);
 
 			//System.out.println("OK");
@@ -220,20 +129,13 @@ public class StudyPlanController extends Controller {
 			
 			simpleReq1.insertNode(newNode);
 			
-			
-		return;
-	}
-	
-	public static void createCrossLinkedList(CrossLinkedList allCross_relation, HashMap<Integer, ArrayList<Node>> course_list) {
-		/**
-		 * @author tongrui
-		 * function: construct the crosslist
-		 */
-		allCross_relation.addAllCourseInGraph(course_list);
-		
-		for (Entry<Integer, ArrayList<Node>> entry : course_list.entrySet()) {
-			int courseID = entry.getKey();
-			Course course = Course.findById(entry.getKey());
+			/**
+			 * @author tongrui
+			 * function: construct the crosslist
+			 */
+
+			allCross_relation.addCourse(Integer.valueOf(courseID));
+			Course course = Course.findById(courseID);
 			
 			String prereq = course.getPrereq(2);
 			String coreq = course.getCoreq(2);
@@ -273,7 +175,6 @@ public class StudyPlanController extends Controller {
 						
 						if (prelist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (prelist[5].equals(",")) {
 							allCross_relation.setArcBox(redNode, courseID, 3);
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
@@ -315,7 +216,6 @@ public class StudyPlanController extends Controller {
 						
 						if (colist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (colist[5].equals(",")) {
 							allCross_relation.setArcBox(redNode, courseID, 3);
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
@@ -323,14 +223,11 @@ public class StudyPlanController extends Controller {
 					}
 				}
 			}
-		}
-		
-		allCross_relation.displayCrossLinkedList();
-		allCross_relation.removeAloneNode();
+		return;
 	}
 	
 	
-	public static void add2Course_List2(TestLinkList degreeProgram, ComplexReq complexReq, Linklist simpleReq1, int courseID){
+	public void add2Course_List2(ComplexReq complexReq, Linklist simpleReq1, int courseID){
 		boolean ifCourseExist = degreeProgram.prepareInsertCourseLinkList(courseID);
 		if(ifCourseExist){
 			int simpleReqName = simpleReq1.first.cName;
@@ -353,7 +250,7 @@ public class StudyPlanController extends Controller {
 	
 	}
 	
-	public static Linklist find_or_create_simpleReq(TestLinkList degreeProgram, int srId, String srTitle, int reqNum){
+	public Linklist find_or_create_simpleReq(int srId, String srTitle, int reqNum){
 		boolean simpleReqExist = degreeProgram.prepareInsertSimple(srId);
 			if(simpleReqExist){
 				int i=0;
@@ -368,8 +265,7 @@ public class StudyPlanController extends Controller {
 			}
 	}
 	
-	public static void CheckInSelectedCourse(TestLinkList degreeProgram,int complexID, int simpleID, int courseID,
-			CrossLinkedList allCross_relation){
+	public void CheckInSelectedCourse(int complexID, int simpleID, int courseID){
 		for(int i =0;i<degreeProgram.allComplexReq.size();i++){
 			if(degreeProgram.allComplexReq.get(i).first.ComplexReq_Id == complexID){
 				ComplexReq  complexReq = degreeProgram.allComplexReq.get(i);
@@ -393,9 +289,9 @@ public class StudyPlanController extends Controller {
 	
 	
 	
-	public static void AutoFillCourseBin(Cal_Depth calSemester, TestLinkList degreeProgram, CrossLinkedList allCross_relation){  //change the arguments and recursively call this function 
+	public void AutoFillCourseBin(Cal_Depth calSemester){  //change the arguments and recursively call this function 
 		ArrayList<Integer> courseBinResult = new ArrayList<Integer>();
-		GetCourseMaxDepthInGraph(calSemester, allCross_relation); //mark the min and max in nodeInGraph
+		GetCourseMaxDepthInGraph(calSemester); //mark the min and max in nodeInGraph
 		for (int i = 0; i < calSemester.allCross_relation_example.headNodeList.size(); i++) { //in node graph find all value
 			NodeInGraph courseInGraph = calSemester.allCross_relation_example.headNodeList.get(i);
 			for(Integer key: degreeProgram.course.keySet()){
@@ -427,30 +323,24 @@ public class StudyPlanController extends Controller {
 					}else{
 						//add a function to sort as semester as ascending
 						Node course = simpleReq.SimpleReq.first.next;//each course in simple requirement
-						//HashMap<Integer, Node> courseHash = new HashMap<Integer, Node>();
-						HashMap<Integer, ArrayList<Node>> courseHash = new HashMap<Integer, ArrayList<Node>>();
-						
+						HashMap<Integer, Node> courseHash = new HashMap<Integer, Node>();
 						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();// each simple requirement has a sortedset stores courses' maxDepth
-						
 						while(course !=null){
-							if (!courseHash.containsKey(course.maxDepth)){
-								courseOrderByMaxDepth.add(course.maxDepth);
-								ArrayList<Node> alist = new ArrayList<Node>();
-								alist.add(course);
-								courseHash.put(course.maxDepth, alist);
-							} else {
-								ArrayList<Node> alist = courseHash.get(course.maxDepth);
-								alist.add(course);
-								courseHash.put(course.maxDepth, alist);
-							}
+							courseHash.put(course.maxDepth, course);
+							courseOrderByMaxDepth.add(course.maxDepth);
+							course = course.next;//In this simple requirement, put the maxDepth into set and sort
 							
-							course = course.next;
 						}
+						
+//						Iterator<Integer> it = courseOrderByMaxDepth.iterator();
 						int maxMaxDepth = courseOrderByMaxDepth.last();
+//						while(it.hasNext()){
+//							maxMaxDepth = it.next();  //find the latest course
+//						}
 						
 						if(maxMaxDepth==0){
 							// all course in this simple requirement has no pre and core relation 
-							FillNonePreCoreReq(degreeProgram, complexReq, simpleReq.SimpleReq, courseBinResult);
+							FillNonePreCoreReq(complexReq, simpleReq.SimpleReq, courseBinResult);
 							
 						}else{
 							//the course in this simple requirement has pre and core relation 
@@ -458,41 +348,7 @@ public class StudyPlanController extends Controller {
 							//simpleReq.SimpleReq.satisfied=true;
 							//simpleReq.SimpleReq.first.statisfied=true;
 							//simpleReq.SimpleReq.first.needFinish--;
-							for(Entry<Integer, ArrayList<Node>> entry:courseHash.entrySet()){
-								int key = entry.getKey();
-								ArrayList<Node> courseNodeList= entry.getValue();
-								System.out.print("The maxDepth is "+ key +" include these courses: \n");
-								for(Node courseNode: courseNodeList){
-									
-									System.out.print("Output course: "+courseNode.cName+" ");
-									ArrayList<Integer> courseList = new ArrayList<Integer> (); // store its pre an core
-									backtrackCourse(allCross_relation, courseNode.cName, courseList);
-									RemoveTheLastCourseItSelf(courseList);
-									RemoveTheRedInRelatedCourseList(courseList);
-									for(Integer needToBeSelectedCourse : courseList){
-										if(degreeProgram.course.containsKey(needToBeSelectedCourse)){
-											for(Linklist assignSimple : degreeProgram.course_list){
-												if(degreeProgram.checkCourseIn_ReqList(assignSimple.first.cName, courseNode.cName)){
-													degreeProgram.CheckAllSimpleAndComplex();
-													break;
-												}
-											}
-											courseBinResult.add(needToBeSelectedCourse);
-											degreeProgram.CheckAllSimpleAndComplex();
-										}else{
-											courseBinResult.add(needToBeSelectedCourse); // cs 135 is not in degree program , requirement
-										}
-										
-										
-									}
-									
-									courseBinResult.add(courseNode.cName);
-									
-								}
-								System.out.print("\n ======================= \n");
-							}
-							
-							System.out.print("\n");
+//							Iterator<Integer> it = courseOrderByMaxDepth.iterator();
 //							while(it.hasNext()){
 //								Node checkCourse = courseHash.get(it.next());
 //								ArrayList<Integer> courseList = new ArrayList<Integer> ();
@@ -521,9 +377,11 @@ public class StudyPlanController extends Controller {
 //									
 //								}
 //								
-//					
 //								
-//								it.next();  //find the latest course
+//								
+//								
+//								
+//								maxMaxDepth = it.next();  //find the latest course
 //							}
 							
 							
@@ -546,7 +404,7 @@ public class StudyPlanController extends Controller {
 	}
 	
 	
-	public static void FillNonePreCoreReq(TestLinkList degreeProgram, ComplexReq complexReq, Linklist simpleReq, ArrayList<Integer> courseBinResult){
+	public void FillNonePreCoreReq(ComplexReq complexReq, Linklist simpleReq, ArrayList<Integer> courseBinResult){
 		Node course=null;
 		Linklist tempSimple = null;
 		ComplexReq tempComplex=null;
@@ -592,32 +450,28 @@ public class StudyPlanController extends Controller {
 	}
 	
 	
-	public static void ShowRelatedCourse(ArrayList<Integer> pre_and_core){
+	public void ShowRelatedCourse(ArrayList<Integer> pre_and_core){
 		for(int i=0; i< pre_and_core.size();i++){
 			
 			System.out.print( pre_and_core.get(i)+"\n");
 		}
 	}
 	
-	public static ArrayList<Integer>  RemoveTheLastCourseItSelf(ArrayList<Integer> courseList){
+	public ArrayList<Integer>  RemoveTheLastCourseItSelf(ArrayList<Integer> courseList){
 		
-//		Iterator<Integer> itDelete = courseList.iterator();
-//		
-//		while(itDelete.hasNext()){
-//			if(itDelete.next()==null)
-//				itDelete.remove();
-//			itDelete.next();
-//		}
-		if(courseList.size()==0){
-			
-		}else{
-			courseList.remove(courseList.size()-1);
+		Iterator<Integer> itDelete = courseList.iterator();
+		while(itDelete.hasNext()){
+			if(itDelete.next()==null)
+				itDelete.remove();
+			itDelete.next();
 		}
+		
+		
 		
 		return courseList;
 	}
 	
-	public static ArrayList<Integer> RemoveTheRedInRelatedCourseList(ArrayList<Integer> pre_and_core){
+	public ArrayList<Integer> RemoveTheRedInRelatedCourseList(ArrayList<Integer> pre_and_core){
 		for(int i=0; i< pre_and_core.size();i++){
 			if(pre_and_core.get(i)<0){
 				pre_and_core.remove(i);
@@ -626,15 +480,13 @@ public class StudyPlanController extends Controller {
 		
 		return pre_and_core;
 	}
-	public static void backtrackCourse(CrossLinkedList courseRelation,
-			int courseID, ArrayList<Integer> courseList) { // given course name
-		CrossLinkedList cr = courseRelation;
-		int size = cr.headNodeList.size();
+	public void backtrackCourse(int courseID, ArrayList<Integer> courseList) { // given course name
+		int size = allCross_relation.headNodeList.size();
 		ArcBox tempArc = new ArcBox();
 		NodeInGraph tempNode = new NodeInGraph();
 		// int i = 0, j = 0; // 计数器
 		for (int i = 0; i < size; i++) {
-			tempNode = cr.headNodeList.get(i); // 找到这个将要被选的课程，开始回溯
+			tempNode = allCross_relation.headNodeList.get(i); // 找到这个将要被选的课程，开始回溯
 			if (tempNode.courseID==courseID) {// 找到了这个课名的headnode
 																	// 开始遍历链表
 				tempArc = tempNode.firstIn;
@@ -644,20 +496,18 @@ public class StudyPlanController extends Controller {
 					if (relation_type == 3) {
 						for (int j = 0; j < size; j++) { // 这个for
 							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
-							NodeInGraph tempNode2 = cr.headNodeList.get(j);
+							NodeInGraph tempNode2 = allCross_relation.headNodeList.get(j);
 							if (tempNode2.courseID==tempTailCourseID) { // for
 																				// loop只需要做if判断为正的时候的事情
 								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
 									break;
 								} else if (tempNode2.finished == false
 										&& tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
-									backtrackCourse(courseRelation,
-											tempNode2.courseID, courseList);
+									backtrackCourse(tempNode2.courseID, courseList);
 								} else { // tempNode2.finished == false &&
 											// tempNode2.visited == true
 									tempNode2.visited = true; // 先把这个节点标记为mark过
-									backtrackCourse(courseRelation,
-											tempNode2.courseID, courseList);
+									backtrackCourse(tempNode2.courseID, courseList);
 								}
 							}
 
@@ -666,20 +516,18 @@ public class StudyPlanController extends Controller {
 					} else {
 						for (int j = 0; j < size; j++) { // 这个for
 							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
-							NodeInGraph tempNode2 = cr.headNodeList.get(j);
+							NodeInGraph tempNode2 = allCross_relation.headNodeList.get(j);
 							if (tempNode2.courseID==tempTailCourseID) { // for
 																				// loop只需要做if判断为正的时候的事情
 								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
 									break;
 								} else if (tempNode2.finished == false
 										&& tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
-									backtrackCourse(courseRelation,
-											tempNode2.courseID, courseList);
+									backtrackCourse(tempNode2.courseID, courseList);
 								} else { // tempNode2.finished == false &&
 											// tempNode2.visited == true
 									tempNode2.visited = true; // 先把这个节点标记为mark过
-									backtrackCourse(courseRelation,
-											tempNode2.courseID, courseList);
+									backtrackCourse(tempNode2.courseID, courseList);
 
 								}
 							}

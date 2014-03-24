@@ -1,4 +1,4 @@
-@(jsonData : String)
+@(jsonData : String, want : String, already : String)
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
 "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -56,10 +56,10 @@
         <div class="step">
             <ul>
                 <li>
-                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                    <a href="course">STEP 1 : Choosing Courses</a>
                 </li>
                 <li class="active">
-                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                    STEP 2 : Scheduling Courses
                 </li>
                 <li>
                     <a>STEP 3 : Getting Study Plan</a>
@@ -75,24 +75,11 @@
                 <div class="left_list">
                     <span>Want to take: </span>
                     <ul id="wantTake">
-
-                        <li id="1">
-                            CS 577a - Software Engineering A<a>&oplus;</a>
-                        </li>
-                        <li id="2">
-                            CS 577b - Software Engineering B<a>&oplus;</a>
-                        </li>
                     </ul>
                 </div>
                 <div class="left_list">
                     <span>Already taken: </span>
                     <ul id="alreadyTaken">
-                        <li id="3">
-                            CS 510 - Software Management and Economics<a>&oplus;</a>
-                        </li>
-                        <li id="4">
-                            CS 572 - Web Search Engine and Information Retrival<a>&oplus;</a>
-                        </li>
                     </ul>
                 </div>
                 <div>
@@ -107,30 +94,30 @@
                         </div>
                     </li>
                     <!-- <li>
-                        <div class="right_list">
-                            <div class="sem_title">
-                                Fall 2013<a>&oplus;</a>
-                            </div>
-                            <div style="display: none;">
-                                <ul class="req_course_list">
-                                    <li>
-                                        CS 510 - Software Management and Economics<a>&otimes;</a>
-                                    </li>
-                                    <li>
-                                        CS 510 - Software Management and Economics<a>&otimes;</a>
-                                    </li>
-                                </ul>
-                                <div class="credits">
-                                    <span>Total Credits:</span>
-                                    <input type="text"/>
-                                    <span>Minimun Credits:</span>
-                                    <input type="text"/>
-                                    <span>Maximun Credits:</span>
-                                    <input type="text"/>
-                                    <a class="auto button">AUTO</a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="right_list">
+                    <div class="sem_title">
+                    Fall 2013<a>&oplus;</a>
+                    </div>
+                    <div style="display: none;">
+                    <ul class="req_course_list">
+                    <li>
+                    CS 510 - Software Management and Economics<a>&otimes;</a>
+                    </li>
+                    <li>
+                    CS 510 - Software Management and Economics<a>&otimes;</a>
+                    </li>
+                    </ul>
+                    <div class="credits">
+                    <span>Total Credits:</span>
+                    <input type="text"/>
+                    <span>Minimun Credits:</span>
+                    <input type="text"/>
+                    <span>Maximun Credits:</span>
+                    <input type="text"/>
+                    <a class="auto button">AUTO</a>
+                    </div>
+                    </div>
+                    </div>
                     </li> -->
 
                 </ul>
@@ -141,6 +128,15 @@
             <span>Student Scheduling System for Stevens Institute of Technology</span>
             <br>
             <span>Copy right: Team #10</span>
+        </div>
+        <div id="jsonData" style="display: none;">
+            @jsonData
+        </div>
+        <div id="want" style="display: none;">
+            @want
+        </div>
+        <div id="already" style="display: none;">
+            @already
         </div>
     </body>
 </html>

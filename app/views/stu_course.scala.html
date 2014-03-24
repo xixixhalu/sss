@@ -36,10 +36,10 @@
         <div class="step">
             <ul>
                 <li class="active">
-                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                    STEP 1 : Choosing Courses
                 </li>
                 <li>
-                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                    <a href="semester">STEP 2 : Scheduling Courses</a>
                 </li>
                 <li>
                     <a>STEP 3 : Getting Study Plan</a>
@@ -65,9 +65,10 @@
                 	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
                 		<input type="hidden" value="" name="">
                 		
-                    	<a class="button left_auto">AUTO</a>
+                    	<a class="button left_auto" href="javascript:{}"
+                    		onclick="autoCourse()">AUTO</a>
                     	<a class="button left_next" href="javascript:{}"
-                    	   onclick='submit(this.parentElement)'>NEXT</a>
+                    	   onclick='submitCourse(this.parentElement)'>NEXT</a>
                 	</form>
                 </div>
             </div>
@@ -112,7 +113,7 @@
                                     //cont += Html("</li>");
                                 cont += Html("</ul>");
                                 }
-                                cont += Html("<a class=\"auto button\">AUTO</a>");
+                                //cont += Html("<a class=\"auto button\">AUTO</a>");
                             cont += Html("</div>");
                         cont += Html("</div>");
                     cont += Html("</li>");
@@ -160,7 +161,7 @@
             <br>
             <span>Copy right: Team #10</span>
         </div>
-        <div id="jsonData">@jsonData</div>
+        <div id="jsonData" style="display: none;">@jsonData</div>
     </body>
 </html>
 

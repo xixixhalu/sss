@@ -24,33 +24,33 @@ function dropDown(id) {
 }
 
 //adding course to want-to-take list
-function addLikeCourse(id,curNode) {
+function addLikeCourse(id, curNode) {
     if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("wantTake");
-    wantTake.appendChild(generateLi(id,curNode));
+    wantTake.appendChild(generateLi(id, curNode));
 }
 
 //adding course to already-taken list
-function addTakenCourse(id,curNode) {
+function addTakenCourse(id, curNode) {
     if (!checkConstraints(id)) {
         return null;
     }
     var wantTake = document.getElementById("alreadyTaken");
-    wantTake.appendChild(generateLi(id,curNode));
+    wantTake.appendChild(generateLi(id, curNode));
 }
 
-function generateLi(id,curNode) {
+function generateLi(id, curNode) {
     var courseLi = document.createElement("li");
     courseLi.id = id;
     courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title;
-    var simpleReqId=curNode.parentElement.parentElement.id;
-    var complexReqId=curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
-    simpleReqId=simpleReqId.substring(3);
-    complexReqId=complexReqId.substring(4);
-    courseLi.innerHTML+="<input type='hidden' value='"+simpleReqId+"' name='simpleReqId'>";
-    courseLi.innerHTML+="<input type='hidden' value='"+complexReqId+"' name='complexReqId'>";
+    var simpleReqId = curNode.parentElement.parentElement.id;
+    var complexReqId = curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    simpleReqId = simpleReqId.substring(3);
+    complexReqId = complexReqId.substring(4);
+    courseLi.innerHTML += "<input type='hidden' value='" + simpleReqId + "' name='simpleReqId'>";
+    courseLi.innerHTML += "<input type='hidden' value='" + complexReqId + "' name='complexReqId'>";
     courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
     return courseLi;
 }
@@ -116,8 +116,42 @@ function checkCourseExist(id) {
 }
 
 //remove course from course bin
-function removeCourse(id) {
-    var courseLi = document.getElementById(id);
+function removeCourse(curId) {
+    //获取需要删除的节点
+    var courseLi = document.getElementById(curId);
+    //获取course bin中的所有课
+    var allCourses = getLikeCourses().concat(getTakenCourses());
+    //循环course bin中的所有课，
+    for ( i = 0; i < allCourses.length; i++) {
+        var id = allCourses[i];
+        var prereq = new Array;
+        var coreq = new Array;
+        //查看这门课是否有先行课
+        if (courseObjs[id].prereq) {
+            //如果有取出这门课的所有先行课，判断它的先行课中是否有需要删除的课
+            prereq = courseObjs[id].prereq;
+            for ( j = 0; j < prereq.length; j++) {
+                if (prereq[j].id == curId) {
+                    //如果有，提示用户不能删除
+                    var curCourse = courseObjs[id].prefix + courseObjs[id].num;
+                    alert("This course is the prerequisite of "+curCourse);
+                    return false;
+                }
+            }
+        }
+        //查看并行课
+        if (courseObjs[id].coreq) {
+            coreq = courseObjs[id].coreq;
+            for ( j = 0; j < coreq.length; j++) {
+                if (coreq[j].id == curId) {
+                    //如果有，提示用户不能删除
+                    var curCourse = courseObjs[id].prefix + courseObjs[id].num;
+                    alert("This course is the corequisite of "+curCourse);
+                    return false;
+                }
+            }
+        }
+    }
     courseLi.parentElement.removeChild(courseLi);
 }
 
@@ -353,31 +387,94 @@ function checkCoreq(id) {
         return false;
     }
 }
-function wantTakeCourse(id,sid,cid){
-	this.id=id;
-	this.sid=sid;
-	this.cid=cid;
-}
-function submit(form)
-{
-	/* create hidden field of selected courses */
-	var acForm = document.getElementById("acForm");
-	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
 
-	var dataArray=new Array;
-	for (i = 0; i < wantTake.length; i++) {
-		var id = wantTake[i].id;
-		var sid = wantTake[i].getElementsByTagName("input")[0].value;
-		var cid = wantTake[i].getElementsByTagName("input")[1].value;
-		dataArray.push(new wantTakeCourse(id,sid,cid));
-	}
-	var json=JSON.stringify(dataArray);
-	
-	var inp = document.createElement("input");
-	inp.setAttribute("type", "hidden");
-	inp.setAttribute("name", "wantTakeCourses");
-	inp.setAttribute("value", json);
-	acForm.appendChild(inp);
-	
-	form.submit();
+function wantTakeCourse(id, sid, cid) {
+    this.id = id;
+    this.sid = sid;
+    this.cid = cid;
 }
+
+function submitCourse(form) {
+    /* create hidden field of selected courses */
+    var acForm = document.getElementById("acForm");
+    var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+    var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
+
+    var dataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        dataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    var json = JSON.stringify(dataArray);
+
+    var inp = document.createElement("input");
+    inp.setAttribute("type", "hidden");
+    inp.setAttribute("name", "wantTakeCourses");
+    inp.setAttribute("value", json);
+    acForm.appendChild(inp);
+
+    var dataArray = new Array;
+    for ( i = 0; i < alreadyTaken.length; i++) {
+        var id = alreadyTaken[i].id;
+        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        dataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    var json = JSON.stringify(dataArray);
+
+    var inp = document.createElement("input");
+    inp.setAttribute("type", "hidden");
+    inp.setAttribute("name", "alreadyTakenCourses");
+    inp.setAttribute("value", json);
+    acForm.appendChild(inp);
+
+    form.submit();
+}
+
+function autoCourse() {
+	
+	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+    var wantDataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    
+    var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
+    var alreadyDataArray=new Array;
+    for ( i = 0; i < alreadyTaken.length; i++) {
+        var id = alreadyTaken[i].id;
+        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) 
+    	+ ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) +'})');
+
+	/* null manipulation */
+    if (true) {
+        var url = "/student/autoFill";
+        $.post(url, 
+        	{
+        		wantTakeCourses: JSON.stringify(wantDataArray),
+        		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
+        	}, function(data) {
+            // var coursesObj = eval("(" + data + ")");
+            // var courses = coursesObj.courses;
+            // for ( i = 0; i < courses.length; i++) {
+                // var li = document.createElement("li");
+                // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
+                // ul.appendChild(li);
+            // }
+        });
+    }
+}
+
+
+

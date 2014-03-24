@@ -67,18 +67,19 @@ public class CrossLinkedList {
 				this.headNodeList.get(i).firstIn = arc;
 			}
 		}
-		
+
+		System.out.println("this arc is: " + tail + "-->" + head + " " + info);
 	}
 	
 	public void addAllCourseInGraph(HashMap<Integer, ArrayList<Node>> list){
-		
-		for(Entry<Integer, ArrayList<Node>> entry:list.entrySet()){
-			int courseId = entry.getKey();
-			addCourse(courseId);
+			
+			for(Entry<Integer, ArrayList<Node>> entry:list.entrySet()){
+				int courseId = entry.getKey();
+				addCourse(courseId);
+			}
+			
 		}
-		
-	}
-	
+
 	
 	public void removeAloneNode(){
 		
