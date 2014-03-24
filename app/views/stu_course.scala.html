@@ -65,7 +65,8 @@
                 	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
                 		<input type="hidden" value="" name="">
                 		
-                    	<a class="button left_auto">AUTO</a>
+                    	<a class="button left_auto" href="javascript:{}"
+                    	   onclick="autoCourse()">AUTO</a>
                     	<a class="button left_next" href="javascript:{}"
                     	   onclick='submitCourse(this.parentElement)'>NEXT</a>
                 	</form>
@@ -112,7 +113,7 @@
                                     //cont += Html("</li>");
                                 cont += Html("</ul>");
                                 }
-                                cont += Html("<a class=\"auto button\">AUTO</a>");
+                                //cont += Html("<a class=\"auto button\">AUTO</a>");
                             cont += Html("</div>");
                         cont += Html("</div>");
                     cont += Html("</li>");
