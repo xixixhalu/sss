@@ -432,3 +432,45 @@ function submitCourse(form) {
 
     form.submit();
 }
+
+function autoCourse() {
+	
+	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+    var wantDataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    
+    var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
+    var alreadyDataArray=new Array;
+    for ( i = 0; i < alreadyTaken.length; i++) {
+        var id = alreadyTaken[i].id;
+        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    var json = eval('({' + wantDataArray + ', ' + alreadyDataArray +'})');
+
+	/* null manipulation */
+    if (true) {
+        var url = "/student/autofill/";
+        $.post(url, json, function(data) {
+        	alert(1);
+            // var coursesObj = eval("(" + data + ")");
+            // var courses = coursesObj.courses;
+            // for ( i = 0; i < courses.length; i++) {
+                // var li = document.createElement("li");
+                // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
+                // ul.appendChild(li);
+            // }
+        });
+    }
+}
+
+
+
