@@ -22,6 +22,7 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result retrieveDegrees() {
 		try{
+			StudyPlanController.CreateDegreeProgram(new Integer(5));
 			return ok(views.html.index.render(Degree.getAll()));
 		}catch(Exception e)
     	{

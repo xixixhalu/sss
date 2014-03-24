@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -90,6 +91,9 @@ public class StudyPlanController extends Controller {
 			}	
 		}
 		
+		createCrossLinkedList(allCross_relation, degreeProgram.course);
+//		degreeProgram.displayAllCourse();
+//		allCross_relation.Display_All_Headnode();
 
 
 //		degreeProgram.displayallComplexReq();
@@ -175,7 +179,6 @@ public class StudyPlanController extends Controller {
 //		CheckInSelectedCourse(degreeProgram, 23, 19, 102);
 		
 		
-		allCross_relation.removeAloneNode();
 		
 		degreeProgram.CheckAllSimpleAndComplex();
 		
@@ -190,8 +193,8 @@ public class StudyPlanController extends Controller {
 		//degreeProgram.displayallComplexReq();
 		//degreeProgram.displayCourseList();
 		
-		//allCross_relation.Display_All_Headnode();
-		//allCross_relation.displayCrossLinkedList();
+//		allCross_relation.Display_All_Headnode();
+//		allCross_relation.displayCrossLinkedList();
 		
 		play.Logger.info("================================================");
 	}
@@ -215,13 +218,20 @@ public class StudyPlanController extends Controller {
 			
 			simpleReq1.insertNode(newNode);
 			
-			/**
-			 * @author tongrui
-			 * function: construct the crosslist
-			 */
-
-			allCross_relation.addCourse(Integer.valueOf(courseID));
-			Course course = Course.findById(courseID);
+			
+		return;
+	}
+	
+	public static void createCrossLinkedList(CrossLinkedList allCross_relation, HashMap<Integer, ArrayList<Node>> course_list) {
+		/**
+		 * @author tongrui
+		 * function: construct the crosslist
+		 */
+		allCross_relation.addAllCourseInGraph(course_list);
+		
+		for (Entry<Integer, ArrayList<Node>> entry : course_list.entrySet()) {
+			int courseID = entry.getKey();
+			Course course = Course.findById(entry.getKey());
 			
 			String prereq = course.getPrereq(2);
 			String coreq = course.getCoreq(2);
@@ -261,6 +271,7 @@ public class StudyPlanController extends Controller {
 						
 						if (prelist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
+							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (prelist[5].equals(",")) {
 							allCross_relation.setArcBox(redNode, courseID, 3);
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
@@ -302,6 +313,7 @@ public class StudyPlanController extends Controller {
 						
 						if (colist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
+							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (colist[5].equals(",")) {
 							allCross_relation.setArcBox(redNode, courseID, 3);
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
@@ -309,7 +321,10 @@ public class StudyPlanController extends Controller {
 					}
 				}
 			}
-		return;
+		}
+		
+		allCross_relation.displayCrossLinkedList();
+		allCross_relation.removeAloneNode();
 	}
 	
 	
