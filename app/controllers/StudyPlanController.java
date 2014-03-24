@@ -238,7 +238,6 @@ public class StudyPlanController extends Controller {
 			String prereq = course.getPrereq(2);
 			String coreq = course.getCoreq(2);
 			
-		
 			
 			if (!prereq.trim().equals("-")) {
 				String[] prelist = prereq.split(" ");
@@ -273,9 +272,7 @@ public class StudyPlanController extends Controller {
 						
 						if (prelist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (prelist[5].equals(",")) {
-							allCross_relation.setArcBox(redNode, courseID, 3);
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
 						}
 					}
@@ -315,9 +312,7 @@ public class StudyPlanController extends Controller {
 						
 						if (colist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (colist[5].equals(",")) {
-							allCross_relation.setArcBox(redNode, courseID, 3);
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
 						}
 					}
