@@ -39,9 +39,9 @@ public class StudyPlanController2 extends Controller {
 			DegreeForm degreeForm = filledForm.get();
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
-			studyplan = new StudyPlan();
 			
 			//Initialize study plan graph.
+			studyplan = new StudyPlan();
 			studyplan.CreateDegreeProgram(Integer.valueOf(degreeId));
 			
 			//get all courses' JSON
@@ -59,6 +59,42 @@ public class StudyPlanController2 extends Controller {
 		{
 			return badRequest(views.html.error.render("Cannot retrieve course list"));
 		}
+	}
+	
+	public static Result autoFillCourse(String courseJson){
+		String want;
+		String already;
+		Logger.info(courseJson);
+		return ok();
+	/*	
+		try {
+			JSONArray wantCourses = new JSONArray(want);
+			JSONArray alreadyCourses = new JSONArray(already);
+			
+			for (int i = 0; i < wantCourses.length(); i++) {
+				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
+				int id = wantCourse.getInt("id");
+				int sid = wantCourse.getInt("sid");
+				int cid = wantCourse.getInt("cid");
+				studyplan.CheckInSelectedCourse(cid, sid, id);
+			}
+	
+			for (int i = 0; i < alreadyCourses.length(); i++) {
+				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
+				int id = alreadyCourse.getInt("id");
+				int sid = alreadyCourse.getInt("sid");
+				int cid = alreadyCourse.getInt("cid");
+				studyplan.CheckInSelectedCourse(cid, sid, id);
+			}
+			studyplan.degreeProgram.CheckAllSimpleAndComplex();
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return badRequest(views.html.error.render("Some data cannot be obtained"));
+		}
+		return ok();
+		*/
 	}
 	
 	public static Result assignSemester(){
@@ -81,7 +117,7 @@ public class StudyPlanController2 extends Controller {
 				int id = wantCourse.getInt("id");
 				int sid = wantCourse.getInt("sid");
 				int cid = wantCourse.getInt("cid");
-				session("jsonCourseData", wantTakeCourses);
+				//session("jsonCourseData", wantTakeCourses);
 				
 				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
 			}
