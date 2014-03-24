@@ -1,7 +1,11 @@
 package controllers.algorithm.pre_and_core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
+
+import controllers.algorithm.req_and_course.Node;
 
 public class CrossLinkedList {
 	// store all head nodes;
@@ -63,7 +67,18 @@ public class CrossLinkedList {
 				this.headNodeList.get(i).firstIn = arc;
 			}
 		}
+		
 	}
+	
+	public void addAllCourseInGraph(HashMap<Integer, ArrayList<Node>> list){
+		
+		for(Entry<Integer, ArrayList<Node>> entry:list.entrySet()){
+			int courseId = entry.getKey();
+			addCourse(courseId);
+		}
+		
+	}
+	
 	
 	public void removeAloneNode(){
 		

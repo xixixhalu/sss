@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import models.Cg;
@@ -187,11 +190,11 @@ public class StudyPlanController extends Controller {
 		calSemester.allCross_relation_example = allCross_relation;
 		AutoFillCourseBin(calSemester, degreeProgram, allCross_relation);
 		//System.out.print("After AutoFill: \n");
-		//degreeProgram.displayallComplexReq();
+		degreeProgram.displayallComplexReq();
 		//degreeProgram.displayCourseList();
 		
 		//allCross_relation.Display_All_Headnode();
-		//allCross_relation.displayCrossLinkedList();
+		allCross_relation.displayCrossLinkedList();
 		
 		play.Logger.info("================================================");
 
@@ -411,20 +414,26 @@ public class StudyPlanController extends Controller {
 					}else{
 						//add a function to sort as semester as ascending
 						Node course = simpleReq.SimpleReq.first.next;//each course in simple requirement
-						HashMap<Integer, Node> courseHash = new HashMap<Integer, Node>();
-						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();// each simple requirement has a sortedset stores courses' maxDepth
-						while(course !=null){
-							courseHash.put(course.maxDepth, course);
-							courseOrderByMaxDepth.add(course.maxDepth);
-							course = course.next;//In this simple requirement, put the maxDepth into set and sort
-							
-						}
+						//HashMap<Integer, Node> courseHash = new HashMap<Integer, Node>();
+						HashMap<Integer, ArrayList<Node>> courseHash = new HashMap<Integer, ArrayList<Node>>();
 						
-//						Iterator<Integer> it = courseOrderByMaxDepth.iterator();
+						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();// each simple requirement has a sortedset stores courses' maxDepth
+						
+						while(course !=null){
+							if (!courseHash.containsKey(course.maxDepth)){
+								courseOrderByMaxDepth.add(course.maxDepth);
+								ArrayList<Node> alist = new ArrayList<Node>();
+								alist.add(course);
+								courseHash.put(course.maxDepth, alist);
+							} else {
+								ArrayList<Node> alist = courseHash.get(course.maxDepth);
+								alist.add(course);
+								courseHash.put(course.maxDepth, alist);
+							}
+							
+							course = course.next;
+						}
 						int maxMaxDepth = courseOrderByMaxDepth.last();
-//						while(it.hasNext()){
-//							maxMaxDepth = it.next();  //find the latest course
-//						}
 						
 						if(maxMaxDepth==0){
 							// all course in this simple requirement has no pre and core relation 
@@ -436,7 +445,41 @@ public class StudyPlanController extends Controller {
 							//simpleReq.SimpleReq.satisfied=true;
 							//simpleReq.SimpleReq.first.statisfied=true;
 							//simpleReq.SimpleReq.first.needFinish--;
-//							Iterator<Integer> it = courseOrderByMaxDepth.iterator();
+							for(Entry<Integer, ArrayList<Node>> entry:courseHash.entrySet()){
+								int key = entry.getKey();
+								ArrayList<Node> courseNodeList= entry.getValue();
+								System.out.print("The maxDepth is "+ key +" include these courses: \n");
+								for(Node courseNode: courseNodeList){
+									
+									System.out.print("Output course: "+courseNode.cName+" ");
+									ArrayList<Integer> courseList = new ArrayList<Integer> (); // store its pre an core
+									backtrackCourse(allCross_relation, courseNode.cName, courseList);
+									RemoveTheLastCourseItSelf(courseList);
+									RemoveTheRedInRelatedCourseList(courseList);
+									for(Integer needToBeSelectedCourse : courseList){
+										if(degreeProgram.course.containsKey(needToBeSelectedCourse)){
+											for(Linklist assignSimple : degreeProgram.course_list){
+												if(degreeProgram.checkCourseIn_ReqList(assignSimple.first.cName, courseNode.cName)){
+													degreeProgram.CheckAllSimpleAndComplex();
+													break;
+												}
+											}
+											courseBinResult.add(needToBeSelectedCourse);
+											degreeProgram.CheckAllSimpleAndComplex();
+										}else{
+											courseBinResult.add(needToBeSelectedCourse); // cs 135 is not in degree program , requirement
+										}
+										
+										
+									}
+									
+									courseBinResult.add(courseNode.cName);
+									
+								}
+								System.out.print("\n ======================= \n");
+							}
+							
+							System.out.print("\n");
 //							while(it.hasNext()){
 //								Node checkCourse = courseHash.get(it.next());
 //								ArrayList<Integer> courseList = new ArrayList<Integer> ();
@@ -465,11 +508,9 @@ public class StudyPlanController extends Controller {
 //									
 //								}
 //								
+//					
 //								
-//								
-//								
-//								
-//								maxMaxDepth = it.next();  //find the latest course
+//								it.next();  //find the latest course
 //							}
 							
 							
@@ -547,14 +588,18 @@ public class StudyPlanController extends Controller {
 	
 	public static ArrayList<Integer>  RemoveTheLastCourseItSelf(ArrayList<Integer> courseList){
 		
-		Iterator<Integer> itDelete = courseList.iterator();
-		while(itDelete.hasNext()){
-			if(itDelete.next()==null)
-				itDelete.remove();
-			itDelete.next();
+//		Iterator<Integer> itDelete = courseList.iterator();
+//		
+//		while(itDelete.hasNext()){
+//			if(itDelete.next()==null)
+//				itDelete.remove();
+//			itDelete.next();
+//		}
+		if(courseList.size()==0){
+			
+		}else{
+			courseList.remove(courseList.size()-1);
 		}
-		
-		
 		
 		return courseList;
 	}
