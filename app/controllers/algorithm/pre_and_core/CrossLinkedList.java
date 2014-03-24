@@ -1,10 +1,11 @@
 package controllers.algorithm.pre_and_core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CrossLinkedList {
 	// store all head nodes;
-	public ArrayList<Node> headNodeList = new ArrayList<Node>();
+	public ArrayList<NodeInGraph> headNodeList = new ArrayList<NodeInGraph>();
 
 	// 默认的构造方法
 	public CrossLinkedList() {
@@ -12,7 +13,7 @@ public class CrossLinkedList {
 //		this.headNodeList.add(firstNode);
 	}
 	
-	public Node findHeadCourse(int courseID){
+	public NodeInGraph findHeadCourse(int courseID){
 		int size = this.headNodeList.size();
 		for(int i=0; i<size;i++){
 			if(this.headNodeList.get(i).courseID == courseID)
@@ -34,7 +35,7 @@ public class CrossLinkedList {
 //	}
 
 	public void addCourse(int courseID) {
-		Node node = new Node(courseID);
+		NodeInGraph node = new NodeInGraph(courseID);
 		this.headNodeList.add(node);
 	}
 
@@ -62,6 +63,19 @@ public class CrossLinkedList {
 				this.headNodeList.get(i).firstIn = arc;
 			}
 		}
+	}
+	
+	public void removeAloneNode(){
+		
+		Iterator<NodeInGraph> iter = this.headNodeList.iterator();
+		
+		while(iter.hasNext())
+		{
+			NodeInGraph course = iter.next();
+			if(course.firstOut == null && course.firstIn == null)
+				iter.remove();
+		}
+			
 	}
 
 	// Display
