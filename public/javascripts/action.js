@@ -454,13 +454,17 @@ function autoCourse() {
         alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
     }
     
-    var json = eval('({' + wantDataArray + ', ' + alreadyDataArray +'})');
+    var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) 
+    	+ ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) +'})');
 
 	/* null manipulation */
     if (true) {
-        var url = "/student/autofill/";
-        $.post(url, json, function(data) {
-        	alert(1);
+        var url = "/student/autoFill";
+        $.post(url, 
+        	{
+        		wantTakeCourses: JSON.stringify(wantDataArray),
+        		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
+        	}, function(data) {
             // var coursesObj = eval("(" + data + ")");
             // var courses = coursesObj.courses;
             // for ( i = 0; i < courses.length; i++) {

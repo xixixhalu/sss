@@ -61,16 +61,16 @@ public class StudyPlanController2 extends Controller {
 		}
 	}
 	
-	public static Result autoFillCourse(String courseJson){
-		String want;
-		String already;
-		Logger.info(courseJson);
-		return ok();
-	/*	
+	public static Result autoFillCourse(){
+		
+		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
+		TakeForm form = filledForm.get();
+		String want = form.wantTakeCourses;
+		String already = form.alreadyTakenCourses;
+			
 		try {
 			JSONArray wantCourses = new JSONArray(want);
 			JSONArray alreadyCourses = new JSONArray(already);
-			
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
@@ -93,8 +93,9 @@ public class StudyPlanController2 extends Controller {
 			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
+		studyplan.degreeProgram.displayallComplexReq();
 		return ok();
-		*/
+		
 	}
 	
 	public static Result assignSemester(){

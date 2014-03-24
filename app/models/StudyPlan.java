@@ -100,7 +100,7 @@ public class StudyPlan{
 		//System.out.print("\n");
 		Cal_Depth calSemester = new Cal_Depth();
 		calSemester.allCross_relation_example = allCross_relation;
-		AutoFillCourseBin(calSemester);
+		//AutoFillCourseBin(calSemester);//********************************
 		//System.out.print("After AutoFill: \n");
 		//degreeProgram.displayallComplexReq();
 		//degreeProgram.displayCourseList();
