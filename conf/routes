@@ -58,7 +58,7 @@ GET		/student/course			controllers.StudyPlanController2.retrieveDegrees()
 GET		/student/semester		controllers.StudyPlanController2.retrieveDegrees()
 POST	/student/course			controllers.StudyPlanController2.retrieveCourses()
 POST	/student/semester		controllers.StudyPlanController2.assignSemester()
-POST	/student/autoFill		controllers.StudyPlanController2.autoFillCourse()
+POST	/student/autoFill		controllers.StudyPlanController2.autoAssignSemester()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

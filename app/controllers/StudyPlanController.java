@@ -194,10 +194,9 @@ public class StudyPlanController extends Controller {
 		//System.out.print("After AutoFill: \n");
 		degreeProgram.displayallComplexReq();
 		//degreeProgram.displayCourseList();
-		
-		//allCross_relation.Display_All_Headnode();
-		allCross_relation.displayCrossLinkedList();
 
+//		allCross_relation.Display_All_Headnode();
+//		allCross_relation.displayCrossLinkedList();
 		
 		play.Logger.info("================================================");
 	}
@@ -272,6 +271,7 @@ public class StudyPlanController extends Controller {
 						allCross_relation.setArcBox(redNode, courseID, 1);
 						if (prelist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
+							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (prelist[5].equals(",")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
 						}
@@ -283,7 +283,6 @@ public class StudyPlanController extends Controller {
 				String[] colist = coreq.split(" ");
 				
 				if (colist.length - 2 == 1) {
-					if(colist[2].equals("102") && courseID == 94)
 					allCross_relation.setArcBox(Integer.valueOf(colist[2]), courseID, 2);
 				} else if (colist.length - 2 == 3) {
 					if (colist[3].equals(",")) {
@@ -313,6 +312,7 @@ public class StudyPlanController extends Controller {
 						
 						if (colist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
+							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (colist[5].equals(",")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
 						}
