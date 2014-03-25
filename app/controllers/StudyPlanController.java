@@ -634,12 +634,15 @@ public class StudyPlanController extends Controller {
 			TestLinkList degreeProgram, int numOfSemester) {
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
-
+		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {
 				if (courseBin.get(i) == key) {
 					Node temp = courseInHash.get(key).get(0);
+					if (max < temp.maxDepth)
+						max = temp.maxDepth;
 					// semesterBin.put(temp.maxDepth,temp);
+
 					if (semesterBin.containsKey(temp.maxDepth)) { // if this
 																	// semester
 																	// exist
@@ -654,27 +657,32 @@ public class StudyPlanController extends Controller {
 				}
 			}
 		}
-		// how many courses needed each semester
-		int tatalCourses = courseBin.size();
-		int coursesEachSemester = tatalCourses / numOfSemester + 1;
-		// add the courses into the semester
-		Map<Integer, ArrayList<Node>> semesters = new HashMap<Integer, ArrayList<Node>>();
+		int courseInSemester = courseBin.size() / numOfSemester + 1;
+
+		// record the number of courses already in the semester
+		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
+		for (int level = max; level >= 0; level--) {
+			ArrayList<Node> courseInSameLvl = semesterBin.get(level);
+			int num = courseInSemester;
+			int lvlRemainCourse=courseInSameLvl.size();
+			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
+				if(courseInSameLvl.get(i).semester!=-1){
+					continue;
+				}
+				courseInSameLvl.get(i).semester = numOfSemester;
+				num--;
+				lvlRemainCourse--;
+			}
+			numOfCourseInSemester.put(numOfSemester, num);
+			if (lvlRemainCourse > 0) {
+				level++;
+			}
+			numOfSemester--;
+		}
 		
-//		for (int n = 1; n <= numOfSemester; n++) {
-//			ArrayList<Node> courseInSameLvl = null;
-//			ArrayList<Node> coursesInSemester = new ArrayList<Node>();
-//			int m=coursesEachSemester;
-//			while(m>0) {
-//				for (Integer key : semesterBin.keySet()) {
-//					courseInSameLvl = semesterBin.get(key);
-//					for (Node course : courseInSameLvl) {
-//						coursesInSemester.add(course);
-//						m--;
-//					}
-//				}
-//			}
-//			 semesters.put(n, coursesInSemester);
-//		}
+		for(Integer key : numOfCourseInSemester.keySet()){
+			System.out.println("In " + key+ " semester, it has "+ numOfCourseInSemester.get(key)+" size remain ");
+		}
 
 		for (Integer key : semesterBin.keySet()) {
 			System.out.print("The semester " + key + " is \n");

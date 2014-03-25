@@ -8,13 +8,12 @@ public class Node {
 	public String courseName;
 	public String abbreviation;
 	public int credit;
-	public String semester[];
 	public int needFinish;
 	public boolean statisfied;
 	public boolean chosen; //be chosen or not
 	public int minDepth=10000;
 	public int maxDepth=0;
-	public int smester=0;
+	public int semester=-1;
 	
 	public boolean isNull(){//if this course is null
 		
