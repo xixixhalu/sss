@@ -14,7 +14,7 @@ public class Node {
 	public boolean chosen; //be chosen or not
 	public int minDepth=10000;
 	public int maxDepth=0;
-	
+	public int smester=0;
 	
 	public boolean isNull(){//if this course is null
 		
