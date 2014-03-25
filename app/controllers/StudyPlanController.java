@@ -101,7 +101,7 @@ public class StudyPlanController extends Controller {
 		}
 
 		createCrossLinkedList(allCross_relation, degreeProgram.course);
-		// degreeProgram.displayAllCourse();
+		degreeProgram.displayAllCourse();
 		// allCross_relation.Display_All_Headnode();
 
 		// degreeProgram.displayallComplexReq();
@@ -637,7 +637,7 @@ public class StudyPlanController extends Controller {
 		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {
-				if (courseBin.get(i) == key) {
+				if (courseBin.get(i).compareTo(key)==0) {
 					Node temp = courseInHash.get(key).get(0);
 					if (max < temp.maxDepth)
 						max = temp.maxDepth;
@@ -661,25 +661,25 @@ public class StudyPlanController extends Controller {
 
 		// record the number of courses already in the semester
 		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
-		for (int level = max; level >= 0; level--) {
-			ArrayList<Node> courseInSameLvl = semesterBin.get(level);
-			int num = courseInSemester;
-			int lvlRemainCourse=courseInSameLvl.size();
-			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
-				if(courseInSameLvl.get(i).semester!=-1){
-					continue;
-				}
-				courseInSameLvl.get(i).semester = numOfSemester;
-				num--;
-				lvlRemainCourse--;
-			}
-			numOfCourseInSemester.put(numOfSemester, num);
-			if (lvlRemainCourse > 0) {
-				level++;
-			}
-			numOfSemester--;
-		}
-		
+//		for (int level = max; level >= 0; level--) {
+//			ArrayList<Node> courseInSameLvl = semesterBin.get(level);
+//			int num = courseInSemester;
+//			int lvlRemainCourse=courseInSameLvl.size();
+//			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
+//				if(courseInSameLvl.get(i).semester!=-1){
+//					continue;
+//				}
+//				courseInSameLvl.get(i).semester = numOfSemester;
+//				num--;
+//				lvlRemainCourse--;
+//			}
+//			numOfCourseInSemester.put(numOfSemester, num);
+//			if (lvlRemainCourse > 0) {
+//				level++;
+//			}
+//			numOfSemester--;
+//		}
+//		
 		for(Integer key : numOfCourseInSemester.keySet()){
 			System.out.println("In " + key+ " semester, it has "+ numOfCourseInSemester.get(key)+" size remain ");
 		}
