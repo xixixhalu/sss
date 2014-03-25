@@ -637,9 +637,9 @@ public class StudyPlanController extends Controller {
 		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {
-				if (courseBin.get(i) == key) {
+				if (courseBin.get(i).compareTo(key)==0) {
 					Node temp = courseInHash.get(key).get(0);
-					if (max < temp.maxDepth)
+					if (max <= temp.maxDepth)
 						max = temp.maxDepth;
 					// semesterBin.put(temp.maxDepth,temp);
 
@@ -661,27 +661,52 @@ public class StudyPlanController extends Controller {
 
 		// record the number of courses already in the semester
 		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
-		for (int level = max; level >= 0; level--) {
-			ArrayList<Node> courseInSameLvl = semesterBin.get(level);
-			int num = courseInSemester;
-			int lvlRemainCourse=courseInSameLvl.size();
+		int level=max;
+		int curSemester=numOfSemester;
+		while(level>=0&&curSemester>0) {
+			ArrayList<Node> courseInSameLvl = semesterBin.get(level);//get the courses in this level of depth
+			int num = courseInSemester;//record how many courses remain in one semester
+			int lvlRemainCourse=courseInSameLvl.size();//record how many courses remain in this level of depth
+			//mark the course with semester
 			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
+				//check the if the course has already been assigned with a semester.
 				if(courseInSameLvl.get(i).semester!=-1){
+					//-1 is the default number of semester,
+					//if course has been assigned with a semester, then do nothing continue the loop
 					continue;
 				}
-				courseInSameLvl.get(i).semester = numOfSemester;
+				//if the course has not been assigned
+				courseInSameLvl.get(i).semester = curSemester;//assign the current semester to the course 
 				num--;
 				lvlRemainCourse--;
 			}
-			numOfCourseInSemester.put(numOfSemester, num);
-			if (lvlRemainCourse > 0) {
-				level++;
+			numOfCourseInSemester.put(curSemester, num);
+			if (lvlRemainCourse == 0) {
+				level--;
 			}
-			numOfSemester--;
+			curSemester--;
 		}
 		
+		for(int i=1;i<=numOfCourseInSemester.size();i++){
+			int remainCourse=numOfCourseInSemester.get(i);
+			if(numOfCourseInSemester.get(i)>0){
+				ArrayList<Node> courseWithoutReq=semesterBin.get(0);
+				
+				for(int j=0;j<courseWithoutReq.size()&&remainCourse>0;j++){
+					if(courseWithoutReq.get(j).semester==-1){
+						courseWithoutReq.get(j).semester=i;
+						remainCourse--;
+					}
+				}
+			}
+			numOfCourseInSemester.put(i, remainCourse);
+		}
+		
+		//-------------------------------
+		
+		
 		for(Integer key : numOfCourseInSemester.keySet()){
-			System.out.println("In " + key+ " semester, it has "+ numOfCourseInSemester.get(key)+" size remain ");
+			System.out.println("*************In " + key+ " semester, it has "+ numOfCourseInSemester.get(key)+" size remain ");
 		}
 
 		for (Integer key : semesterBin.keySet()) {
