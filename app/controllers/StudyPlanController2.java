@@ -11,6 +11,7 @@ import controllers.forms.TakeForm;
 import models.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -140,6 +141,58 @@ public class StudyPlanController2 extends Controller {
 			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
+	}
+	
+	public static Result autoAssignSemester(){
+		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
+		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
+		
+		try{
+			TakeForm form = filledForm.get();
+			
+			String wantTakeCourses = form.wantTakeCourses;
+			String alreadyTakeCourses = form.alreadyTakenCourses;
+			
+			JSONArray wantCourses = new JSONArray(wantTakeCourses);
+			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
+			
+			for (int i = 0; i < wantCourses.length(); i++) {
+				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
+				int id = wantCourse.getInt("id");
+
+				String core_ids = Course.findById(Integer.valueOf(id)).getCoreq(2);
+				if (!core_ids.trim().equals("-")) {
+					String[] colist = core_ids.split(" ");
+					ArrayList<Integer> core = new ArrayList<Integer>();
+					for(int j = 2; j < colist.length; j+=2)
+					{
+						core.add(Integer.valueOf(colist[j]));
+					}
+					corequisites.put(Integer.valueOf(id), core);
+				}
+			}
+
+			for (int i = 0; i < alreadyCourses.length(); i++) {
+				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
+				int id = alreadyCourse.getInt("id");
+				String core_ids = Course.findById(Integer.valueOf(id)).getCoreq(2);
+				if (!core_ids.trim().equals("-")) {
+					String[] colist = core_ids.split(" ");
+					ArrayList<Integer> core = new ArrayList<Integer>();
+					for(int j = 2; j < colist.length; j+=2)
+					{
+						core.add(Integer.valueOf(colist[j]));
+					}
+					corequisites.put(Integer.valueOf(id), core);
+				}
+			}
+			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
+			return ok();
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return badRequest(views.html.error.render("Some data cannot be obtained"));
+		}	
 	}
 	
 	public static void generateReq(Integer id){

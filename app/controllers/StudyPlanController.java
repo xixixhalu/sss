@@ -19,6 +19,7 @@ import models.Sr;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import play.Logger;
 import play.mvc.Controller;
 import controllers.algorithm.pre_and_core.ArcBox;
 import controllers.algorithm.pre_and_core.Cal_Depth;
@@ -101,7 +102,8 @@ public class StudyPlanController extends Controller {
 		}
 
 		createCrossLinkedList(allCross_relation, degreeProgram.course);
-		degreeProgram.displayAllCourse();
+
+		// degreeProgram.displayAllCourse();
 		// allCross_relation.Display_All_Headnode();
 
 		// degreeProgram.displayallComplexReq();
@@ -174,18 +176,20 @@ public class StudyPlanController extends Controller {
 		//
 		// --------The third test case: one complex three simple and relation
 		// 1 of 2 in simple, 2 of 2 simple
-		// CheckInSelectedCourse(degreeProgram, 22, 17, 189);
-		// CheckInSelectedCourse(degreeProgram, 22, 17, 133);
 
-		// CheckInSelectedCourse(degreeProgram, 22, 18, 190);
-		// CheckInSelectedCourse(degreeProgram, 22, 17, 189);
-		// CheckInSelectedCourse(degreeProgram, 22, 17, 133);
-		// CheckInSelectedCourse(degreeProgram, 22, 16, 120);
-		// CheckInSelectedCourse(degreeProgram, 22, 16, 118);
-
-		// CheckInSelectedCourse(degreeProgram, 23, 19, 164);
-		// CheckInSelectedCourse(degreeProgram, 23, 19, 102);
-
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 189);
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 133);
+		
+		
+//		CheckInSelectedCourse(degreeProgram, 22, 18, 190);
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 189);
+//		CheckInSelectedCourse(degreeProgram, 22, 17, 133);
+//		CheckInSelectedCourse(degreeProgram, 22, 16, 120);
+//		CheckInSelectedCourse(degreeProgram, 22, 16, 118);
+		
+//		CheckInSelectedCourse(degreeProgram, 23, 19, 164);
+//		CheckInSelectedCourse(degreeProgram, 23, 19, 102);
+		
 		degreeProgram.CheckAllSimpleAndComplex();
 
 		// System.out.print("Before AutoFill:");
@@ -201,48 +205,50 @@ public class StudyPlanController extends Controller {
 		// System.out.print("After AutoFill: \n");
 		degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
-
+		
 		// allCross_relation.Display_All_Headnode();
 		// allCross_relation.displayCrossLinkedList();
-
+		
 		play.Logger.info("================================================");
 	}
-
-	public static void addCourse(TestLinkList degreeProgram,
-			Linklist simpleReq1, int courseID, CrossLinkedList allCross_relation) {
-		// System.out.println(ifCourseExist);
-
-		// System.out.println("OK");
-
-		Node newNode = new Node(courseID);
-
-		if (degreeProgram.course.containsKey(courseID)) {
-			degreeProgram.course.get(courseID).add(newNode);
-		} else {
-			ArrayList<Node> clist = new ArrayList<Node>();
-			clist.add(newNode);
-			degreeProgram.course.put(courseID, clist);
-		}
-
-		simpleReq1.insertNode(newNode);
-
+	
+	
+	public static void addCourse(TestLinkList degreeProgram,Linklist simpleReq1, int courseID
+			, CrossLinkedList allCross_relation){
+		//System.out.println(ifCourseExist);
+			
+			//System.out.println("OK");
+		
+			Node newNode = new Node(courseID);
+		
+			if (degreeProgram.course.containsKey(courseID)) {
+				degreeProgram.course.get(courseID).add(newNode);
+			} else {
+				ArrayList<Node> clist = new ArrayList<Node>();
+				clist.add(newNode);
+				degreeProgram.course.put(courseID, clist);
+			}
+			
+			simpleReq1.insertNode(newNode);
+			
+			
 		return;
 	}
-
-	public static void createCrossLinkedList(CrossLinkedList allCross_relation,
-			HashMap<Integer, ArrayList<Node>> course_list) {
+	
+	public static void createCrossLinkedList(CrossLinkedList allCross_relation, HashMap<Integer, ArrayList<Node>> course_list) {
 		/**
-		 * @author tongrui function: construct the crosslist
+		 * @author tongrui
+		 * function: construct the crosslist
 		 */
 		allCross_relation.addAllCourseInGraph(course_list);
-
+		
 		for (Entry<Integer, ArrayList<Node>> entry : course_list.entrySet()) {
 			int courseID = entry.getKey();
 			Course course = Course.findById(entry.getKey());
-
+			
 			String prereq = course.getPrereq(2);
 			String coreq = course.getCoreq(2);
-
+			
 			if (!prereq.trim().equals("-")) {
 				String[] prelist = prereq.split(" ");
 
@@ -257,11 +263,9 @@ public class StudyPlanController extends Controller {
 								Integer.valueOf(prelist[4]), courseID, 1);
 					} else if (prelist[3].equals("or")) {
 						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[2]), redNode, 3);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[4]), redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 3);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 1);
 					}
 				} else if (prelist.length - 2 == 5) {
 					if (prelist[3].equals(",")) {
@@ -278,20 +282,14 @@ public class StudyPlanController extends Controller {
 						}
 					} else if (prelist[3].equals("or")) {
 						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[2]), redNode, 3);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[4]), redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 3);
-
+						allCross_relation.setArcBox(Integer.valueOf(prelist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(prelist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 1);
 						if (prelist[5].equals("or")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(prelist[6]), redNode, 3);
+							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
 							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (prelist[5].equals(",")) {
-							allCross_relation.setArcBox(redNode, courseID, 3);
-							allCross_relation.setArcBox(
-									Integer.valueOf(prelist[6]), courseID, 1);
+							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
 						}
 					}
 				}
@@ -311,11 +309,9 @@ public class StudyPlanController extends Controller {
 								courseID, 2);
 					} else if (colist[3].equals("or")) {
 						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-								redNode, 3);
-						allCross_relation.setArcBox(Integer.valueOf(colist[4]),
-								redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 3);
+						allCross_relation.setArcBox(Integer.valueOf(colist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(colist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 2);
 					}
 				} else if (colist.length - 2 == 5) {
 					if (colist[3].equals(",")) {
@@ -332,20 +328,15 @@ public class StudyPlanController extends Controller {
 						}
 					} else if (colist[3].equals("or")) {
 						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-								redNode, 3);
-						allCross_relation.setArcBox(Integer.valueOf(colist[4]),
-								redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 3);
-
+						allCross_relation.setArcBox(Integer.valueOf(colist[2]), redNode, 3);
+						allCross_relation.setArcBox(Integer.valueOf(colist[4]), redNode, 3);
+						allCross_relation.setArcBox(redNode, courseID, 2);
+						
 						if (colist[5].equals("or")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(colist[6]), redNode, 3);
+							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
 							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (colist[5].equals(",")) {
-							allCross_relation.setArcBox(redNode, courseID, 3);
-							allCross_relation.setArcBox(
-									Integer.valueOf(colist[6]), courseID, 2);
+							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
 						}
 					}
 				}
@@ -624,6 +615,7 @@ public class StudyPlanController extends Controller {
 		for (Integer id : courseBinResult) {
 
 			System.out.print(id + " ");
+
 		}
 
 		System.out.print("\n");
@@ -639,7 +631,7 @@ public class StudyPlanController extends Controller {
 			for (Integer key : courseInHash.keySet()) {
 				if (courseBin.get(i).compareTo(key)==0) {
 					Node temp = courseInHash.get(key).get(0);
-					if (max < temp.maxDepth)
+					if (max <= temp.maxDepth)
 						max = temp.maxDepth;
 					// semesterBin.put(temp.maxDepth,temp);
 
@@ -661,27 +653,52 @@ public class StudyPlanController extends Controller {
 
 		// record the number of courses already in the semester
 		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
-//		for (int level = max; level >= 0; level--) {
-//			ArrayList<Node> courseInSameLvl = semesterBin.get(level);
-//			int num = courseInSemester;
-//			int lvlRemainCourse=courseInSameLvl.size();
-//			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
-//				if(courseInSameLvl.get(i).semester!=-1){
-//					continue;
-//				}
-//				courseInSameLvl.get(i).semester = numOfSemester;
-//				num--;
-//				lvlRemainCourse--;
-//			}
-//			numOfCourseInSemester.put(numOfSemester, num);
-//			if (lvlRemainCourse > 0) {
-//				level++;
-//			}
-//			numOfSemester--;
-//		}
-//		
+		int level=max;
+		int curSemester=numOfSemester;
+		while(level>=0&&curSemester>0) {
+			ArrayList<Node> courseInSameLvl = semesterBin.get(level);//get the courses in this level of depth
+			int num = courseInSemester;//record how many courses remain in one semester
+			int lvlRemainCourse=courseInSameLvl.size();//record how many courses remain in this level of depth
+			//mark the course with semester
+			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
+				//check the if the course has already been assigned with a semester.
+				if(courseInSameLvl.get(i).semester!=-1){
+					//-1 is the default number of semester,
+					//if course has been assigned with a semester, then do nothing continue the loop
+					continue;
+				}
+				//if the course has not been assigned
+				courseInSameLvl.get(i).semester = curSemester;//assign the current semester to the course 
+				num--;
+				lvlRemainCourse--;
+			}
+			numOfCourseInSemester.put(curSemester, num);
+			if (lvlRemainCourse == 0) {
+				level--;
+			}
+			curSemester--;
+		}
+		
+		for(int i=1;i<=numOfCourseInSemester.size();i++){
+			int remainCourse=numOfCourseInSemester.get(i);
+			if(numOfCourseInSemester.get(i)>0){
+				ArrayList<Node> courseWithoutReq=semesterBin.get(0);
+				
+				for(int j=0;j<courseWithoutReq.size()&&remainCourse>0;j++){
+					if(courseWithoutReq.get(j).semester==-1){
+						courseWithoutReq.get(j).semester=i;
+						remainCourse--;
+					}
+				}
+			}
+			numOfCourseInSemester.put(i, remainCourse);
+		}
+		
+		//-------------------------------
+		
+		
 		for(Integer key : numOfCourseInSemester.keySet()){
-			System.out.println("In " + key+ " semester, it has "+ numOfCourseInSemester.get(key)+" size remain ");
+			System.out.println("*************In " + key+ " semester, it has "+ numOfCourseInSemester.get(key)+" size remain ");
 		}
 
 		for (Integer key : semesterBin.keySet()) {
@@ -750,7 +767,6 @@ public class StudyPlanController extends Controller {
 			System.out.print(pre_and_core.get(i) + "\n");
 		}
 	}
-
 	public static ArrayList<Integer> RemoveTheLastCourseItSelf(
 			ArrayList<Integer> courseList) {
 
