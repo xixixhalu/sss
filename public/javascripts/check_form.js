@@ -105,7 +105,7 @@ function checkSrForm() {
 		return false;
 	}
 	if (required_num == "") {
-		alert("Please ");
+		alert("Please enter a required number!");
 		return false;
 	}
 	
