@@ -13,13 +13,16 @@ import models.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
-	public static StudyPlan studyplan;
+	public static ConcurrentHashMap<String, StudyPlan> studyPlanPool = 
+								new ConcurrentHashMap<String, StudyPlan>();
 	
 	public static Result retrieveDegrees() {
 		try{
@@ -42,7 +45,12 @@ public class StudyPlanController2 extends Controller {
 			Degree degree = Degree.findById(degreeId);
 			
 			//Initialize study plan graph.
-			studyplan = new StudyPlan();
+			
+			StudyPlan studyplan = new StudyPlan();
+			String uuid = UUID.randomUUID().toString();
+			session("uuid", uuid);
+			studyPlanPool.put(uuid, studyplan);
+			//Logger.info(uuid);
 			studyplan.CreateDegreeProgram(Integer.valueOf(degreeId));
 			
 			//get all courses' JSON
@@ -63,6 +71,7 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoFillCourse(){
+		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		if(studyplan.courseBin == null) {
 			Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();	
 			try {
@@ -121,6 +130,7 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result assignSemester(){
+		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		boolean needAuto = false;
 		if(studyplan.courseBin == null)
