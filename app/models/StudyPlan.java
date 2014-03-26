@@ -39,7 +39,7 @@ public class StudyPlan {
 	public TestLinkList degreeProgram;
 	CrossLinkedList allCross_relation;
 	Cal_Depth calSemester;
-	ArrayList<Integer> courseBin;		//Course Info after auto fill course
+	public ArrayList<Integer> courseBin;		//Course Info after auto fill course
 
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
 		calSemester.allCross_relation_example = allCross_relation;

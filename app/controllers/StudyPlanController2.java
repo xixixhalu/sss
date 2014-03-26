@@ -66,7 +66,8 @@ public class StudyPlanController2 extends Controller {
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		TakeForm form = filledForm.get();
 		String want = form.wantTakeCourses;
-		String already = form.alreadyTakenCourses;			
+		String already = form.alreadyTakenCourses;	
+		JSONObject coursesArr = new JSONObject();
 		try {
 			JSONArray wantCourses = new JSONArray(want);
 			JSONArray alreadyCourses = new JSONArray(already);
@@ -88,14 +89,28 @@ public class StudyPlanController2 extends Controller {
 			studyplan.degreeProgram.CheckAllSimpleAndComplex();
 			studyplan.AutoFillCourseBin();
 			
+			ArrayList<Integer> courseBin = studyplan.courseBin;
+			
+			for (Integer id : courseBin) {
+				Course course = Course.findById(id);
+				JSONObject auto_want = new JSONObject();
+				auto_want.put("id", course.getId());
+				auto_want.put("prefix", course.getPrefix());
+				auto_want.put("num", course.getNumber());
+				auto_want.put("title", course.getTitle());
+				wantCourses.put(auto_want);
+			}
+			
+			coursesArr.put("want", wantCourses);
+			coursesArr.put("already", alreadyCourses);
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
 		
-		return ok();
-		
+		return ok(coursesArr.toString());
 	}
 	
 	public static Result assignSemester(){
