@@ -39,7 +39,7 @@ public class StudyPlan {
 	public TestLinkList degreeProgram;
 	CrossLinkedList allCross_relation;
 	Cal_Depth calSemester;
-	ArrayList<Integer> courseBin;		//Course Info after auto fill course
+	public ArrayList<Integer> courseBin;		//Course Info after auto fill course
 
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
 		calSemester.allCross_relation_example = allCross_relation;
@@ -617,15 +617,16 @@ public class StudyPlan {
 			}
 		}
 
+		
 		System.out.print("\n");
 		courseBin = courseBinResult;
 		return courseBinResult;
 	}
 
-	public void AutoAssignSemester(int numOfSemester) {
+	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester) {
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
-		HashMap<Integer, ArrayList<Node>> result = new HashMap<Integer, ArrayList<Node>>();
+		HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
 		
 		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
@@ -714,26 +715,26 @@ public class StudyPlan {
 			ArrayList<Node> temp = semesterBin.get(key);
 			for(Node course: temp){// get each course
 				if(result.containsKey(course.semester)){
-					ArrayList<Node> thisSemester = result.get(course.semester);
-					thisSemester.add(course);
+					ArrayList<Integer> thisSemester = result.get(course.semester);
+					thisSemester.add(Integer.valueOf(course.cName));
 					result.put(course.semester, thisSemester);
 				}else{
-					ArrayList<Node> thisNewSemester = new ArrayList<Node>();
-					thisNewSemester.add(course);
+					ArrayList<Integer> thisNewSemester = new ArrayList<Integer>();
+					thisNewSemester.add(Integer.valueOf(course.cName));
 					result.put(course.semester, thisNewSemester);
 				}
 			}
 		}
 		
 		for(Integer key : result.keySet()){
-			ArrayList<Node> courseInSameSemester = result.get(key);
+			ArrayList<Integer> courseInSameSemester = result.get(key);
 			System.out.print("In semester "+ key +", there are ");
-				for(Node course: courseInSameSemester){
-					System.out.print(course.cName+" ");
+				for(Integer courseId: courseInSameSemester){
+					System.out.print(courseId+" ");
 				}
 		    System.out.print("\n");
 		}
-
+		return result;
 	}
 
 	public void FillNonePreCoreReq(ComplexReq complexReq, Linklist simpleReq,
