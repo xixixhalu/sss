@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -103,6 +102,7 @@ public class StudyPlanController extends Controller {
 		}
 
 		createCrossLinkedList(allCross_relation, degreeProgram.course);
+
 		// degreeProgram.displayAllCourse();
 		// allCross_relation.Display_All_Headnode();
 
@@ -198,7 +198,6 @@ public class StudyPlanController extends Controller {
 		// System.out.print("\n");
 		Cal_Depth calSemester = new Cal_Depth();
 		calSemester.allCross_relation_example = allCross_relation;
-
 		ArrayList<Integer> courseBin;
 		courseBin = AutoFillCourseBin(calSemester, degreeProgram,
 				allCross_relation);
@@ -602,7 +601,6 @@ public class StudyPlanController extends Controller {
 							}
 
 							System.out.print("\n");
-
 						}
 
 					}
@@ -617,6 +615,7 @@ public class StudyPlanController extends Controller {
 		for (Integer id : courseBinResult) {
 
 			System.out.print(id + " ");
+
 		}
 
 		System.out.print("\n");
@@ -768,7 +767,6 @@ public class StudyPlanController extends Controller {
 			System.out.print(pre_and_core.get(i) + "\n");
 		}
 	}
-
 	public static ArrayList<Integer> RemoveTheLastCourseItSelf(
 			ArrayList<Integer> courseList) {
 

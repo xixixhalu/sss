@@ -34,12 +34,15 @@ function addLikeCourse(id, curNode) {
 
 //adding course to already-taken list
 function addTakenCourse(id, curNode) {
-    if (!checkConstraints(id)) {
+    if (checkCourseExist(id)) {
+        alert("This course is already in the course bin!");
         return null;
     }
     var wantTake = document.getElementById("alreadyTaken");
     wantTake.appendChild(generateLi(id, curNode));
 }
+
+
 
 function generateLi(id, curNode) {
     var courseLi = document.createElement("li");

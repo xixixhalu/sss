@@ -3,6 +3,10 @@
  */
 function addSimpleReq() {
     var simpleReq = document.getElementById("s_req");
+    if (checkExistReq(simpleReq.value)) {
+        alert("This simple reqirement has already been added!!");
+        return;
+    }
     //alert(simpleReq);
     var simpleReqTitle = getSelectedText(simpleReq);
     var simpleReqList = document.getElementById("s_list");
@@ -16,6 +20,16 @@ function addSimpleReq() {
     li.innerHTML += "<span>" + simpleReqTitle + "</span>";
     li.innerHTML += "<input type='text' name='simpleReqGroup' value='1'>";
     simpleReqList.appendChild(li);
+}
+
+function checkExistReq(id) {
+    var ids = document.getElementsByName("simpleReqId");
+    for ( i = 0; i < ids.length; i++) {
+        if (id == ids[i].value) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function deleteSimpleReq(node) {
@@ -44,7 +58,7 @@ function generateSpace() {
     fspan.style.width = "29px";
     fspan.style.border = "white";
     fspan.innerHTML = "&nbsp;";
-    fspan.setAttribute("name","simpleReqRel");
+    fspan.setAttribute("name", "simpleReqRel");
     return fspan;
 }
 
