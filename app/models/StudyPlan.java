@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -606,6 +605,7 @@ public class StudyPlan {
 
 		for (Integer id : courseBinResult) {
 
+			Logger.info(id + " ");
 			System.out.print(id + " ");
 		}
 
@@ -617,6 +617,8 @@ public class StudyPlan {
 	public void AutoAssignSemester(int numOfSemester) {
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
+		HashMap<Integer, ArrayList<Node>> result = new HashMap<Integer, ArrayList<Node>>();
+		
 		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {
@@ -698,6 +700,30 @@ public class StudyPlan {
 			for (Node course : tempNodeList) {
 				System.out.print(course.cName + "\n");
 			}
+		}
+		
+		for(Integer key : semesterBin.keySet()){
+			ArrayList<Node> temp = semesterBin.get(key);
+			for(Node course: temp){// get each course
+				if(result.containsKey(course.semester)){
+					ArrayList<Node> thisSemester = result.get(course.semester);
+					thisSemester.add(course);
+					result.put(course.semester, thisSemester);
+				}else{
+					ArrayList<Node> thisNewSemester = new ArrayList<Node>();
+					thisNewSemester.add(course);
+					result.put(course.semester, thisNewSemester);
+				}
+			}
+		}
+		
+		for(Integer key : result.keySet()){
+			ArrayList<Node> courseInSameSemester = result.get(key);
+			System.out.print("In semester "+ key +", there are ");
+				for(Node course: courseInSameSemester){
+					System.out.print(course.cName+" ");
+				}
+		    System.out.print("\n");
 		}
 
 	}
