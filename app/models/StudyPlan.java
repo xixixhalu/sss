@@ -608,6 +608,14 @@ public class StudyPlan {
 			Logger.info(id + " ");
 			System.out.print(id + " ");
 		}
+		
+		for(Integer id: degreeProgram.course.keySet()){
+			ArrayList<Node> temp = degreeProgram.course.get(id);
+			Node tempNode = temp.get(0);
+			if(tempNode.chosen==true && !courseBinResult.contains(tempNode.cName)){
+				courseBinResult.add(tempNode.cName);
+			}
+		}
 
 		System.out.print("\n");
 		courseBin = courseBinResult;
