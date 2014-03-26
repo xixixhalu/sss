@@ -144,8 +144,8 @@ function addReq(name, list) {
         alert("This course has already been added!!");
         return;
     }
-    if(document.getElementsByTagName("body")[0].id==course_id){
-        alert("You can not add self!!");
+    if (document.getElementsByTagName("body")[0].id == course_id) {
+        alert("Courses cannot be the prerequisites or corequisites of itself!!");
         return;
     }
 
@@ -250,10 +250,16 @@ function initEdit() {
             var li = document.createElement("li");
             var courseName = prereqs[i].prefix + prereqs[i].num;
             var course_id = prereqs[i].id;
+            var relation = prereqs[i].relation;
+            var group = prereqs[i].group;
             if (ul1.children.length > 0) {
-                li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+                if (relation == "or") {
+                    li.innerHTML += "<select name='relation'><option>AND</option><option selected='selected'>OR</option></select>";
+                } else
+                    li.innerHTML += "<select name='relation'><option>AND</option><option>OR</option></select>";
+                li.innerHTML += "<div><span>" + courseName + "</span><input type='number' name='group' value='"+group+"'/></div>";
             } else {
-                li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+                li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='"+group+"'/></div>";
             }
             li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
             li.ondblclick = function(evt) {
@@ -270,10 +276,16 @@ function initEdit() {
             var li = document.createElement("li");
             var courseName = coreqs[i].prefix + coreqs[i].num;
             var course_id = coreqs[i].id;
+            var relation = coreqs[i].relation;
+            var group = coreqs[i].group;
             if (ul2.children.length > 0) {
-                li.innerHTML = "<select name='relation'><option>AND</option><option>OR</option></select><div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+                if (relation == "or") {
+                    li.innerHTML += "<select name='relation'><option>AND</option><option selected='selected'>OR</option></select>";
+                } else
+                    li.innerHTML += "<select name='relation'><option>AND</option><option>OR</option></select>";
+                li.innerHTML += "<div><span>" + courseName + "</span><input type='number' name='group' value='"+group+"'/></div>";
             } else {
-                li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='1'/></div>";
+                li.innerHTML = "<div><span>" + courseName + "</span><input type='number' name='group' value='"+group+"'/></div>";
             }
             li.innerHTML += "<input type='hidden' name='course_id' value='" + course_id + "'>";
             li.ondblclick = function(evt) {

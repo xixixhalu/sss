@@ -4,7 +4,7 @@
 function addSimpleReq() {
     var simpleReq = document.getElementById("s_req");
     if (checkExistReq(simpleReq.value)) {
-        alert("This simple reqirement has already been added!!");
+        alert("This simple requirement has already been added!!");
         return;
     }
     //alert(simpleReq);
@@ -168,9 +168,9 @@ function init(simpleReqs) {
 
         var span = document.createElement("span");
         span.innerHTML = simpleReqs[i].name;
-        span.onclick = function() {
-            changePriority(this);
-        };
+        // span.onclick = function() {
+            // changePriority(this);
+        // };
         li.appendChild(span);
 
         var text = document.createElement("input");
