@@ -462,22 +462,35 @@ function autoCourse() {
 
 	/* null manipulation */
     if (true) {
-        var url = "/student/autoFill";
+        var url = "/student/autoFillCourse";
         $.post(url, 
         	{
         		wantTakeCourses: JSON.stringify(wantDataArray),
         		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
         	}, function(data) {
-            // var coursesObj = eval("(" + data + ")");
-            // var courses = coursesObj.courses;
-            // for ( i = 0; i < courses.length; i++) {
-                // var li = document.createElement("li");
-                // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
-                // ul.appendChild(li);
-            // }
-        });
+            	var ul_want = document.getElementById('wantTake');
+            	var ul_already = document.getElementById('alreadyTaken');
+            	
+            	var courseArr = eval('(' + data + ')');
+            	var wantArr = courseArr.want;
+            	var alreadyArr = courseArr.already;
+            	
+            	for (var i = 0; i < wantArr.length; i++) {
+            		var li = document.createElement('li');
+            		li.id = wantArr[i].id;
+            		li.innerHTML = wantArr[i].prefix + wantArr[i].num + ' - ' + wantArr[i].title +
+            		'<a onclick="removeCourse('+ wantArr[i].id +')">⊗</a>' +
+            		'<input type="hidden" value="-1" name="simpleReqId">' +
+            		'<input type="hidden" value="-1" name="complexReqId">';
+            		ul_want.appendChild(li);
+            	}
+            	
+            	for (var i = 0; i < alreadyArr.length; i++) {
+            		var li = document.createElement('li');
+            		li.innerHTML = wantArr[i].prefix + wantArr[i].num + ' - ' + wantArr[i].title;
+            		ul_already.appendChild(li);
+            	}
+            
+        	});
     }
 }
-
-
-

@@ -23,7 +23,6 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result retrieveDegrees() {
 		try{
-			StudyPlanController.CreateDegreeProgram(new Integer(5));
 			return ok(views.html.index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
@@ -64,45 +63,68 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoFillCourse(){
+		if(studyplan.courseBin == null) {
+			Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();	
+			try {
+				TakeForm form = filledForm.get();
+				String want = form.wantTakeCourses;
+				String already = form.alreadyTakenCourses;	
+				JSONObject coursesArr = new JSONObject();	
+			
+				JSONArray wantCourses = new JSONArray(want);
+				JSONArray alreadyCourses = new JSONArray(already);
+				for (int i = 0; i < wantCourses.length(); i++) {
+					JSONObject wantCourse = (JSONObject) wantCourses.get(i);
+					int id = wantCourse.getInt("id");
+					int sid = wantCourse.getInt("sid");
+					int cid = wantCourse.getInt("cid");
+					
+					studyplan.CheckInSelectedCourse(cid, sid, id);
+				}
 		
-		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
-		TakeForm form = filledForm.get();
-		String want = form.wantTakeCourses;
-		String already = form.alreadyTakenCourses;
-			
-		try {
-			JSONArray wantCourses = new JSONArray(want);
-			JSONArray alreadyCourses = new JSONArray(already);
-			for (int i = 0; i < wantCourses.length(); i++) {
-				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
-				int id = wantCourse.getInt("id");
-				int sid = wantCourse.getInt("sid");
-				int cid = wantCourse.getInt("cid");
-				studyplan.CheckInSelectedCourse(cid, sid, id);
+				for (int i = 0; i < alreadyCourses.length(); i++) {
+					JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
+					int id = alreadyCourse.getInt("id");
+					int sid = alreadyCourse.getInt("sid");
+					int cid = alreadyCourse.getInt("cid");
+					
+					studyplan.CheckInSelectedCourse(cid, sid, id);
+					
+				}
+				studyplan.degreeProgram.CheckAllSimpleAndComplex();
+				studyplan.AutoFillCourseBin();
+				ArrayList<Integer> courseBin = studyplan.courseBin;
+				
+				for (Integer id : courseBin) {
+					Course course = Course.findById(id);
+					JSONObject auto_want = new JSONObject();
+					auto_want.put("id", course.getId());
+					auto_want.put("prefix", course.getPrefix());
+					auto_want.put("num", course.getNumber());
+					auto_want.put("title", course.getTitle());
+					wantCourses.put(auto_want);
+				}
+				
+				coursesArr.put("want", wantCourses);
+				coursesArr.put("already", alreadyCourses);
+				
+				return ok(coursesArr.toString());
+				
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+				return badRequest(views.html.error.render("Some data cannot be obtained"));
 			}
-	
-			for (int i = 0; i < alreadyCourses.length(); i++) {
-				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
-				int id = alreadyCourse.getInt("id");
-				int sid = alreadyCourse.getInt("sid");
-				int cid = alreadyCourse.getInt("cid");
-				studyplan.CheckInSelectedCourse(cid, sid, id);
-			}
-			studyplan.degreeProgram.CheckAllSimpleAndComplex();
-			
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
-		studyplan.degreeProgram.displayallComplexReq();
-		return ok();
-		
+		else
+			return ok("");
 	}
 	
 	public static Result assignSemester(){
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
-		
+		boolean needAuto = false;
+		if(studyplan.courseBin == null)
+			needAuto = true;
 		try{
 			TakeForm form = filledForm.get();
 			
@@ -114,14 +136,17 @@ public class StudyPlanController2 extends Controller {
 			JSONObject json = new JSONObject();
 			CourseWrapper cw = new CourseWrapper(true, true, true, true,
 						true, true, true, true, true);
-			
+			Logger.info(String.valueOf(wantCourses.length()));
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
 				int sid = wantCourse.getInt("sid");
 				int cid = wantCourse.getInt("cid");
 				//session("jsonCourseData", wantTakeCourses);
-				
+				if(needAuto)
+				{
+					studyplan.CheckInSelectedCourse(cid, sid, id);
+				}
 				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
 			}
 
@@ -130,10 +155,19 @@ public class StudyPlanController2 extends Controller {
 				int id = alreadyCourse.getInt("id");
 				int sid = alreadyCourse.getInt("sid");
 				int cid = alreadyCourse.getInt("cid");
-				
+				if(needAuto)
+				{
+					studyplan.CheckInSelectedCourse(cid, sid, id);
+				}
 				json.put(String.valueOf(id), Course.findById(id).toJson(cw));
 			}
 			
+			//if courseBin is null, auto fill course in back-end
+			if(needAuto)
+			{
+				studyplan.degreeProgram.CheckAllSimpleAndComplex();
+				studyplan.AutoFillCourseBin();
+			}
 			return ok(views.html.stu_semester.render(json.toString(), 
 					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)
@@ -187,6 +221,9 @@ public class StudyPlanController2 extends Controller {
 				}
 			}
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
+			
+			//Bowen: autoAssignSemester, hard code 8 semester
+			//HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8);
 			return ok();
 		}catch(Exception e)
 		{
@@ -195,7 +232,8 @@ public class StudyPlanController2 extends Controller {
 		}	
 	}
 	
-	public static void generateReq(Integer id){
+	public static Result generateStudyPlan(){
+		return ok(views.html.stu_studyplan.render());
 	}
 	
 }

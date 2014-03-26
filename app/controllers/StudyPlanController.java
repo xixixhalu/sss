@@ -287,7 +287,6 @@ public class StudyPlanController extends Controller {
 						allCross_relation.setArcBox(redNode, courseID, 1);
 						if (prelist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (prelist[5].equals(",")) {
 							allCross_relation.setArcBox(Integer.valueOf(prelist[6]), courseID, 1);
 						}
@@ -334,7 +333,6 @@ public class StudyPlanController extends Controller {
 						
 						if (colist[5].equals("or")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
 						} else if (colist[5].equals(",")) {
 							allCross_relation.setArcBox(Integer.valueOf(colist[6]), courseID, 2);
 						}
@@ -709,6 +707,17 @@ public class StudyPlanController extends Controller {
 			}
 		}
 
+		for(Integer key : semesterBin.keySet()){
+			ArrayList<Node> temp = semesterBin.get(key);
+			for(Node course: temp){// get each 
+				
+				
+				
+				
+				
+				System.out.print(course.cName +" is in "+ course.semester);
+			}
+		}
 	}
 
 	public static void FillNonePreCoreReq(TestLinkList degreeProgram,
