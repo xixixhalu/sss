@@ -477,9 +477,10 @@ function autoCourse() {
             	
             	for (var i = 0; i < wantArr.length; i++) {
             		var li = document.createElement('li');
-            		li.id = wantArr[i].id;
-            		li.innerHTML = wantArr[i].prefix + wantArr[i].num + ' - ' + wantArr[i].title +
-            		'<a onclick="removeCourse('+ wantArr[i].id +')">⊗</a>' +
+            		var id=wantArr[i].id;
+            		li.id = id;
+            		li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title +
+            		'<a onclick="removeCourse('+ id +')">⊗</a>' +
             		'<input type="hidden" value="-1" name="simpleReqId">' +
             		'<input type="hidden" value="-1" name="complexReqId">';
             		ul_want.appendChild(li);
