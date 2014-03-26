@@ -91,9 +91,16 @@
                             	cont += Html(req.getTitle());
                                 cont += Html(" <a onclick=\"dropDown('req_"+ req.getId() +"')\">&otimes;</a>");
                             cont += Html("</div>");
-                            cont += Html("<span>You must take all the courses listed below.</span>");
+                          	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
+                          	if(srReqs.length() > 1)
+                          	{
+                          		if(srReqs.get(2).asInstanceOf[JSONObject].get("relation").equals("or"))
+                          			cont += Html("<span>You must take courses in one of options listed below</span>");
+                          		else
+                          			cont += Html("<span>YYou must take courses all of options listed below</span>");
+                          	}
                             cont += Html("<div>");
-                            	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
+                            	
                             	for(i <- 0 to srReqs.length()-1)
                             	{
                             	var srReqObject : JSONObject = srReqs.get(i).asInstanceOf[JSONObject];
@@ -104,6 +111,7 @@
 								var cg : Cg = Cg.findById(cgId);
                                 cont += Html("<ul class=\"req_course_list\" id=\"sr_" + srId + "\">");
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
+                                	cont += Html("<div>You must take "+reqNum+" courses listed below.</div>");
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li>");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
