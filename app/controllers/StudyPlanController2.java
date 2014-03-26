@@ -64,11 +64,12 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result autoFillCourse(){
 		if(studyplan.courseBin == null) {
-			Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
+			Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();	
 			try {
 				TakeForm form = filledForm.get();
 				String want = form.wantTakeCourses;
-				String already = form.alreadyTakenCourses;			
+				String already = form.alreadyTakenCourses;	
+				JSONObject coursesArr = new JSONObject();	
 			
 				JSONArray wantCourses = new JSONArray(want);
 				JSONArray alreadyCourses = new JSONArray(already);
@@ -93,7 +94,21 @@ public class StudyPlanController2 extends Controller {
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
 				studyplan.AutoFillCourseBin();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
-				return ok();
+				
+				for (Integer id : courseBin) {
+					Course course = Course.findById(id);
+					JSONObject auto_want = new JSONObject();
+					auto_want.put("id", course.getId());
+					auto_want.put("prefix", course.getPrefix());
+					auto_want.put("num", course.getNumber());
+					auto_want.put("title", course.getTitle());
+					wantCourses.put(auto_want);
+				}
+				
+				coursesArr.put("want", wantCourses);
+				coursesArr.put("already", alreadyCourses);
+				
+				return ok(coursesArr.toString());
 				
 			}catch(Exception e)
 			{
@@ -121,7 +136,7 @@ public class StudyPlanController2 extends Controller {
 			JSONObject json = new JSONObject();
 			CourseWrapper cw = new CourseWrapper(true, true, true, true,
 						true, true, true, true, true);
-			
+			Logger.info(String.valueOf(wantCourses.length()));
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
@@ -153,7 +168,6 @@ public class StudyPlanController2 extends Controller {
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
 				studyplan.AutoFillCourseBin();
 			}
-			
 			return ok(views.html.stu_semester.render(json.toString(), 
 					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)
