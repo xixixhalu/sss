@@ -34,12 +34,15 @@ function addLikeCourse(id, curNode) {
 
 //adding course to already-taken list
 function addTakenCourse(id, curNode) {
-    if (!checkConstraints(id)) {
+    if (checkCourseExist(id)) {
+        alert("This course is already in the course bin!");
         return null;
     }
     var wantTake = document.getElementById("alreadyTaken");
     wantTake.appendChild(generateLi(id, curNode));
 }
+
+
 
 function generateLi(id, curNode) {
     var courseLi = document.createElement("li");
@@ -459,7 +462,7 @@ function autoCourse() {
 
 	/* null manipulation */
     if (true) {
-        var url = "/student/autoFill";
+        var url = "/student/autoFillCourse";
         $.post(url, 
         	{
         		wantTakeCourses: JSON.stringify(wantDataArray),
@@ -476,5 +479,46 @@ function autoCourse() {
     }
 }
 
+function autoSemester() {
+	
+	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+    var wantDataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    
+    var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
+    var alreadyDataArray=new Array;
+    for ( i = 0; i < alreadyTaken.length; i++) {
+        var id = alreadyTaken[i].id;
+        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) 
+    	+ ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) +'})');
 
+	/* null manipulation */
+    if (true) {
+        var url = "/student/autoFillSemester";
+        $.post(url, 
+        	{
+        		wantTakeCourses: JSON.stringify(wantDataArray),
+        		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
+        	}, function(data) {
+            // var coursesObj = eval("(" + data + ")");
+            // var courses = coursesObj.courses;
+            // for ( i = 0; i < courses.length; i++) {
+                // var li = document.createElement("li");
+                // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
+                // ul.appendChild(li);
+            // }
+        });
+    }
+}
 

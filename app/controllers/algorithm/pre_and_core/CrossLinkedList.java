@@ -68,7 +68,7 @@ public class CrossLinkedList {
 			}
 		}
 
-		System.out.println("this arc is: " + tail + "-->" + head + " " + info);
+		//System.out.println("this arc is: " + tail + "-->" + head + " " + info);
 	}
 	
 	public void addAllCourseInGraph(HashMap<Integer, ArrayList<Node>> list){

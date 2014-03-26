@@ -709,6 +709,12 @@ public class StudyPlanController extends Controller {
 			}
 		}
 
+		for(Integer key : semesterBin.keySet()){
+			ArrayList<Node> temp = semesterBin.get(key);
+			for(Node course: temp){
+				System.out.print(course.cName +" is in "+ course.semester);
+			}
+		}
 	}
 
 	public static void FillNonePreCoreReq(TestLinkList degreeProgram,
