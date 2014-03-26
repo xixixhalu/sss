@@ -19,11 +19,10 @@ import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
-	public static StudyPlan studyplan;
+	static StudyPlan studyplan;
 	
 	public static Result retrieveDegrees() {
 		try{
-			StudyPlanController.CreateDegreeProgram(new Integer(5));
 			return ok(views.html.index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
@@ -64,12 +63,10 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoFillCourse(){
-		
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		TakeForm form = filledForm.get();
 		String want = form.wantTakeCourses;
-		String already = form.alreadyTakenCourses;
-			
+		String already = form.alreadyTakenCourses;			
 		try {
 			JSONArray wantCourses = new JSONArray(want);
 			JSONArray alreadyCourses = new JSONArray(already);
@@ -89,13 +86,14 @@ public class StudyPlanController2 extends Controller {
 				studyplan.CheckInSelectedCourse(cid, sid, id);
 			}
 			studyplan.degreeProgram.CheckAllSimpleAndComplex();
+			studyplan.AutoFillCourseBin();
 			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
-		studyplan.degreeProgram.displayallComplexReq();
+		
 		return ok();
 		
 	}
@@ -187,6 +185,10 @@ public class StudyPlanController2 extends Controller {
 				}
 			}
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
+			
+			//Bowen: autoAssignSemester
+			Logger.info("+++++++++++++++++++++++++++++");
+			studyplan.AutoAssignSemester(8);
 			return ok();
 		}catch(Exception e)
 		{
