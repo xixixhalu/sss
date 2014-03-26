@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
-	static StudyPlan studyplan;
+	public static StudyPlan studyplan;
 	
 	public static Result retrieveDegrees() {
 		try{
@@ -186,8 +186,8 @@ public class StudyPlanController2 extends Controller {
 			}
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
-			//Bowen: autoAssignSemester
-			studyplan.AutoAssignSemester(8);
+			//Bowen: autoAssignSemester, hard code 8 semester
+			//HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8);
 			return ok();
 		}catch(Exception e)
 		{
@@ -196,7 +196,8 @@ public class StudyPlanController2 extends Controller {
 		}	
 	}
 	
-	public static void generateReq(Integer id){
+	public static Result generateStudyPlan(){
+		return ok(views.html.stu_studyplan.render());
 	}
 	
 }
