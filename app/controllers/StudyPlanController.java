@@ -711,7 +711,12 @@ public class StudyPlanController extends Controller {
 
 		for(Integer key : semesterBin.keySet()){
 			ArrayList<Node> temp = semesterBin.get(key);
-			for(Node course: temp){
+			for(Node course: temp){// get each 
+				
+				
+				
+				
+				
 				System.out.print(course.cName +" is in "+ course.semester);
 			}
 		}
