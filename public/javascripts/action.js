@@ -469,7 +469,7 @@ function autoCourse() {
         		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
         	}, function(data) {
             // var coursesObj = eval("(" + data + ")");
-            // var courses = coursesObj.courses;
+             //var courses = coursesObj.courses;
             // for ( i = 0; i < courses.length; i++) {
                 // var li = document.createElement("li");
                 // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;

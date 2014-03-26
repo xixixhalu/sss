@@ -187,7 +187,6 @@ public class StudyPlanController2 extends Controller {
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester
-			Logger.info("+++++++++++++++++++++++++++++");
 			studyplan.AutoAssignSemester(8);
 			return ok();
 		}catch(Exception e)
