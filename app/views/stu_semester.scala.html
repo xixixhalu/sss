@@ -12,6 +12,7 @@
         <link href="/assets/stylesheets/popwindow.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
         <script src="/assets/javascripts/semester.js"></script>
+        <script src="/assets/javascripts/action.js" type="text/javascript"></script>
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
@@ -56,7 +57,7 @@
         <div class="step">
             <ul>
                 <li>
-                    <a href="course">STEP 1 : Choosing Courses</a>
+                    <a>STEP 1 : Choosing Courses</a>
                 </li>
                 <li class="active">
                     STEP 2 : Scheduling Courses
@@ -83,7 +84,8 @@
                     </ul>
                 </div>
                 <div>
-                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                    <a class="button left_auto" href="javascript:{}"
+                    		onclick="autoSemester()">AUTO</a><a class="button left_next" href="studyplan">NEXT</a>
                 </div>
             </div>
             <div class="right float_right">

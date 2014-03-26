@@ -10,6 +10,7 @@ window.onload = function() {
     for ( i = 0; i < want.length; i++) {
         var li = document.createElement("li");
         var id = want[i].id;
+        li.id=id;
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
@@ -20,6 +21,7 @@ window.onload = function() {
     for ( i = 0; i < already.length; i++) {
         var li = document.createElement("li");
         var id = already[i].id;
+        li.id=id;
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
@@ -143,7 +145,7 @@ function semesterDorpDown(evt) {
 }
 
 function addCourseToSemester(course, id) {
-    var lis = document.getElementById("req_list").getElementsByTagName("li");
+    var lis = document.getElementById("req_list").children;
     for ( i = 1; i < lis.length; i++) {
         if (lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].style.display == "block") {
             var ul = lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].getElementsByTagName("ul")[0];

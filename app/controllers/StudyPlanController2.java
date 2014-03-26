@@ -11,6 +11,7 @@ import controllers.forms.TakeForm;
 import models.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -22,7 +23,6 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result retrieveDegrees() {
 		try{
-			StudyPlanController.CreateDegreeProgram(new Integer(5));
 			return ok(views.html.index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
@@ -63,12 +63,10 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoFillCourse(){
-		
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		TakeForm form = filledForm.get();
 		String want = form.wantTakeCourses;
-		String already = form.alreadyTakenCourses;
-			
+		String already = form.alreadyTakenCourses;			
 		try {
 			JSONArray wantCourses = new JSONArray(want);
 			JSONArray alreadyCourses = new JSONArray(already);
@@ -88,13 +86,14 @@ public class StudyPlanController2 extends Controller {
 				studyplan.CheckInSelectedCourse(cid, sid, id);
 			}
 			studyplan.degreeProgram.CheckAllSimpleAndComplex();
+			studyplan.AutoFillCourseBin();
 			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
 			return badRequest(views.html.error.render("Some data cannot be obtained"));
 		}
-		studyplan.degreeProgram.displayallComplexReq();
+		
 		return ok();
 		
 	}
@@ -142,7 +141,63 @@ public class StudyPlanController2 extends Controller {
 		}
 	}
 	
-	public static void generateReq(Integer id){
+	public static Result autoAssignSemester(){
+		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
+		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
+		
+		try{
+			TakeForm form = filledForm.get();
+			
+			String wantTakeCourses = form.wantTakeCourses;
+			String alreadyTakeCourses = form.alreadyTakenCourses;
+			
+			JSONArray wantCourses = new JSONArray(wantTakeCourses);
+			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
+			
+			for (int i = 0; i < wantCourses.length(); i++) {
+				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
+				int id = wantCourse.getInt("id");
+
+				String core_ids = Course.findById(Integer.valueOf(id)).getCoreq(2);
+				if (!core_ids.trim().equals("-")) {
+					String[] colist = core_ids.split(" ");
+					ArrayList<Integer> core = new ArrayList<Integer>();
+					for(int j = 2; j < colist.length; j+=2)
+					{
+						core.add(Integer.valueOf(colist[j]));
+					}
+					corequisites.put(Integer.valueOf(id), core);
+				}
+			}
+
+			for (int i = 0; i < alreadyCourses.length(); i++) {
+				JSONObject alreadyCourse = (JSONObject) alreadyCourses.get(i);
+				int id = alreadyCourse.getInt("id");
+				String core_ids = Course.findById(Integer.valueOf(id)).getCoreq(2);
+				if (!core_ids.trim().equals("-")) {
+					String[] colist = core_ids.split(" ");
+					ArrayList<Integer> core = new ArrayList<Integer>();
+					for(int j = 2; j < colist.length; j+=2)
+					{
+						core.add(Integer.valueOf(colist[j]));
+					}
+					corequisites.put(Integer.valueOf(id), core);
+				}
+			}
+			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
+			
+			//Bowen: autoAssignSemester, hard code 8 semester
+			//HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8);
+			return ok();
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return badRequest(views.html.error.render("Some data cannot be obtained"));
+		}	
+	}
+	
+	public static Result generateStudyPlan(){
+		return ok(views.html.stu_studyplan.render());
 	}
 	
 }

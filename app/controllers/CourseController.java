@@ -15,6 +15,7 @@ import java.util.List;
 public class CourseController extends Controller {
 
     public static Result retrieveCourses() {
+
     	try{
     		return ok(views.html.course_list.render(Course.getAll()));
     	}catch(Exception e)
