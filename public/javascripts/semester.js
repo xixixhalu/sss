@@ -111,7 +111,7 @@ function appendSemester() {
         var credits = document.createElement("div");
         credits.className = "credits";
 
-        credits.innerHTML = "<span>Total Credits:</span><input type='text'/><span>Minimun Credits:</span><input type='text' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='text' name='max' value='" + max + "'/><a class='auto button'>AUTO</a>";
+        credits.innerHTML = "<span>Total Credits:</span><input type='text'/><span>Minimun Credits:</span><input type='text' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='text' name='max' value='" + max + "'/>";//<a class='auto button'>AUTO</a>";
 
         div.appendChild(req_course_list);
         div.appendChild(credits);
