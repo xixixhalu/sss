@@ -2,8 +2,7 @@ package controllers.algorithm.req_and_course;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
 
 public class TestLinkList {
 
@@ -126,6 +125,10 @@ public class TestLinkList {
 		}
 		//选课
 		this.course_list.get(i).set2ChooseCourse(courseID); //在requirement链表中标记
+		this.course_list.get(i).first.needFinish--;
+		if(this.course_list.get(i).first.needFinish==0){
+			this.course_list.get(i).first.statisfied=true;
+		}
 		for(int k=0; k<this.course_list.size(); k++){
 			if(k!=i){
 				this.course_list.get(k).deleteByData(courseID);
@@ -136,6 +139,102 @@ public class TestLinkList {
 		return true; // this course exists and has not been chosen.
 	}
 	
+	
+	
+	public boolean checker(){
+		for(ComplexReq complex: allComplexReq){
+			ComplexReq_Node simpleReq = complex.first.next;
+			if(complex.first.relation.equals("or")){
+				boolean ifBreakInOr = false;
+				while(simpleReq !=null){
+					int remainCourseInSimple=0;
+					Node course = simpleReq.SimpleReq.first.next;
+					while(course!=null && course.chosen==false){
+						remainCourseInSimple++;
+						course = course.next;
+					}
+					if(simpleReq.SimpleReq.first.needFinish<=remainCourseInSimple){
+						ifBreakInOr = true;
+						break;
+					}else{
+						simpleReq = simpleReq.next;
+					}
+				}
+				
+				if(ifBreakInOr==true){
+					continue;
+				}else{
+					return false;
+				}
+			}else if(complex.first.relation.equals("and")){ // complex has and relation
+				boolean ifBreakInAnd = false;
+				while(simpleReq!=null){
+					int remainCourseInSimple=0;
+					Node course = simpleReq.SimpleReq.first.next;
+					while(course!=null & course.chosen==false){
+						remainCourseInSimple++;
+						course = course.next;
+					}
+					
+					if(simpleReq.SimpleReq.first.needFinish<=remainCourseInSimple){
+						simpleReq = simpleReq.next;
+					}else{
+						ifBreakInAnd=true;
+						break;
+					}
+				}
+				
+				if(ifBreakInAnd==true){
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 
+	public void CheckAllSimpleAndComplex(){  //check all simple and complex satisfaction
+		//int flag1=0;
+		//int flag2 = 0;
+		boolean ifBreak =false;
+		for(int i =0; i<this.course_list.size();i++){
+			if(this.course_list.get(i).first.needFinish==0){
+				this.course_list.get(i).first.statisfied=true;
+			}
+			//System.out.print("in simple "+ flag1++ +" ");
+		}
+		
+		for(int j=0; j<this.allComplexReq.size();j++){
+			ComplexReq complexTemp = this.allComplexReq.get(j);
+			ComplexReq_Node simpleReq = complexTemp.first.next;
+			if(this.allComplexReq.get(j).first.relation.equals("or")){
+				
+				while(simpleReq !=null){
+					if(simpleReq.SimpleReq.first.needFinish==0){
+						complexTemp.first.satisfied=true;
+						break;
+					}
+					simpleReq = simpleReq.next;
+				}
+				//System.out.print("in complex or "+ flag2++ +" ");
+			}else{
+				while(simpleReq !=null){
+					if(simpleReq.SimpleReq.first.needFinish!=0){
+						ifBreak = true;
+						break;
+					}
+					simpleReq = simpleReq.next;
+				}
+				if(ifBreak){
+					
+				}else{
+					complexTemp.first.satisfied=true;
+				}
+				
+				//System.out.print("in complex and"+ flag2++ +" ");
+			}
+		}
+	}
 
 }

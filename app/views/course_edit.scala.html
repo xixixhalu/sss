@@ -22,7 +22,7 @@
         </script>
     </head>
 
-    <body>
+    <body id="@course.getId()">
         <div id="header"></div>
 
         <!--网页主体-->
@@ -35,7 +35,7 @@
                 <div class="top">
 
                     <div>
-                        <span class="title">Rrefix&amp;Number: </span>
+                        <span class="title">Prefix&amp;Number: </span>
                         <input type="text" name="prefix" value="@course.getPrefix()">
                         <span> - </span>
                         <input type="text" name="number" value="@course.getNumber()">
@@ -76,7 +76,7 @@
                         </div> -->
                     </div>
                     <div>
-                        <span>Available semester(s) for this course onLine: </span>
+                        <span>Available semester(s) for this course online: </span>
                         <br>
                         <div class="semesters">
                             <input  type="checkbox" value="Spring" name="online[0]" id="spring2" @if(course.getOnline().get(0)!=null){checked}/>
@@ -111,11 +111,11 @@
                             <a onclick="addReq('prereq','reqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
-                            title="As the example showed below,
-                            1.CS115 2.CS284, CS146
-                            it means (CS115 OR (CS284 AND CS146)),
-                            the relation between boxes is OR,
-                            the relation within boxes is AND">
+                            title="Please type the course's prefix and number, 
+then click 'ADD' button.
+As the example showed below, 
+1 CS115 or 1 CS284 and 2 CS146
+it means (CS115 OR CS284) AND CS146">
                         </div>
                         <div>
                             <ul class="req_list" id="reqlist">
@@ -135,11 +135,11 @@
                             <a onclick="addReq('coreq','coqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
-                            title="As the example showed below,
-                            1.CS115 2.CS284, CS146
-                            it means (CS115 OR (CS284 AND CS146)),
-                            the relation between boxes is OR,
-                            the relation within boxes is AND">
+                            title="Please type the course's prefix and number, 
+then click 'ADD' button.
+As the example showed below, 
+1 CS115 or 1 CS284 and 2 CS146
+it means (CS115 OR CS284) AND CS146">
                         </div>
                     </div>
 

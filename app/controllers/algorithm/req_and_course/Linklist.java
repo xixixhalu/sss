@@ -2,11 +2,21 @@ package controllers.algorithm.req_and_course;
 
 public class Linklist {
 	public Node first; // head node
+	//public boolean satisfied = false;
 
 	private int pos; // Node's position
 
 	public Linklist() {
 		this.first = null;
+	}
+	
+	public boolean isNull(){
+		Node temp = first;
+		if(temp.next.isNull()==false){
+			return false;
+		}else{
+			return true;
+		}
 	}
 	
 	public Linklist(int simpleReqID, String simpleReqName, int needFinish){
@@ -92,6 +102,10 @@ public class Linklist {
 
 	public void displayAllNodes() {
 		Node current = first;
+		System.out.print("This simple need to "+ current.needFinish + " to be finished and status is "+current.statisfied +"\n");
+		
+		current.showFirstNode();
+		current = current.next;
 		while (current != null) {
 			current.showNode();
 			current = current.next;

@@ -32,7 +32,7 @@
             <form action="@routes.CourseController.addCourse()" method="post" onsubmit="return doSubmit()">
                 <div class="top">
                     <div>
-                        <span class="title">Rrefix&amp;Number: </span>
+                        <span class="title">Prefix&amp;Number: </span>
                         <input type="text" name="prefix">
                         <span> - </span>
                         <input type="text" name="number">
@@ -74,7 +74,7 @@
                         </div> -->
                     </div>
                     <div>
-                        <span>Available semester(s) for this course onLine: </span>
+                        <span>Available semester(s) for this course online: </span>
                         <br>
                         <div class="semesters">
                             <input  type="checkbox" value="Spring" name="online[0]" id="spring2"/>
@@ -109,11 +109,15 @@
                             <a onclick="addReq('prereq','reqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
-                            title="As the example showed below,
-                            1.CS115 2.CS284, CS146
-                            it means (CS115 OR (CS284 AND CS146)),
-                            the relation between boxes is OR,
-                            the relation within boxes is AND">
+                            title="To add a prerequisite, 
+    please type the course's prefix and number, 
+    then click 'ADD' button.
+To remove a prerequisite,
+    double-click the added box.
+Here is an example to specify the boolean expression, 
+    1 CS115 OR 1 CS284 AND 2 CS146
+    means (CS115 OR CS284) AND CS146,
+    aka., CSS115 OR CS248, CS146">
                         </div>
                         <div>
                             <ul class="req_list" id="reqlist">
@@ -134,11 +138,15 @@
                             <a onclick="addReq('coreq','coqlist')"> ADD </a>
                         </div>
                         <div class="float_left help_img"><img src="/assets/images/question-mark.png" height="22px"
-                            title="As the example showed below,
-                            1.CS115 2.CS284, CS146
-                            it means (CS115 OR (CS284 AND CS146)),
-                            the relation between boxes is OR,
-                            the relation within boxes is AND">
+                            title="To add a corequisite, 
+    please type the course's prefix and number, 
+    then click 'ADD' button.
+To remove a corequisite,
+    double-click the added box.
+Here is an example to specify the boolean expression, 
+    1 CS115 OR 1 CS284 AND 2 CS146
+    means (CS115 OR CS284) AND CS146,
+    aka., CSS115 OR CS248, CS146">
                         </div>
                     </div>
 

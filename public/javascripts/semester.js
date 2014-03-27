@@ -1,6 +1,47 @@
 /**
  * @author Bohan Zheng
  */
+window.onload = function() {
+    var jsonData = document.getElementById("jsonData").innerText;
+    var courseObjs = eval("(" + jsonData + ")");
+    var want = eval("(" + document.getElementById("want").innerText + ")");
+    var already = eval("(" + document.getElementById("already").innerText + ")");
+    var wantTakeUL = document.getElementById("wantTake");
+    for ( i = 0; i < want.length; i++) {
+        var li = document.createElement("li");
+        var id = want[i].id;
+        li.id=id;
+        var prefix = courseObjs[id].prefix;
+        var num = courseObjs[id].num;
+        var title = courseObjs[id].title;
+        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        wantTakeUL.appendChild(li);
+    }
+    var alreadyTakenUL = document.getElementById("alreadyTaken");
+    for ( i = 0; i < already.length; i++) {
+        var li = document.createElement("li");
+        var id = already[i].id;
+        li.id=id;
+        var prefix = courseObjs[id].prefix;
+        var num = courseObjs[id].num;
+        var title = courseObjs[id].title;
+        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        alreadyTakenUL.appendChild(li);
+    }
+    $(document).ready(function() {
+        $(".left_list a").click(function() {
+            var i = this.parentElement.innerHTML.indexOf("<a>");
+            var course = this.parentElement.innerHTML.substring(0, i);
+            // var j = course.lastIndexOf("     ");
+            // if (j > 0) {
+                // var course = course.substring(j + 5);
+            // }
+            var id = this.parentElement.id;
+            if (addCourseToSemester(course, id))
+                this.parentElement.style.textDecoration = "line-through";
+        });
+    });
+};
 var f = 0;
 function addSemesters() {
     f = 0;
@@ -70,7 +111,7 @@ function appendSemester() {
         var credits = document.createElement("div");
         credits.className = "credits";
 
-        credits.innerHTML = "<span>Total Credits:</span><input type='text'/><span>Minimun Credits:</span><input type='text' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='text' name='max' value='" + max + "'/><a class='auto button'>AUTO</a>";
+        credits.innerHTML = "<span>Total Credits:</span><input type='text'/><span>Minimun Credits:</span><input type='text' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='text' name='max' value='" + max + "'/>";//<a class='auto button'>AUTO</a>";
 
         div.appendChild(req_course_list);
         div.appendChild(credits);
@@ -103,21 +144,8 @@ function semesterDorpDown(evt) {
     }
 }
 
-
-$(document).ready(function() {
-    $(".left_list a").click(function() {
-        var i = this.parentElement.innerHTML.indexOf("<a>");
-        var course = this.parentElement.innerHTML.substring(0, i);
-        var j = course.lastIndexOf("     ");
-        var id = this.parentElement.id;
-        var course = course.substring(j + 5);
-        if (addCourseToSemester(course, id))
-            this.parentElement.style.textDecoration = "line-through";
-    });
-});
-
 function addCourseToSemester(course, id) {
-    var lis = document.getElementById("req_list").getElementsByTagName("li");
+    var lis = document.getElementById("req_list").children;
     for ( i = 1; i < lis.length; i++) {
         if (lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].style.display == "block") {
             var ul = lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].getElementsByTagName("ul")[0];
@@ -148,4 +176,47 @@ function getPrefixNumber(li) {
     var j = course.lastIndexOf("    ");
     course = course.substring(j);
     return course;
+}
+
+function autoSemester() {
+	
+	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+    var wantDataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    
+    var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
+    var alreadyDataArray=new Array;
+    for ( i = 0; i < alreadyTaken.length; i++) {
+        var id = alreadyTaken[i].id;
+        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+    }
+    
+    var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) 
+    	+ ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) +'})');
+
+	/* null manipulation */
+    if (true) {
+        var url = "/student/autoFillSemester";
+        $.post(url, 
+        	{
+        		wantTakeCourses: JSON.stringify(wantDataArray),
+        		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
+        	}, function(data) {
+            // var coursesObj = eval("(" + data + ")");
+            // var courses = coursesObj.courses;
+            // for ( i = 0; i < courses.length; i++) {
+                // var li = document.createElement("li");
+                // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
+                // ul.appendChild(li);
+            // }
+        });
+    }
 }

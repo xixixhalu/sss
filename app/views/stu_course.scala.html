@@ -36,10 +36,10 @@
         <div class="step">
             <ul>
                 <li class="active">
-                    <a href="course.html">STEP 1 : Choosing Courses</a>
+                    STEP 1 : Choosing Courses
                 </li>
                 <li>
-                    <a href="semester.html">STEP 2 : Scheduling Courses</a>
+                    <a>STEP 2 : Scheduling Courses</a>
                 </li>
                 <li>
                     <a>STEP 3 : Getting Study Plan</a>
@@ -54,14 +54,25 @@
                 </div>
                 <div class="left_list">
                     <span onclick="getLikeCourses()">Want to take: </span>
-                    <ul id="wantTake"></ul>
+                    <ul id="wantTake" style="border-bottom: dotted 1px #AAAAAA">
+                    	
+                    </ul>
                 </div>
                 <div class="left_list">
                     <span onclick="getTakenCourses()">Already taken: </span>
-                    <ul id="alreadyTaken"></ul>
+                    <ul id="alreadyTaken">
+                    	
+                    </ul>
                 </div>
                 <div>
-                    <a class="button left_auto">AUTO</a><a class="button left_next">NEXT</a>
+                	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
+                		<input type="hidden" value="" name="">
+                		
+                    	<a class="button left_auto" href="javascript:{}"
+                    		onclick="autoCourse()">AUTO</a>
+                    	<a class="button left_next" href="javascript:{}"
+                    	   onclick='submitCourse(this.parentElement)'>NEXT</a>
+                	</form>
                 </div>
             </div>
             <div class="right float_right">
@@ -80,9 +91,16 @@
                             	cont += Html(req.getTitle());
                                 cont += Html(" <a onclick=\"dropDown('req_"+ req.getId() +"')\">&otimes;</a>");
                             cont += Html("</div>");
-                            cont += Html("<span>You must take all the courses listed below.</span>");
+                          	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
+                          	if(srReqs.length() > 1)
+                          	{
+                          		if(srReqs.get(2).asInstanceOf[JSONObject].get("relation").equals("or"))
+                          			cont += Html("<span>You must take courses in one of options listed below</span>");
+                          		else
+                          			cont += Html("<span>You must take courses all of options listed below</span>");
+                          	}
                             cont += Html("<div>");
-                            	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
+                            	
                             	for(i <- 0 to srReqs.length()-1)
                             	{
                             	var srReqObject : JSONObject = srReqs.get(i).asInstanceOf[JSONObject];
@@ -93,11 +111,12 @@
 								var cg : Cg = Cg.findById(cgId);
                                 cont += Html("<ul class=\"req_course_list\" id=\"sr_" + srId + "\">");
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
+                                	cont += Html("<div>You must take "+reqNum+" courses listed below.</div>");
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li>");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
-                                    	cont += Html(course.getTitle());
-                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +")'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +")'>&oplus;</a>");
+                                    	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
+                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
                                     cont += Html("</li>");
                                     }
                                     //cont += Html("<li>");
@@ -105,7 +124,7 @@
                                     //cont += Html("</li>");
                                 cont += Html("</ul>");
                                 }
-                                cont += Html("<a class=\"auto button\">AUTO</a>");
+                                //cont += Html("<a class=\"auto button\">AUTO</a>");
                             cont += Html("</div>");
                         cont += Html("</div>");
                     cont += Html("</li>");
@@ -153,7 +172,7 @@
             <br>
             <span>Copy right: Team #10</span>
         </div>
-        <div id="jsonData">@jsonData</div>
+        <div id="jsonData" style="display: none;">@jsonData</div>
     </body>
 </html>
 

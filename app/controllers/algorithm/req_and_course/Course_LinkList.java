@@ -3,7 +3,6 @@ package controllers.algorithm.req_and_course;
 public class Course_LinkList {
 	public CourseNode first; // head node
 
-	public boolean beChosen;
 	private int pos; // Node's position
 
 	public Course_LinkList() {
@@ -44,10 +43,10 @@ public class Course_LinkList {
 	//
 	// }
 
-	public void insertNode(CourseNode SimpleReq) {
+	public void insertNode(CourseNode SimpleAndCompleReq) {
 		CourseNode current = first;
-		SimpleReq.next = current.next;
-		current.next = SimpleReq;
+		SimpleAndCompleReq.next = current.next;
+		current.next = SimpleAndCompleReq;
 
 	}
 
