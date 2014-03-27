@@ -52,7 +52,6 @@ public class StudyPlanController2 extends Controller {
 			studyPlanPool.put(uuid, studyplan);
 			//Logger.info(uuid);
 			studyplan.CreateDegreeProgram(Integer.valueOf(degreeId));
-			
 			//get all courses' JSON
 			JSONObject json = new JSONObject();
 			List<Course> courses = Course.getAll();
