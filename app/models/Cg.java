@@ -68,6 +68,18 @@ public class Cg extends Model{
 	/** delete(Integer), 
 	 * Corresponding to delete statement*/
 	public static void delete(Integer id) {
+		/**
+		 * Cascade
+		 */
+		List<Sr> srs = Sr.getAll();
+		for (Sr sr : srs) {
+			if (sr.getCg_id().equals(id)){
+				Sr.delete(sr.getId());
+				sr.update();
+				break;
+			}
+		}
+		
 		ECg ecg = Ebean.find(ECg.class, id);
 		if(ecg != null)
 			ecg.delete();

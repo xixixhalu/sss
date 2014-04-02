@@ -70,6 +70,25 @@ public class Requirement extends Model{
 	/** delete(Integer), 
 	 * Corresponding to delete statement*/
 	public static void delete(Integer id) {
+		/**
+		 * cascade
+		 */
+		List<Degree> degrees = Degree.getAll();
+		for (Degree degree : degrees) {
+			ArrayList<String> req_ids = degree.getReq_ids();
+			
+			req_ids.remove(id.toString());
+			
+			StringBuffer updated_req_ids = new StringBuffer();
+			for (int i = 0; i < req_ids.size(); ++i) {
+				updated_req_ids.append(req_ids.get(i));
+				if (i != req_ids.size() - 1)
+					updated_req_ids.append(",");
+			}
+			degree.setReq_ids(updated_req_ids.toString());
+			degree.update();
+		}
+		
 		ERequirement erequirement = Ebean.find(ERequirement.class, id);
 		if(erequirement != null)
 			erequirement.delete();
