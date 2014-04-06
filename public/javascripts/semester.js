@@ -8,6 +8,7 @@ var ASO = {
         93 : "3",
         89 : "2",
         84 : "1",
+        86 : "1",
         74 : "1",
         180 : "1"
     }
@@ -15,7 +16,7 @@ var ASO = {
 
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
-    var courseObjs = eval("(" + jsonData + ")");
+    courseObjs = eval("(" + jsonData + ")");
     var want = eval("(" + document.getElementById("want").innerText + ")");
     var already = eval("(" + document.getElementById("already").innerText + ")");
     var wantTakeUL = document.getElementById("wantTake");
@@ -159,14 +160,19 @@ function semesterDorpDown(evt) {
 
 function addCourseToSemester(course, id) {
     var lis = document.getElementById("req_list").children;
+    var num = 0;
     for ( i = 1; i < lis.length; i++) {
         if (lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].style.display == "block") {
             var ul = lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].getElementsByTagName("ul")[0];
+            num = i;
             break;
         }
     }
     if (!ul) {
         alert("Please select a semester first!");
+        return false;
+    }
+    if (!checkSemesterConstraints(id, num)) {
         return false;
     }
     var li = document.createElement("li");
@@ -261,3 +267,154 @@ function getSemesterData() {
     }
     return semesters;
 }
+
+function checkSemesterConstraints(id, num) {
+    if (num < ASO.courses[id]) {
+        alert("the eariliest possiblity for this course is No." + ASO.courses[id] + " semester");
+        return false;
+    }
+    var reqList = document.getElementById("req_list").getElementsByClassName("req_course_list");
+    var prereqs = new Array();
+    for ( i = 0; i < num; i++) {
+        var prereqlis = reqList[i].children;
+        for ( j = 0; j < prereqlis.length; j++) {
+            prereqs.push(prereqlis[j].id);
+        }
+    }
+    var coreqlis = reqList[num - 1].children;
+    var coreqs = new Array();
+    for ( i = 0; i < coreqlis.length; i++) {
+        coreqs.push(coreqlis[i].id);
+    }
+    if (!checkSemesterReq(id, prereqs)) {
+        var str = "check the prerequisite constraints!\n";
+        var prereqs = courseObjs[id].prereq;
+        for ( i = 0; i < prereqs.length; i++)
+            str += " " + prereqs[i].relation + " " + prereqs[i].prefix + prereqs[i].num;
+        alert(str);
+        return false;
+    }
+    if (!checkSemesterReq(id, coreqs)) {
+        var str = "check the corequisite constraints!\n";
+        var coreqs = courseObjs[id].coreq;
+        for ( i = 0; i < coreqs.length; i++)
+            str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+        alert(str);
+        return false;
+    }
+    return true;
+}
+
+function checkSemesterReq(id, courses) {
+    var p = false;
+
+    var prereq = new Array;
+
+    if (courseObjs[id].prereq)
+        prereq = courseObjs[id].prereq;
+
+    if (prereq.length == 0)
+        return true;
+
+    var prereqCourses = new Array;
+
+    //check if the prerequisites exist in course bin ignoring the relation
+    for ( i = 0; i < courses.length; i++) {
+        for ( reqNum = 0; reqNum < prereq.length; reqNum++) {
+            if (courses[i] == prereq[reqNum].id)
+                prereqCourses.push(courses[i]);
+        }
+    }
+    //if exist check if they satisfy the relation
+    if (prereqCourses.length > 0) {
+
+        //用来记录每组的条件是否满足
+        var ifsatisfy = new Array;
+        //找出一共有多少组
+        var gs = new Array;
+        for ( i = 0; i < prereq.length; i++) {
+            if (i == 0) {
+                gs.push(prereq[i].group);
+            } else {
+                if (prereq[i].group != prereq[i - 1].group) {
+                    gs.push(prereq[i].group);
+                }
+            }
+        }
+        //先取出组之间的关系，便于以后处理
+        var groupRelation = new Array;
+        while (gs.length > 0) {
+            //先处理prerequisite里的第一组
+            var g = gs.shift();
+            //取出第一组的课
+            var group = new Array;
+            for ( i = 0; i < prereq.length; i++) {
+                if (prereq[i].group == g) {
+                    group.push(prereq[i]);
+                }
+            }
+            var total = group.length;
+            //判断第一组课之间的关系
+            try {
+                //如果这一组课里只有一门课,则无法取到这组课之间的关系，那么默认设置课之间的关系为or
+                var relation = group[1].relation;
+            } catch(e) {
+                var relation = "or";
+            }
+            groupRelation.push(group[0].relation);
+            if (relation == "or") {
+                for ( i = 0; i < prereqCourses.length; i++) {
+                    for ( j = 0; j < group.length; j++) {
+                        if (prereqCourses[i] == group[j].id) {
+                            total--;
+                        }
+                    }
+                }
+                if (total < group.length) {
+                    ifsatisfy.push(true);
+                } else
+                    ifsatisfy.push(false);
+            } else if (relation == "and") {
+                for ( i = 0; i < prereqCourses.length; i++) {
+                    for ( j = 0; j < group.length; j++) {
+                        if (prereqCourses[i] == group[j].id) {
+                            total--;
+                        }
+                    }
+                }
+                if (total == 0) {
+                    ifsatisfy.push(true);
+                } else
+                    ifsatisfy.push(false);
+            } else {
+                //留着处理not关系
+            }
+            //第一组处理完了，准备处理下一组
+        }
+
+        //处理组之间的关系
+        if (groupRelation.length == 1) {
+            //如果只有一组
+            return ifsatisfy[0];
+        } else {
+            //不止一组
+            if (groupRelation[1] == "or") {
+                var ret = false;
+                for ( i = 0; i < ifsatisfy.length; i++) {
+                    ret = ifsatisfy[i] || ret;
+                }
+            } else if (groupRelation[1] == "and") {
+                var ret = true;
+                for ( i = 0; i < ifsatisfy.length; i++) {
+                    ret = ifsatisfy[i] && ret;
+                }
+            } else {
+                //留着处理not关系
+            }
+        }
+        return ret;
+    } else {
+        return false;
+    }
+}
+
