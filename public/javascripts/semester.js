@@ -1,16 +1,29 @@
 /**
  * @author Bohan Zheng
  */
+var ASO = {
+    "minSemester" : "4",
+    "courses" : {
+        97 : "3",
+        93 : "3",
+        89 : "2",
+        84 : "1",
+        86 : "1",
+        74 : "1",
+        180 : "1"
+    }
+};
+
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
-    var courseObjs = eval("(" + jsonData + ")");
+    courseObjs = eval("(" + jsonData + ")");
     var want = eval("(" + document.getElementById("want").innerText + ")");
     var already = eval("(" + document.getElementById("already").innerText + ")");
     var wantTakeUL = document.getElementById("wantTake");
     for ( i = 0; i < want.length; i++) {
         var li = document.createElement("li");
         var id = want[i].id;
-        li.id=id;
+        li.id = id;
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
@@ -21,7 +34,7 @@ window.onload = function() {
     for ( i = 0; i < already.length; i++) {
         var li = document.createElement("li");
         var id = already[i].id;
-        li.id=id;
+        li.id = id;
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
@@ -34,7 +47,7 @@ window.onload = function() {
             var course = this.parentElement.innerHTML.substring(0, i);
             // var j = course.lastIndexOf("     ");
             // if (j > 0) {
-                // var course = course.substring(j + 5);
+            // var course = course.substring(j + 5);
             // }
             var id = this.parentElement.id;
             if (addCourseToSemester(course, id))
@@ -99,7 +112,7 @@ function appendSemester() {
 
         var sem_title = document.createElement("div");
         sem_title.className = "sem_title";
-        sem_title.innerHTML = semester + " " + year + "<a>&oplus;</a>";
+        sem_title.innerHTML = semester + " " + year;
         sem_title.onclick = semesterDorpDown;
 
         var div = document.createElement("div");
@@ -111,7 +124,8 @@ function appendSemester() {
         var credits = document.createElement("div");
         credits.className = "credits";
 
-        credits.innerHTML = "<span>Total Credits:</span><input type='text'/><span>Minimun Credits:</span><input type='text' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='text' name='max' value='" + max + "'/>";//<a class='auto button'>AUTO</a>";
+        credits.innerHTML = "<span>Minimun Credits:</span><input type='number' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='number' name='max' value='" + max + "'/>";
+        //<a class='auto button'>AUTO</a>";
 
         div.appendChild(req_course_list);
         div.appendChild(credits);
@@ -146,9 +160,11 @@ function semesterDorpDown(evt) {
 
 function addCourseToSemester(course, id) {
     var lis = document.getElementById("req_list").children;
+    var num = 0;
     for ( i = 1; i < lis.length; i++) {
         if (lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].style.display == "block") {
             var ul = lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].getElementsByTagName("ul")[0];
+            num = i;
             break;
         }
     }
@@ -156,7 +172,11 @@ function addCourseToSemester(course, id) {
         alert("Please select a semester first!");
         return false;
     }
+    if (!checkSemesterConstraints(id, num)) {
+        return false;
+    }
     var li = document.createElement("li");
+    li.id = id;
     li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
     ul.appendChild(li);
     return true;
@@ -179,44 +199,222 @@ function getPrefixNumber(li) {
 }
 
 function autoSemester() {
-	
-	var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
+
+    var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
-        var sid = wantTake[i].getElementsByTagName("input")[0].value;
-        var cid = wantTake[i].getElementsByTagName("input")[1].value;
-        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+        // var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        // var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, -1, -1));
     }
-    
-    
+
     var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
-    var alreadyDataArray=new Array;
+    var alreadyDataArray = new Array;
     for ( i = 0; i < alreadyTaken.length; i++) {
         var id = alreadyTaken[i].id;
-        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
-        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
-        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+        // var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        // var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, -1, -1));
     }
-    
-    var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) 
-    	+ ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) +'})');
 
-	/* null manipulation */
+    var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) + ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) + '})');
+
+    /* null manipulation */
     if (true) {
         var url = "/student/autoFillSemester";
-        $.post(url, 
-        	{
-        		wantTakeCourses: JSON.stringify(wantDataArray),
-        		alreadyTakenCourses: JSON.stringify(alreadyDataArray)
-        	}, function(data) {
+        $.post(url, {
+            wantTakeCourses : JSON.stringify(wantDataArray),
+            alreadyTakenCourses : JSON.stringify(alreadyDataArray),
+            /* [semester:{num:1,title:spring 2014,;minCredit:1,maxCredit:10,courses:[1,2,3]},...]*/
+            semesterData : JSON.stringify(getSemesterData())
+        }, function(data) {
             // var coursesObj = eval("(" + data + ")");
             // var courses = coursesObj.courses;
             // for ( i = 0; i < courses.length; i++) {
-                // var li = document.createElement("li");
-                // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
-                // ul.appendChild(li);
+            // var li = document.createElement("li");
+            // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
+            // ul.appendChild(li);
             // }
         });
     }
 }
+
+function Semester(num, title, minCredit, maxCredit, courses) {
+    this.num = num;
+    this.title = title;
+    this.minCredit = minCredit;
+    this.maxCredit = maxCredit;
+    this.courses = courses;
+}
+
+function getSemesterData() {
+    var semesterList = document.getElementById("req_list");
+    var semesterLis = semesterList.children;
+    var semesters = new Array();
+    for ( i = 1; i < semesterLis.length; i++) {
+        var num = i;
+        var title = semesterLis[i].getElementsByClassName("sem_title")[0].innerText;
+        var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
+        var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
+        var courses = new Array();
+        var courseLis = semesterLis[i].getElementsByClassName("req_course_list")[0].children;
+        for ( j = 0; j < courseLis.length; j++) {
+            courses.push(courseLis[j].id);
+        }
+        var semester = new Semester(num, title, minCredit, maxCredit, courses);
+        semesters.push(semester);
+    }
+    return semesters;
+}
+
+function checkSemesterConstraints(id, num) {
+    if (num < ASO.courses[id]) {
+        alert("the eariliest possiblity for this course is No." + ASO.courses[id] + " semester");
+        return false;
+    }
+    var reqList = document.getElementById("req_list").getElementsByClassName("req_course_list");
+    var prereqs = new Array();
+    for ( i = 0; i < num; i++) {
+        var prereqlis = reqList[i].children;
+        for ( j = 0; j < prereqlis.length; j++) {
+            prereqs.push(prereqlis[j].id);
+        }
+    }
+    var coreqlis = reqList[num - 1].children;
+    var coreqs = new Array();
+    for ( i = 0; i < coreqlis.length; i++) {
+        coreqs.push(coreqlis[i].id);
+    }
+    if (!checkSemesterReq(id, prereqs)) {
+        var str = "check the prerequisite constraints!\n";
+        var prereqs = courseObjs[id].prereq;
+        for ( i = 0; i < prereqs.length; i++)
+            str += " " + prereqs[i].relation + " " + prereqs[i].prefix + prereqs[i].num;
+        alert(str);
+        return false;
+    }
+    if (!checkSemesterReq(id, coreqs)) {
+        var str = "check the corequisite constraints!\n";
+        var coreqs = courseObjs[id].coreq;
+        for ( i = 0; i < coreqs.length; i++)
+            str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+        alert(str);
+        return false;
+    }
+    return true;
+}
+
+function checkSemesterReq(id, courses) {
+    var p = false;
+
+    var prereq = new Array;
+
+    if (courseObjs[id].prereq)
+        prereq = courseObjs[id].prereq;
+
+    if (prereq.length == 0)
+        return true;
+
+    var prereqCourses = new Array;
+
+    //check if the prerequisites exist in course bin ignoring the relation
+    for ( i = 0; i < courses.length; i++) {
+        for ( reqNum = 0; reqNum < prereq.length; reqNum++) {
+            if (courses[i] == prereq[reqNum].id)
+                prereqCourses.push(courses[i]);
+        }
+    }
+    //if exist check if they satisfy the relation
+    if (prereqCourses.length > 0) {
+
+        //用来记录每组的条件是否满足
+        var ifsatisfy = new Array;
+        //找出一共有多少组
+        var gs = new Array;
+        for ( i = 0; i < prereq.length; i++) {
+            if (i == 0) {
+                gs.push(prereq[i].group);
+            } else {
+                if (prereq[i].group != prereq[i - 1].group) {
+                    gs.push(prereq[i].group);
+                }
+            }
+        }
+        //先取出组之间的关系，便于以后处理
+        var groupRelation = new Array;
+        while (gs.length > 0) {
+            //先处理prerequisite里的第一组
+            var g = gs.shift();
+            //取出第一组的课
+            var group = new Array;
+            for ( i = 0; i < prereq.length; i++) {
+                if (prereq[i].group == g) {
+                    group.push(prereq[i]);
+                }
+            }
+            var total = group.length;
+            //判断第一组课之间的关系
+            try {
+                //如果这一组课里只有一门课,则无法取到这组课之间的关系，那么默认设置课之间的关系为or
+                var relation = group[1].relation;
+            } catch(e) {
+                var relation = "or";
+            }
+            groupRelation.push(group[0].relation);
+            if (relation == "or") {
+                for ( i = 0; i < prereqCourses.length; i++) {
+                    for ( j = 0; j < group.length; j++) {
+                        if (prereqCourses[i] == group[j].id) {
+                            total--;
+                        }
+                    }
+                }
+                if (total < group.length) {
+                    ifsatisfy.push(true);
+                } else
+                    ifsatisfy.push(false);
+            } else if (relation == "and") {
+                for ( i = 0; i < prereqCourses.length; i++) {
+                    for ( j = 0; j < group.length; j++) {
+                        if (prereqCourses[i] == group[j].id) {
+                            total--;
+                        }
+                    }
+                }
+                if (total == 0) {
+                    ifsatisfy.push(true);
+                } else
+                    ifsatisfy.push(false);
+            } else {
+                //留着处理not关系
+            }
+            //第一组处理完了，准备处理下一组
+        }
+
+        //处理组之间的关系
+        if (groupRelation.length == 1) {
+            //如果只有一组
+            return ifsatisfy[0];
+        } else {
+            //不止一组
+            if (groupRelation[1] == "or") {
+                var ret = false;
+                for ( i = 0; i < ifsatisfy.length; i++) {
+                    ret = ifsatisfy[i] || ret;
+                }
+            } else if (groupRelation[1] == "and") {
+                var ret = true;
+                for ( i = 0; i < ifsatisfy.length; i++) {
+                    ret = ifsatisfy[i] && ret;
+                }
+            } else {
+                //留着处理not关系
+            }
+        }
+        return ret;
+    } else {
+        return false;
+    }
+}
+
