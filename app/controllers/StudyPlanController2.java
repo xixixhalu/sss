@@ -187,6 +187,7 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoAssignSemester(){
+		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
 		
@@ -195,9 +196,11 @@ public class StudyPlanController2 extends Controller {
 			
 			String wantTakeCourses = form.wantTakeCourses;
 			String alreadyTakeCourses = form.alreadyTakenCourses;
+			String semesterData = form.semesterData;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
+			JSONArray semesterArray = new JSONArray(semesterData);
 			
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
@@ -229,10 +232,33 @@ public class StudyPlanController2 extends Controller {
 					corequisites.put(Integer.valueOf(id), core);
 				}
 			}
+			
+			/**
+			 * @author tongrui
+			 * assign semester to courses in backend
+			 * 
+			 * semester id: 1
+			 * title: spring
+			 * max: 3
+			 * min: 1
+			 * courses: [74,95]
+			 */
+//			for (int i = 0; i < semesterArray.length(); i++) {
+//				JSONObject semester = (JSONObject) semesterArray.get(i);
+//				int semesterNum = semester.getInt("num");
+//				JSONArray courses = (JSONArray) semester.get("courses");
+//				
+//				for (int j = 0; j < courses.length(); j++) {
+//					int courseID = courses.getInt(j);
+//					Course course = Course.findById(courseID);
+//					course.set
+//				}
+//			}
+			
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
-			//HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8);
+			HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8, semesterData);
 			return ok();
 		}catch(Exception e)
 		{
