@@ -13,7 +13,8 @@
     	<div class="content">
     		<h2>Study Plan</h2>
     		@{
-    			var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(session().get("uuid"));
+    			var uuid : String = session().get("uuid");
+    			var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(uuid);
     			var output : Html = Html("");
     			var result : HashMap[Integer, ArrayList[Integer]] = studyplan.AutoAssignSemester(8);
     			for(key <- result.keySet()){
@@ -26,6 +27,7 @@
 		    		output += Html("<br/>");
 				}
 				studyplan = null;
+				StudyPlanController2.studyPlanPool.remove(uuid);
 				session().clear();
 				output;
     		}
