@@ -7,7 +7,9 @@ window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     courseObjs = eval("(" + jsonData + ")");
 };
-
+$(document).ready(function(){
+    $("ul.req_course_list li:odd").css("background-color","#F8F8F8");
+});
 //dropdown effect
 function dropDown(id) {
     var node = document.getElementById(id);

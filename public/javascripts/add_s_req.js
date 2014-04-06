@@ -12,11 +12,11 @@ function addSimpleReq() {
     var simpleReqList = document.getElementById("s_list");
     var li = document.createElement("li");
     li.innerHTML = "<a onclick='deleteSimpleReq(this)'></a>";
+    li.innerHTML += "<input type='hidden' name='simpleReqId' value=" + simpleReq.value + ">";
     if (simpleReqList.children.length > 1) {
         li.innerHTML += "<select name='simpleReqRel'><option value='and'>AND</option><option value='or'>OR</option><option value='not'>NOT</option></select>";
     } else
         li.innerHTML += "<span name='simpleReqRel' style='width:29px;border:white;' value=''>&nbsp;</span>";
-    li.innerHTML += "<input type='hidden' name='simpleReqId' value=" + simpleReq.value + ">";
     li.innerHTML += "<span>" + simpleReqTitle + "</span>";
     li.innerHTML += "<input type='text' name='simpleReqGroup' value='1'>";
     simpleReqList.appendChild(li);
@@ -40,7 +40,7 @@ function deleteSimpleReq(node) {
     liList = simpleReqList.getElementsByTagName("li");
     if (liList.length > 0) {
         var fli = liList[0];
-        var fselect = fli.children[1];
+        var fselect = fli.children[2];
         var ftitle = fli.children[3];
         var fgroup = fli.children[4];
         var fspan = generateSpace();
@@ -137,7 +137,7 @@ function init(simpleReqs) {
             deleteSimpleReq(this);
         };
         li.appendChild(button);
-
+        li.appendChild(hidden);
         if (simpleReqs[i].relation == "" || !simpleReqs[i].relation) {
             var space = generateSpace();
             li.appendChild(space);
@@ -164,12 +164,10 @@ function init(simpleReqs) {
             li.appendChild(select);
         }
 
-        li.appendChild(hidden);
-
         var span = document.createElement("span");
         span.innerHTML = simpleReqs[i].name;
         // span.onclick = function() {
-            // changePriority(this);
+        // changePriority(this);
         // };
         li.appendChild(span);
 

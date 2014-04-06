@@ -1,8 +1,12 @@
 package models;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.avaje.ebean.Ebean;
 
@@ -67,6 +71,34 @@ public class Sr extends Model{
 	/** delete(Integer), 
 	 * Corresponding to delete statement*/
 	public static void delete(Integer id) {
+		/**
+		 * cascade
+		 */
+		List<Requirement> requirements = Requirement.getAll();
+		for (Requirement requirement : requirements) {
+			try {
+				JSONArray jarr = new JSONArray(requirement.getSr_ids());
+				JSONArray newjarr = new JSONArray();
+				for (int i = 0; i < jarr.length(); i++) {
+					JSONObject json = jarr.getJSONObject(i);
+					if (!id.toString().equals(json.get("id"))){
+						newjarr.put(json);
+					}
+				}
+				if (newjarr.length() != 0)
+					requirement.setSr_ids(newjarr.toString());
+				else
+					Requirement.delete(requirement.getId());
+				
+				requirement.update();
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 		ESr esr = Ebean.find(ESr.class, id);
 		if(esr != null)
 			esr.delete();
