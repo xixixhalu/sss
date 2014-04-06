@@ -154,12 +154,12 @@ function init(simpleReqs) {
             if (simpleReqs[i].relation == "or")
                 or.selected = "selected";
             or.innerHTML = "OR";
-            or.value="value";
+            or.value="or";
             var not = document.createElement("option");
             if (simpleReqs[i].relation == "not")
                 not.selected = "selected";
             not.innerHTML = "NOT";
-            not.value="value";
+            not.value="not";
             select.appendChild(and);
             select.appendChild(or);
             select.appendChild(not);
