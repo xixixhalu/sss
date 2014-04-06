@@ -245,4 +245,5 @@ public class StudyPlanController2 extends Controller {
 		return ok(views.html.stu_studyplan.render());
 	}
 	
+	
 }
