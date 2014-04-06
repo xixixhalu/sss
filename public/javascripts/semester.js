@@ -1,6 +1,17 @@
 /**
  * @author Bohan Zheng
  */
+var ASO = {
+    "minSemester" : "4",
+    "courses" : {
+        97 : "3",
+        93 : "3",
+        89 : "2",
+        84 : "1",
+        74 : "1",
+        180 : "1"
+    }
+};
 
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
@@ -159,7 +170,7 @@ function addCourseToSemester(course, id) {
         return false;
     }
     var li = document.createElement("li");
-    li.id=id;
+    li.id = id;
     li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
     ul.appendChild(li);
     return true;
@@ -187,18 +198,18 @@ function autoSemester() {
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
-        var sid = wantTake[i].getElementsByTagName("input")[0].value;
-        var cid = wantTake[i].getElementsByTagName("input")[1].value;
-        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+        // var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        // var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, -1, -1));
     }
 
     var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
     var alreadyDataArray = new Array;
     for ( i = 0; i < alreadyTaken.length; i++) {
         var id = alreadyTaken[i].id;
-        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
-        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
-        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+        // var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        // var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, -1, -1));
     }
 
     var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) + ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) + '})');
@@ -210,7 +221,7 @@ function autoSemester() {
             wantTakeCourses : JSON.stringify(wantDataArray),
             alreadyTakenCourses : JSON.stringify(alreadyDataArray),
             /* [semester:{num:1,title:spring 2014,;minCredit:1,maxCredit:10,courses:[1,2,3]},...]*/
-            semesterData: JSON.stringify(getSemesterData())
+            semesterData : JSON.stringify(getSemesterData())
         }, function(data) {
             // var coursesObj = eval("(" + data + ")");
             // var courses = coursesObj.courses;
@@ -234,18 +245,18 @@ function Semester(num, title, minCredit, maxCredit, courses) {
 function getSemesterData() {
     var semesterList = document.getElementById("req_list");
     var semesterLis = semesterList.children;
-    var semesters=new Array();
+    var semesters = new Array();
     for ( i = 1; i < semesterLis.length; i++) {
-        var num=i;
+        var num = i;
         var title = semesterLis[i].getElementsByClassName("sem_title")[0].innerText;
-        var minCredit=semesterLis[i].getElementsByTagName("input")[0].value;
-        var maxCredit=semesterLis[i].getElementsByTagName("input")[1].value;
-        var courses=new Array();
-        var courseLis=semesterLis[i].getElementsByClassName("req_course_list")[0].children;
-        for(j=0;j<courseLis.length;j++){
+        var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
+        var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
+        var courses = new Array();
+        var courseLis = semesterLis[i].getElementsByClassName("req_course_list")[0].children;
+        for ( j = 0; j < courseLis.length; j++) {
             courses.push(courseLis[j].id);
         }
-        var semester=new Semester(num,title,minCredit,maxCredit,courses);
+        var semester = new Semester(num, title, minCredit, maxCredit, courses);
         semesters.push(semester);
     }
     return semesters;
