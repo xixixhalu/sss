@@ -47,7 +47,7 @@ function addTakenCourse(id, curNode) {
 function generateLi(id, curNode) {
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title;
+    courseLi.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title;
     var simpleReqId = curNode.parentElement.parentElement.id;
     var complexReqId = curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
     simpleReqId = simpleReqId.substring(3);
