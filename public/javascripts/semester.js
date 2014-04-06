@@ -198,18 +198,18 @@ function autoSemester() {
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
-        var sid = wantTake[i].getElementsByTagName("input")[0].value;
-        var cid = wantTake[i].getElementsByTagName("input")[1].value;
-        wantDataArray.push(new wantTakeCourse(id, sid, cid));
+        // var sid = wantTake[i].getElementsByTagName("input")[0].value;
+        // var cid = wantTake[i].getElementsByTagName("input")[1].value;
+        wantDataArray.push(new wantTakeCourse(id, -1, -1));
     }
 
     var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
     var alreadyDataArray = new Array;
     for ( i = 0; i < alreadyTaken.length; i++) {
         var id = alreadyTaken[i].id;
-        var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
-        var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
-        alreadyDataArray.push(new wantTakeCourse(id, sid, cid));
+        // var sid = alreadyTaken[i].getElementsByTagName("input")[0].value;
+        // var cid = alreadyTaken[i].getElementsByTagName("input")[1].value;
+        alreadyDataArray.push(new wantTakeCourse(id, -1, -1));
     }
 
     var json = eval('({"wantTakeCourses":' + JSON.stringify(wantDataArray) + ', "alreadyTakenCourses":' + JSON.stringify(alreadyDataArray) + '})');
