@@ -159,14 +159,19 @@ function semesterDorpDown(evt) {
 
 function addCourseToSemester(course, id) {
     var lis = document.getElementById("req_list").children;
+    var num = 0;
     for ( i = 1; i < lis.length; i++) {
         if (lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].style.display == "block") {
             var ul = lis[i].getElementsByTagName("div")[0].getElementsByTagName("div")[1].getElementsByTagName("ul")[0];
+            num = i;
             break;
         }
     }
     if (!ul) {
         alert("Please select a semester first!");
+        return false;
+    }
+    if (!checkSemesterConstraints(id,num)) {
         return false;
     }
     var li = document.createElement("li");
@@ -260,4 +265,10 @@ function getSemesterData() {
         semesters.push(semester);
     }
     return semesters;
+}
+
+function checkSemesterConstraints(id,num) {
+    if(num>ASO.courses[id])
+    alert("You need to take its prerequistes first.");
+    return true;
 }
