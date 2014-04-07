@@ -238,7 +238,32 @@ public class StudyPlanController2 extends Controller {
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
 			HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8, semesterData);
-			return ok();
+			
+			/**
+			 * @author tongrui
+			 * return semester data filled with courses
+			 */
+			for (int i = 0; i < semesterArray.length(); i++) {
+				JSONObject semester = (JSONObject) semesterArray.get(i);
+				
+				int semesterID = semester.getInt("num");
+				JSONArray courses = (JSONArray) semester.get("courses");
+				ArrayList<Integer> coursesFilled = result.get(semesterID);
+				
+				for (Integer course : coursesFilled) {
+					boolean flag = false;
+					for (int j = 0; j < courses.length(); j++) {
+						if (courses.getInt(j) == course) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag)
+						courses.put(course);
+				}
+			}
+			
+			return ok(semesterArray.toString());
 		}catch(Exception e)
 		{
 			e.printStackTrace();
