@@ -78,7 +78,6 @@ public class StudyPlanController2 extends Controller {
 				String want = form.wantTakeCourses;
 				String already = form.alreadyTakenCourses;	
 				JSONObject coursesArr = new JSONObject();	
-			
 				JSONArray wantCourses = new JSONArray(want);
 				JSONArray alreadyCourses = new JSONArray(already);
 				for (int i = 0; i < wantCourses.length(); i++) {
@@ -100,6 +99,7 @@ public class StudyPlanController2 extends Controller {
 					
 				}
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
+				//studyplan.degreeProgram.displayallComplexReq();
 				studyplan.AutoFillCourseBin();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
 				
