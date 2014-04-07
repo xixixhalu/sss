@@ -1,5 +1,6 @@
 package models;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -591,12 +592,51 @@ public class StudyPlan {
 		courseBin = courseBinResult;
 		return courseBinResult;
 	}
+	
+	public void setAssignSemester (String semesterData, HashMap<Integer, ArrayList<Node>> courseInHash,
+			HashMap<Integer, ArrayList<Integer>> result) {
+		
+		/**
+		 * @author tongrui
+		 * assign semester to back end
+		 */
+		if (semesterData.equals("[]"))
+			return;
+		
+		try {
+			JSONArray semesterArray = new JSONArray(semesterData);
+			for (int i = 0; i < semesterArray.length(); i++) {
+				JSONObject semester = (JSONObject) semesterArray.get(i);
+				int semesterNum = semester.getInt("num");
+				JSONArray courses = (JSONArray) semester.get("courses");
 
-	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester) {
+				result.put(semesterNum, new ArrayList<Integer>());
+				for (int j = 0; j < courses.length(); j++) {
+					int courseID = courses.getInt(j);
+					result.get(semesterNum).add(courseID);
+					
+					ArrayList<Node> nodes = courseInHash.get(courseID);
+					for (Node node : nodes) {
+						node.semester = semesterNum;
+					}
+				}
+				
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester, String semesterData) {
+
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
 		HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
-
+		
+		// set student-specific semesters
+		setAssignSemester (semesterData, courseInHash, result);
+		
 		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {

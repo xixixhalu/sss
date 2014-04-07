@@ -1,0 +1,40 @@
+@(UserLoginForm: Form[controllers.forms.UserLoginForm])
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>index</title>
+        <link href="/assets/stylesheets/index.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/global.css" type="text/css" rel="stylesheet"/>
+        <script>
+			function validateForm()
+			{
+				var username=document.getElementById('username').value;
+				var password=document.getElementById('password').value;
+				if (username==null || username=="" || password==null || password=="")
+			  	{
+				  alert("Username AND/OR password cannot be blank");
+				  return false;
+			  	}
+			}
+		</script>
+    </head>
+    <body>
+        <div class="content">
+            <img class="logo" src="/assets/images/management logo.png" width="960px;">
+            <form action="index" method="post" onsubmit="return validateForm()">
+                <span>Username:</span>
+                <input id="username" name="username" type="text" placeholder="username"/><br/>
+                <span>Password:</span>
+                <input id="password" name="password" type="password" placeholder="password"/>
+                <div>
+                    <input type="submit" value="Login"/>
+                </div>
+                <font color="gray">current username/password: admin/admin</font>
+            </form>
+        </div>
+    </body>
+</html>
+

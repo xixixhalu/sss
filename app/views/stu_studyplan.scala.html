@@ -16,7 +16,7 @@
     			var uuid : String = session().get("uuid");
     			var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(uuid);
     			var output : Html = Html("");
-    			var result : HashMap[Integer, ArrayList[Integer]] = studyplan.AutoAssignSemester(8);
+    			var result : HashMap[Integer, ArrayList[Integer]] = studyplan.AutoAssignSemester(8, "[]");
     			for(key <- result.keySet()){
 					var courseInSameSemester : ArrayList[Integer] = result.get(key);
 					output += Html("<h3>Semester "+ String.valueOf(key)+"</h3><br/>");

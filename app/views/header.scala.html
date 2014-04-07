@@ -1,3 +1,6 @@
+
+@import play.api.mvc.Results._
+@import controllers.UserController;
 <html>
     <head>
     	<script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
@@ -38,7 +41,13 @@
         <div class="nav_bar">
             <div class="block">
                 <div class="degree_bar">
-                    Username: &nbsp;&nbsp;&nbsp;Admin &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; logout
+                	@{
+                		var user : String = session().get("user");
+                		var out : Html = Html("");
+                		out += Html("Username: &nbsp;&nbsp;&nbsp;" + user + " &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ");
+						out += Html("<a href='logout'>logout</a>");
+						out;
+                	}
                 </div>
             </div>
         </div>

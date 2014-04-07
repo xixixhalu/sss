@@ -13,6 +13,11 @@ import play.mvc.Result;
 public class RequirementController extends Controller{
 	
 	public static Result retrieveRequirements() {
+		String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
 		try{
 			return ok(views.html.requirement_list.render(Requirement.getAll()));
 		}catch(Exception e)
@@ -22,6 +27,11 @@ public class RequirementController extends Controller{
     }
 	
 	public static Result deleteRequirement(Integer id){
+		String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
 		try{
 	    	Requirement.delete(id);
 	    	return redirect(routes.RequirementController.retrieveRequirements());
@@ -32,6 +42,11 @@ public class RequirementController extends Controller{
     }
     
     public static Result requestEditRequirementPage(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
 	    	Form<RequirementEditForm> form = Form.form(RequirementEditForm.class);
 	    	return ok(views.html.requirement_edit.render(Sr.getAll(), Requirement.findById(id), form));
@@ -42,6 +57,11 @@ public class RequirementController extends Controller{
     }
     
     public static Result updateRequirement(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<RequirementEditForm> filledForm = Form.form(RequirementEditForm.class).bindFromRequest();
     	
     	if(filledForm.hasErrors()) {
@@ -63,6 +83,11 @@ public class RequirementController extends Controller{
     }
     
     public static Result requestCreateRequirementPage(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
 	    	Form<RequirementAddForm> form = Form.form(RequirementAddForm.class);
 	    	return ok(views.html.requirement_add.render(Sr.getAll(), form));
@@ -73,6 +98,11 @@ public class RequirementController extends Controller{
     }
     
     public static Result addRequirement(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<RequirementAddForm> filledForm = Form.form(RequirementAddForm.class).bindFromRequest();
     	if (filledForm.hasErrors())
 			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));
