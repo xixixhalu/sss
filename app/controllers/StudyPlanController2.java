@@ -233,27 +233,6 @@ public class StudyPlanController2 extends Controller {
 				}
 			}
 			
-			/**
-			 * @author tongrui
-			 * assign semester to courses in backend
-			 * 
-			 * semester id: 1
-			 * title: spring
-			 * max: 3
-			 * min: 1
-			 * courses: [74,95]
-			 */
-//			for (int i = 0; i < semesterArray.length(); i++) {
-//				JSONObject semester = (JSONObject) semesterArray.get(i);
-//				int semesterNum = semester.getInt("num");
-//				JSONArray courses = (JSONArray) semester.get("courses");
-//				
-//				for (int j = 0; j < courses.length(); j++) {
-//					int courseID = courses.getInt(j);
-//					Course course = Course.findById(courseID);
-//					course.set
-//				}
-//			}
 			
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
