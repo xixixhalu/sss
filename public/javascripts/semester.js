@@ -238,6 +238,7 @@ function autoSemester() {
             for ( i = 0; i < semesterObj.length; i++) {
                 var courses = semesterObj[i].courses;
                 var semester = semesterUls[i];
+                semester.innerHTML="";
                 for ( j = 0; j < courses.length; j++) {
                     var li = document.createElement("li");
                     var id = courses[j];
