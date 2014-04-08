@@ -20,7 +20,7 @@
         <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
-        <script src="/assets/javascripts/action.js" type="text/javascript"></script>
+        <script src="/assets/javascripts/action.js"></script>
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
@@ -67,11 +67,8 @@
                 <div>
                 	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
                 		<input type="hidden" value="" name="">
-                		
-                    	<a class="button left_auto" href="javascript:{}"
-                    		onclick="autoCourse()">AUTO</a>
-                    	<a class="button left_next" href="javascript:{}"
-                    	   onclick='submitCourse(this.parentElement)'>NEXT</a>
+                    	<a class="button left_auto" onclick='autoCourse()'>AUTO</a>
+                    	<a class="button left_next" onclick='submitCourse(this.parentElement)'>NEXT</a>
                 	</form>
                 </div>
             </div>
