@@ -733,11 +733,14 @@ public class StudyPlan {
 		// initiate the courses, assign the courses with the semester which the
 		// student has choose.
 		JSONArray semesterJsonArray;
+		HashMap<Integer, Integer> courseCountInSemester = new HashMap<Integer, Integer>();
 		try {
 			semesterJsonArray = new JSONArray(semesterData);
 			for(int i=0;i<semesterJsonArray.length();i++){
 				JSONObject semester = (JSONObject) semesterJsonArray.get(i);
 				JSONArray courses = (JSONArray) semester.get("courses");
+				//Bowen: recored course count in per semester
+				courseCountInSemester.put(semester.getInt("num"), courses.length());
 				for(int j=0;j<courses.length();j++){
 					int id= courses.getInt(j);
 					courseInHash.get(id).get(0).semester=semester.getInt("num");
@@ -789,6 +792,7 @@ public class StudyPlan {
 																		// depth
 			int num = courseInSemester;// record how many courses remain in one
 										// semester
+			num -= courseCountInSemester.get(curSemester);
 			int lvlRemainCourse = courseInSameLvl.size();// record how many
 															// courses remain in
 															// this level of
