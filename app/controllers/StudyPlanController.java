@@ -203,7 +203,7 @@ public class StudyPlanController extends Controller {
 				allCross_relation);
 		AutoAssignSemester(courseBin, degreeProgram, 8);
 		// System.out.print("After AutoFill: \n");
-		degreeProgram.displayallComplexReq();
+//		degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
 		
 		// allCross_relation.Display_All_Headnode();
@@ -341,7 +341,7 @@ public class StudyPlanController extends Controller {
 			}
 		}
 
-		allCross_relation.displayCrossLinkedList();
+//		allCross_relation.displayCrossLinkedList();
 		allCross_relation.removeAloneNode();
 	}
 

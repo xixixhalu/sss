@@ -100,6 +100,7 @@ public class StudyPlanController2 extends Controller {
 					
 				}
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
+				studyplan.degreeProgram.displayallComplexReq();
 				studyplan.AutoFillCourseBin();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
 				
