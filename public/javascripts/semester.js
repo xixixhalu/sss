@@ -199,7 +199,11 @@ function getPrefixNumber(li) {
 }
 
 function autoSemester() {
-
+    var semesterNum = document.getElementById("req_list").children.length - 1;
+    if(semesterNum<ASO.minSemester){
+        alert("you must add at least "+ASO.minSemester+" semesters first!");
+        return;
+    }
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
@@ -229,13 +233,22 @@ function autoSemester() {
             /* [semester:{num:1,title:spring 2014,;minCredit:1,maxCredit:10,courses:[1,2,3]},...]*/
             semesterData : JSON.stringify(getSemesterData())
         }, function(data) {
-            // var coursesObj = eval("(" + data + ")");
-            // var courses = coursesObj.courses;
-            // for ( i = 0; i < courses.length; i++) {
-            // var li = document.createElement("li");
-            // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
-            // ul.appendChild(li);
-            // }
+            var semesterObj = eval("(" + data + ")");
+            var semesterUls = document.getElementById("req_list").getElementsByClassName("req_course_list");
+            for ( i = 0; i < semesterObj.length; i++) {
+                var courses = semesterObj[i].courses;
+                var semester = semesterUls[i];
+                for ( j = 0; j < courses.length; j++) {
+                    var li = document.createElement("li");
+                    var id = courses[j];
+                    li.id = id;
+                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+                    semester.appendChild(li);
+
+                    //this.parentElement.style.textDecoration = "line-through";
+                }
+            }
+            $("#wantTake li").css("text-decoration", "line-through");
         });
     }
 }
