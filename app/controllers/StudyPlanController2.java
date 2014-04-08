@@ -100,7 +100,7 @@ public class StudyPlanController2 extends Controller {
 				}
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
 				
-				//studyplan.degreeProgram.displayallComplexReq();
+				studyplan.degreeProgram.displayallComplexReq();
 				studyplan.AutoFillCourseBin();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
 				
@@ -146,7 +146,7 @@ public class StudyPlanController2 extends Controller {
 			JSONObject json = new JSONObject();
 			CourseWrapper cw = new CourseWrapper(true, true, true, true,
 						true, true, true, true, true);
-			Logger.info(String.valueOf(wantCourses.length()));
+//			Logger.info(String.valueOf(wantCourses.length()));
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
