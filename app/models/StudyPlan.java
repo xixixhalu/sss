@@ -86,7 +86,7 @@ public class StudyPlan {
 
 		}
 		System.out.println("**************");
-		allCross_relation.DisplayCore(tempCoreList5);
+		//allCross_relation.DisplayCore(tempCoreList5);
 		this.corerequsiteList = tempCoreList5;
 		return;
 	}
@@ -420,6 +420,8 @@ public class StudyPlan {
 			}
 		}
 	}
+	
+	
 
 	public ArrayList<Integer> AutoFillCourseBin() { // change the arguments and
 													// recursively call this
@@ -600,6 +602,23 @@ public class StudyPlan {
 		courseBin = courseBinResult;
 		return courseBinResult;
 	}
+	
+	public void changeCourseStatus(){
+		for(Integer key : degreeProgram.course.keySet()){
+			ArrayList<Node> eachCourseInstance = degreeProgram.course.get(key);
+			for(Node oneInstance : eachCourseInstance){
+				if(oneInstance.chosen==true){
+					if(eachCourseInstance.get(0).chosen==false){
+						eachCourseInstance.get(0).chosen=true;
+					}
+				}
+			}
+			
+		}
+	
+		return;
+	}
+
 
 	public void setAssignSemester(String semesterData, HashMap<Integer, ArrayList<Node>> courseInHash, HashMap<Integer, ArrayList<Integer>> result) {
 
@@ -637,6 +656,7 @@ public class StudyPlan {
 	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester, String semesterData) {
 
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
+		//degreeProgram.displayAllCourse();
 		// courses in each level
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
 		// semester=>[courseID,courseID,courseID]
@@ -694,11 +714,7 @@ public class StudyPlan {
 		int curSemester = numOfSemester;
 		int hhhhh = -1;
 		while (level >= 0 && curSemester > 0) {
-			// if(hhhhh==0){
-			// level--;
-			// hhhhh=-1;
-			// continue;
-			// }
+
 			ArrayList<Node> courseInSameLvl = semesterBin.get(level);// get the
 																		// courses
 																		// in
@@ -725,7 +741,6 @@ public class StudyPlan {
 				}
 				// if the course has not been assigned
 				int tempt = courseInSameLvl.get(i).cName;
-				System.out.println(tempt);
 				if (corerequsiteList.containsKey(Integer.valueOf(tempt))) {
 					courseInSameLvl.get(i).semester = curSemester;// assign the
 																	// current

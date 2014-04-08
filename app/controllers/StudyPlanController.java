@@ -103,7 +103,7 @@ public class StudyPlanController extends Controller {
 
 		createCrossLinkedList(allCross_relation, degreeProgram.course);
 
-		// degreeProgram.displayAllCourse();
+		 //degreeProgram.displayAllCourse();
 		// allCross_relation.Display_All_Headnode();
 
 		// degreeProgram.displayallComplexReq();
@@ -619,6 +619,10 @@ public class StudyPlanController extends Controller {
 		System.out.print("\n");
 		return courseBinResult;
 	}
+	
+	
+	
+	
 
 	public static void AutoAssignSemester(ArrayList<Integer> courseBin,
 			TestLinkList degreeProgram, int numOfSemester) {
