@@ -238,7 +238,7 @@ public class StudyPlanController2 extends Controller {
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
-			HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8, semesterData);
+			studyplan.AutoAssignSemester(8, semesterData);
 			
 			/**
 			 * @author tongrui
@@ -249,7 +249,7 @@ public class StudyPlanController2 extends Controller {
 				
 				int semesterID = semester.getInt("num");
 				JSONArray courses = (JSONArray) semester.get("courses");
-				ArrayList<Integer> coursesFilled = result.get(semesterID);
+				ArrayList<Integer> coursesFilled = studyplan.studyplanResult.get(semesterID);
 				
 				for (Integer course : coursesFilled) {
 					boolean flag = false;

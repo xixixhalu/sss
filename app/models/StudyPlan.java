@@ -38,6 +38,7 @@ public class StudyPlan {
 	Cal_Depth calSemester;
 	public ArrayList<Integer> courseBin; // Course Info after auto fill course
 	public Multimap<Integer, Integer> corerequsiteList = ArrayListMultimap.create();
+	public HashMap<Integer, ArrayList<Integer>> studyplanResult; //Study Plan Info after auto fill semester
 
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
 		calSemester.allCross_relation_example = allCross_relation;
@@ -633,11 +634,6 @@ public class StudyPlan {
 
 	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester, String semesterData) {
 
-<<<<<<< HEAD
-=======
-	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester) {
-		// all courses
->>>>>>> shuaiwang
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
 		// courses in each level
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
@@ -799,7 +795,7 @@ public class StudyPlan {
 			}
 			System.out.print("\n");
 		}
-
+		studyplanResult = result;
 		return result;
 	}
 
