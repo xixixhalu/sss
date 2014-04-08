@@ -38,7 +38,11 @@ public class StudyPlan {
 	Cal_Depth calSemester;
 	public ArrayList<Integer> courseBin; // Course Info after auto fill course
 	public Multimap<Integer, Integer> corerequsiteList = ArrayListMultimap.create();
-	public HashMap<Integer, ArrayList<Integer>> studyplanResult; //Study Plan Info after auto fill semester
+	public HashMap<Integer, ArrayList<Integer>> studyplanResult; // Study Plan
+																	// Info
+																	// after
+																	// auto fill
+																	// semester
 
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
 		calSemester.allCross_relation_example = allCross_relation;
@@ -596,17 +600,15 @@ public class StudyPlan {
 		courseBin = courseBinResult;
 		return courseBinResult;
 	}
-	
-	public void setAssignSemester (String semesterData, HashMap<Integer, ArrayList<Node>> courseInHash,
-			HashMap<Integer, ArrayList<Integer>> result) {
-		
+
+	public void setAssignSemester(String semesterData, HashMap<Integer, ArrayList<Node>> courseInHash, HashMap<Integer, ArrayList<Integer>> result) {
+
 		/**
-		 * @author tongrui
-		 * assign semester to back end
+		 * @author tongrui assign semester to back end
 		 */
 		if (semesterData.equals("[]"))
 			return;
-		
+
 		try {
 			JSONArray semesterArray = new JSONArray(semesterData);
 			for (int i = 0; i < semesterArray.length(); i++) {
@@ -618,13 +620,13 @@ public class StudyPlan {
 				for (int j = 0; j < courses.length(); j++) {
 					int courseID = courses.getInt(j);
 					result.get(semesterNum).add(courseID);
-					
+
 					ArrayList<Node> nodes = courseInHash.get(courseID);
 					for (Node node : nodes) {
 						node.semester = semesterNum;
 					}
 				}
-				
+
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -639,10 +641,28 @@ public class StudyPlan {
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
 		// semester=>[courseID,courseID,courseID]
 		HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
-		
+
 		// set student-specific semesters
-		setAssignSemester (semesterData, courseInHash, result);
-		
+		//setAssignSemester(semesterData, courseInHash, result);
+
+		// initiate the courses, assign the courses with the semester which the
+		// student has choose.
+		JSONArray semesterJsonArray;
+		try {
+			semesterJsonArray = new JSONArray(semesterData);
+			for(int i=0;i<semesterJsonArray.length();i++){
+				JSONObject semester = (JSONObject) semesterJsonArray.get(i);
+				JSONArray courses = (JSONArray) semester.get("courses");
+				for(int j=0;j<courses.length();j++){
+					int id= courses.getInt(j);
+					courseInHash.get(id).get(0).semester=semester.getInt("num");
+				}
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		int max = 0;
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {
