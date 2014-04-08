@@ -39,7 +39,7 @@ public class StudyPlanController2 extends Controller {
 		if(filledForm.hasErrors()) {
     		return badRequest("Not all mandatory fields correct or entered.");
     	}
-		try{
+		//try{
 			DegreeForm degreeForm = filledForm.get();
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
@@ -63,10 +63,10 @@ public class StudyPlanController2 extends Controller {
 			}
 			
 			return ok(views.html.stu_course.render(degree, json.toString()));
-		}catch(Exception e)
-		{
-			return badRequest(views.html.error.render("Cannot retrieve course list"));
-		}
+		//}catch(Exception e)
+		//{
+		//	return badRequest(views.html.error.render("Cannot retrieve course list"));
+		//}
 	}
 	
 	public static Result autoFillCourse(){
@@ -177,6 +177,7 @@ public class StudyPlanController2 extends Controller {
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
 				studyplan.AutoFillCourseBin();
 			}
+			studyplan.degreeProgram.displayallComplexReq();
 			return ok(views.html.stu_semester.render(json.toString(), 
 					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)

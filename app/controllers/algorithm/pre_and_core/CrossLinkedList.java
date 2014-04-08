@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.google.common.collect.Multimap;
+
 import controllers.algorithm.req_and_course.Node;
 
 public class CrossLinkedList {
@@ -149,7 +151,7 @@ public class CrossLinkedList {
 		return core;
 	}
 	
-	public void DisplayCore(HashMap<Integer, Integer> core){
+	public void DisplayCore(Multimap<Integer, Integer> core){
 		for(Integer key : core.keySet()){
 			System.out.println(key +" "+ core.get(key));
 		}

@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +9,14 @@ import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import models.Cg;
-import models.Course;
-import models.Degree;
-import models.Requirement;
-import models.Sr;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import play.Logger;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import controllers.algorithm.pre_and_core.ArcBox;
 import controllers.algorithm.pre_and_core.Cal_Depth;
 import controllers.algorithm.pre_and_core.CrossLinkedList;
@@ -37,7 +36,7 @@ public class StudyPlan {
 	CrossLinkedList allCross_relation;
 	Cal_Depth calSemester;
 	public ArrayList<Integer> courseBin; // Course Info after auto fill course
-	public HashMap<Integer, Integer> corerequsiteList  =new HashMap<Integer, Integer>();
+	public Multimap<Integer, Integer> corerequsiteList = ArrayListMultimap.create();
 
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
 		calSemester.allCross_relation_example = allCross_relation;
@@ -47,30 +46,42 @@ public class StudyPlan {
 		// calSemester.Display_All_Headnode_Min();
 		return;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void GetAllCoureReq(){
+	public void GetAllCoureReq() {
 		HashMap<Integer, Integer> tempCoreList = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> tempCoreList2 = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> tempCoreList3 = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> tempCoreList4 = new HashMap<Integer, Integer>();
+		Multimap<Integer, Integer> tempCoreList5 = ArrayListMultimap.create();
 		tempCoreList = allCross_relation.TraverCore();
-		allCross_relation.DisplayCore(tempCoreList);
+		// allCross_relation.DisplayCore(tempCoreList);
 		tempCoreList2 = (HashMap<Integer, Integer>) tempCoreList.clone();
 		tempCoreList3 = (HashMap<Integer, Integer>) tempCoreList.clone();
-		for(Integer key1: tempCoreList2.keySet()){
-			if(tempCoreList2.get(key1)<0){//get value. if the value is less than 0.
-				for(Integer key2: tempCoreList3.keySet()){
-					if(key2==tempCoreList2.get(key1)){
+		for (Integer key1 : tempCoreList2.keySet()) {
+			if (tempCoreList2.get(key1) < 0) {// get value. if the value is less
+												// than 0.
+				for (Integer key2 : tempCoreList3.keySet()) {
+					if (key2 == tempCoreList2.get(key1)) {
 						tempCoreList4.put(key1, tempCoreList3.get(key2));
 					}
 				}
-			}else if(key1>0 && tempCoreList2.get(key1)>0){
+			} else if (key1 > 0 && tempCoreList2.get(key1) > 0) {
 				tempCoreList4.put(key1, tempCoreList2.get(key1));
-			}		
+			}
+		}
+		// tempCoreList5 = (Multimap<Integer, Integer>) tempCoreList4.clone();
+		for (Integer kk : tempCoreList4.keySet()) {
+			tempCoreList5.put(kk, tempCoreList4.get(kk));
+
+		}
+		for (Integer kk : tempCoreList4.keySet()) {
+			tempCoreList5.put(tempCoreList4.get(kk), kk);
+
 		}
 		System.out.println("**************");
-		allCross_relation.DisplayCore(tempCoreList4);
+		allCross_relation.DisplayCore(tempCoreList5);
+		this.corerequsiteList = tempCoreList5;
 		return;
 	}
 
@@ -216,10 +227,10 @@ public class StudyPlan {
 		// System.out.print("\n");
 
 		// System.out.print("After AutoFill: \n");
-		degreeProgram.displayallComplexReq();
+		// degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
 
-		allCross_relation.Display_All_Headnode();
+		// allCross_relation.Display_All_Headnode();
 		allCross_relation.displayCrossLinkedList();
 
 		play.Logger.info("================================================");
@@ -404,15 +415,29 @@ public class StudyPlan {
 		}
 	}
 
-	public ArrayList<Integer> AutoFillCourseBin() { // change the arguments and recursively call this function
+	public ArrayList<Integer> AutoFillCourseBin() { // change the arguments and
+													// recursively call this
+													// function
 		calSemester = new Cal_Depth();
 		calSemester.allCross_relation_example = allCross_relation;
 		ArrayList<Integer> courseBinResult = new ArrayList<Integer>();
-		GetCourseMaxDepthInGraph(calSemester); // mark the min and max in nodeInGraph
-		for (int i = 0; i < calSemester.allCross_relation_example.headNodeList.size(); i++) { // in node graph find all value
+		GetCourseMaxDepthInGraph(calSemester); // mark the min and max in
+												// nodeInGraph
+		for (int i = 0; i < calSemester.allCross_relation_example.headNodeList.size(); i++) { // in
+																								// node
+																								// graph
+																								// find
+																								// all
+																								// value
 			NodeInGraph courseInGraph = calSemester.allCross_relation_example.headNodeList.get(i);
 			for (Integer key : degreeProgram.course.keySet()) {
-				if (degreeProgram.course.get(key).get(0).cName == courseInGraph.courseID) {// update course both in requirement and graph
+				if (degreeProgram.course.get(key).get(0).cName == courseInGraph.courseID) {// update
+																							// course
+																							// both
+																							// in
+																							// requirement
+																							// and
+																							// graph
 					ArrayList<Node> sameCourseList = degreeProgram.course.get(key);
 					for (Node course : sameCourseList) {
 						course.maxDepth = courseInGraph.maxDepth;
@@ -423,24 +448,41 @@ public class StudyPlan {
 			}
 		}
 
-
 		for (int i = 0; i < degreeProgram.allComplexReq.size(); i++) {
 			ComplexReq complexReq = degreeProgram.allComplexReq.get(i);
 			if (complexReq.first.satisfied == true) {
 				continue;// check next complex requirement
 			} else {
-				ComplexReq_Node simpleReq = complexReq.first.next;// find all unsatisfied complex requirement, fetch its simple requirement
+				ComplexReq_Node simpleReq = complexReq.first.next;// find all
+																	// unsatisfied
+																	// complex
+																	// requirement,
+																	// fetch its
+																	// simple
+																	// requirement
 				while (simpleReq != null) {// as long as the simple is not null
 					if (simpleReq.SimpleReq.first.statisfied == true) {
 						// do nothing and check next simple requirement
 					} else {
 						// add a function to sort as semester as ascending
-						Node course = simpleReq.SimpleReq.first.next;// each course in simple requirement
+						Node course = simpleReq.SimpleReq.first.next;// each
+																		// course
+																		// in
+																		// simple
+																		// requirement
 						// HashMap<Integer, Node> courseHash = new
 						// HashMap<Integer, Node>();
 						HashMap<Integer, ArrayList<Node>> courseHash = new HashMap<Integer, ArrayList<Node>>();
 
-						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();// each simple requirement has a sortedset stores courses maxDepth
+						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();// each
+																							// simple
+																							// requirement
+																							// has
+																							// a
+																							// sortedset
+																							// stores
+																							// courses
+																							// maxDepth
 
 						while (course != null) {
 							if (!courseHash.containsKey(course.maxDepth)) {
@@ -477,7 +519,11 @@ public class StudyPlan {
 								for (Node courseNode : courseNodeList) {
 									if (complexReq.first.satisfied == false) {
 										System.out.print("Output course: " + courseNode.cName + " ");
-										ArrayList<Integer> courseList = new ArrayList<Integer>(); // store its pre an core
+										ArrayList<Integer> courseList = new ArrayList<Integer>(); // store
+																									// its
+																									// pre
+																									// an
+																									// core
 										backtrackCourse(courseNode.cName, courseList);
 										RemoveTheLastCourseItSelf(courseList);
 										RemoveTheRedInRelatedCourseList(courseList);
@@ -550,8 +596,11 @@ public class StudyPlan {
 	}
 
 	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester) {
+		// all courses
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
+		// courses in each level
 		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
+		// semester=>[courseID,courseID,courseID]
 		HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
 
 		int max = 0;
@@ -563,7 +612,9 @@ public class StudyPlan {
 						max = temp.maxDepth;
 					// semesterBin.put(temp.maxDepth,temp);
 
-					if (semesterBin.containsKey(temp.maxDepth)) { // if this semester exist
+					if (semesterBin.containsKey(temp.maxDepth)) { // if this
+																	// semester
+																	// exist
 						ArrayList<Node> alist = semesterBin.get(temp.maxDepth);
 						alist.add(temp);
 						semesterBin.put(temp.maxDepth, alist);
@@ -581,11 +632,26 @@ public class StudyPlan {
 		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
 		int level = max;
 		int curSemester = numOfSemester;
+		int hhhhh = -1;
 		while (level >= 0 && curSemester > 0) {
-			ArrayList<Node> courseInSameLvl = semesterBin.get(level);// get the courses in this level of depth
+			// if(hhhhh==0){
+			// level--;
+			// hhhhh=-1;
+			// continue;
+			// }
+			ArrayList<Node> courseInSameLvl = semesterBin.get(level);// get the
+																		// courses
+																		// in
+																		// this
+																		// level
+																		// of
+																		// depth
 			int num = courseInSemester;// record how many courses remain in one
 										// semester
-			int lvlRemainCourse = courseInSameLvl.size();// record how many courses remain in this level of depth
+			int lvlRemainCourse = courseInSameLvl.size();// record how many
+															// courses remain in
+															// this level of
+															// depth
 			// mark the course with semester
 			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
 				// check the if the course has already been assigned with a
@@ -594,18 +660,47 @@ public class StudyPlan {
 					// -1 is the default number of semester,
 					// if course has been assigned with a semester, then do
 					// nothing continue the loop
+					lvlRemainCourse--;
 					continue;
 				}
 				// if the course has not been assigned
-				courseInSameLvl.get(i).semester = curSemester;// assign the current semester to the course
-				num--;
-				lvlRemainCourse--;
+				int tempt = courseInSameLvl.get(i).cName;
+				System.out.println(tempt);
+				if (corerequsiteList.containsKey(Integer.valueOf(tempt))) {
+					courseInSameLvl.get(i).semester = curSemester;// assign the
+																	// current
+																	// semester
+																	// to the
+																	// course
+					num--;
+					num = BacktrackCore(courseInHash, courseInSameLvl.get(i).cName, curSemester, num);
+					// ArrayList<Integer> coreqs=(ArrayList<Integer>)
+					// corerequsiteList.get(courseInSameLvl.get(i).cName);
+					// for(Integer lalala:coreqs){
+					// for(int n = 0 ;n<courseBin.size();n++){
+					// if(courseInHash.get(lalala).get(0).cName==courseBin.get(n)){
+					// courseInHash.get(lalala).get(0).semester=curSemester;
+					// num--;
+					// //迭代查找所有的corequisite.
+					// }
+					//
+					// }
+					//
+					// }
+				} else {
+					courseInSameLvl.get(i).semester = curSemester;
+					lvlRemainCourse--;
+					num--;
+				}
+
 			}
 			numOfCourseInSemester.put(curSemester, num);
+			// hhhhh = lvlRemainCourse;
 			if (lvlRemainCourse == 0) {
 				level--;
 			}
-			curSemester--;
+			if (num < 6)
+				curSemester--;
 		}
 
 		for (int i = 1; i <= numOfCourseInSemester.size(); i++) {
@@ -660,7 +755,31 @@ public class StudyPlan {
 			}
 			System.out.print("\n");
 		}
+
 		return result;
+	}
+
+	public int BacktrackCore(HashMap<Integer, ArrayList<Node>> courseInHash, Integer courseID, int currentSemester, int num) {
+		// course.semester = currentSemester;// assign the current semester to
+		// the course
+		// num--;
+		Integer[] coreqs = corerequsiteList.get(courseID).toArray(new Integer[0]);
+		for (Integer lalala : coreqs) {
+			if (courseInHash.get(lalala).get(0).semester != -1)
+				continue;
+			for (int n = 0; n < courseBin.size(); n++) {
+				if (lalala.equals(courseBin.get(n))) {
+					courseInHash.get(lalala).get(0).semester = currentSemester;
+					num--;
+					num = BacktrackCore(courseInHash, lalala, currentSemester, num);
+					// 迭代查找所有的corequisite.
+				}
+
+			}
+
+		}
+
+		return num;
 	}
 
 	public void FillNonePreCoreReq(ComplexReq complexReq, Linklist simpleReq, ArrayList<Integer> courseBinResult) {
@@ -683,7 +802,13 @@ public class StudyPlan {
 		}
 
 		while (course != null && course.chosen == false && tempSimple.first.statisfied == false && tempComplex.first.satisfied == false) {
-			degreeProgram.checkCourseIn_ReqList(tempSimple.first.cName, course.cName); // mark this course true in the simple
+			degreeProgram.checkCourseIn_ReqList(tempSimple.first.cName, course.cName); // mark
+																						// this
+																						// course
+																						// true
+																						// in
+																						// the
+																						// simple
 			degreeProgram.CheckAllSimpleAndComplex();
 			courseBinResult.add(course.cName);
 
@@ -720,7 +845,9 @@ public class StudyPlan {
 		return pre_and_core;
 	}
 
-	public void backtrackCourse(int courseID, ArrayList<Integer> courseList) { // given course name
+	public void backtrackCourse(int courseID, ArrayList<Integer> courseList) { // given
+																				// course
+																				// name
 		CrossLinkedList cr = allCross_relation;
 		int size = cr.headNodeList.size();
 		ArcBox tempArc = new ArcBox();
