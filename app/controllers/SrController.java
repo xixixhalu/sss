@@ -12,6 +12,11 @@ import play.mvc.Result;
 public class SrController extends Controller{
 	
 	public static Result retrieveSrs() {
+		String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
 		try{
 			return ok(views.html.sr_list.render(Sr.getAll()));
 		}catch(Exception e)
@@ -21,6 +26,11 @@ public class SrController extends Controller{
     }
 	
 	public static Result deleteSr(Integer id){
+		String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
 		try{
 	    	Sr.delete(id);
 	    	return redirect(routes.SrController.retrieveSrs());
@@ -31,6 +41,11 @@ public class SrController extends Controller{
     }
     
     public static Result requestEditSrPage(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
 	    	Form<SrEditForm> form = Form.form(SrEditForm.class);
 	    	return ok(views.html.sr_edit.render(Cg.getAll(), Sr.findById(id), form));
@@ -41,6 +56,11 @@ public class SrController extends Controller{
     }
     
     public static Result updateSr(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<SrEditForm> filledForm = Form.form(SrEditForm.class).bindFromRequest();
     	
     	if(filledForm.hasErrors()) {
@@ -63,6 +83,11 @@ public class SrController extends Controller{
     }
     
     public static Result requestCreateSrPage(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
 	    	Form<SrAddForm> form = Form.form(SrAddForm.class);
 	    	return ok(views.html.sr_add.render(Cg.getAll(), form));
@@ -73,6 +98,11 @@ public class SrController extends Controller{
     }
     
     public static Result addSr(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<SrAddForm> filledForm = Form.form(SrAddForm.class).bindFromRequest();
     	if (filledForm.hasErrors())
 			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));

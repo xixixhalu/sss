@@ -26,7 +26,7 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result retrieveDegrees() {
 		try{
-			return ok(views.html.index.render(Degree.getAll()));
+			return ok(views.html.stu_index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
     		return badRequest(views.html.error.render("Cannot retrieve degree list"));
@@ -189,6 +189,7 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoAssignSemester(){
+		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
 		
@@ -197,9 +198,11 @@ public class StudyPlanController2 extends Controller {
 			
 			String wantTakeCourses = form.wantTakeCourses;
 			String alreadyTakeCourses = form.alreadyTakenCourses;
+			String semesterData = form.semesterData;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
+			JSONArray semesterArray = new JSONArray(semesterData);
 			
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
@@ -231,11 +234,38 @@ public class StudyPlanController2 extends Controller {
 					corequisites.put(Integer.valueOf(id), core);
 				}
 			}
+			
+			
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
-			//HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8);
-			return ok();
+			studyplan.AutoAssignSemester(8, semesterData);
+			
+			/**
+			 * @author tongrui
+			 * return semester data filled with courses
+			 */
+			for (int i = 0; i < semesterArray.length(); i++) {
+				JSONObject semester = (JSONObject) semesterArray.get(i);
+				
+				int semesterID = semester.getInt("num");
+				JSONArray courses = (JSONArray) semester.get("courses");
+				ArrayList<Integer> coursesFilled = studyplan.studyplanResult.get(semesterID);
+				
+				for (Integer course : coursesFilled) {
+					boolean flag = false;
+					for (int j = 0; j < courses.length(); j++) {
+						if (courses.getInt(j) == course) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag)
+						courses.put(course);
+				}
+			}
+			
+			return ok(semesterArray.toString());
 		}catch(Exception e)
 		{
 			e.printStackTrace();
