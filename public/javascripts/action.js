@@ -7,8 +7,8 @@ window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     courseObjs = eval("(" + jsonData + ")");
 };
-$(document).ready(function(){
-    $("ul.req_course_list li:odd").css("background-color","#F8F8F8");
+$(document).ready(function() {
+    $("ul.req_course_list li:odd").css("background-color", "#F8F8F8");
 });
 //dropdown effect
 function dropDown(id) {
@@ -437,7 +437,9 @@ function submitCourse(form) {
 }
 
 function autoCourse() {
-
+    var c = confirm("Choose your desired courses first, after click the auto there is no going back.\nHave you finished your choice? ");
+    if (c == false)
+        return;
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
