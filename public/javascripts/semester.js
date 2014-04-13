@@ -2,7 +2,7 @@
  * @author Bohan Zheng
  */
 var ASO = {
-    "minSemester" : "4",
+    "minSemester" : "8",
     "courses" : {
         97 : "3",
         93 : "3",
@@ -80,10 +80,10 @@ function add() {
 
 function generateSemesterList(num) {
     var table = document.getElementById("semesterTable");
-    table.innerHTML = "<tr><td>Semester</td><td>Year</td><td>Max Credits</td><td> Min Credits</td></tr>";
+    table.innerHTML = "<tr><td>Semester</td><td>Year</td></tr>";
     for ( i = 0; i < num; i++) {
         var tr = document.createElement("tr");
-        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='number' /></td><td><input type='number' /></td>";
+        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='hidden' /></td><td><input type='hidden' /></td>";
         table.appendChild(tr);
     }
 }
@@ -128,7 +128,7 @@ function appendSemester() {
         //<a class='auto button'>AUTO</a>";
 
         div.appendChild(req_course_list);
-        div.appendChild(credits);
+        //div.appendChild(credits);
 
         right_list.appendChild(sem_title);
         right_list.appendChild(div);

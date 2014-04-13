@@ -32,6 +32,11 @@ function addLikeCourse(id, curNode) {
     }
     var wantTake = document.getElementById("wantTake");
     wantTake.appendChild(generateLi(id, curNode));
+    var name = curNode.parentElement.className;
+    var sameCourse = document.getElementsByClassName(name);
+    for ( i = 0; i < sameCourse.length; i++) {
+        sameCourse[i].style.display = "none";
+    }
 }
 
 //adding course to already-taken list
@@ -42,6 +47,11 @@ function addTakenCourse(id, curNode) {
     }
     var wantTake = document.getElementById("alreadyTaken");
     wantTake.appendChild(generateLi(id, curNode));
+    var name = curNode.parentElement.className;
+    var sameCourse = document.getElementsByClassName(name);
+    for ( i = 0; i < sameCourse.length; i++) {
+        sameCourse[i].style.display = "none";
+    }
 }
 
 function generateLi(id, curNode) {
@@ -156,6 +166,10 @@ function removeCourse(curId) {
         }
     }
     courseLi.parentElement.removeChild(courseLi);
+    var sameCourses=document.getElementsByClassName("c"+curId);
+    for(i=0;i<sameCourses.length;i++){
+        sameCourses[i].style.display="block";
+    }
 }
 
 //check prerequisites
