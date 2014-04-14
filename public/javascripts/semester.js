@@ -269,8 +269,10 @@ function getSemesterData() {
     for ( i = 1; i < semesterLis.length; i++) {
         var num = i;
         var title = semesterLis[i].getElementsByClassName("sem_title")[0].innerText;
-        var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
-        var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
+        var minCredit = 1;
+        var maxCredit = 1;
+        // var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
+        // var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
         var courses = new Array();
         var courseLis = semesterLis[i].getElementsByClassName("req_course_list")[0].children;
         for ( j = 0; j < courseLis.length; j++) {
