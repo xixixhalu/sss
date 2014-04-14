@@ -2,7 +2,7 @@
  * @author Bohan Zheng
  */
 var ASO = {
-    "minSemester" : "4",
+    "minSemester" : "8",
     "courses" : {
         97 : "3",
         93 : "3",
@@ -80,10 +80,10 @@ function add() {
 
 function generateSemesterList(num) {
     var table = document.getElementById("semesterTable");
-    table.innerHTML = "<tr><td>Semester</td><td>Year</td><td>Max Credits</td><td> Min Credits</td></tr>";
+    table.innerHTML = "<tr><td>Semester</td><td>Year</td></tr>";
     for ( i = 0; i < num; i++) {
         var tr = document.createElement("tr");
-        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='number' /></td><td><input type='number' /></td>";
+        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='hidden' /></td><td><input type='hidden' /></td>";
         table.appendChild(tr);
     }
 }
@@ -128,7 +128,7 @@ function appendSemester() {
         //<a class='auto button'>AUTO</a>";
 
         div.appendChild(req_course_list);
-        div.appendChild(credits);
+        //div.appendChild(credits);
 
         right_list.appendChild(sem_title);
         right_list.appendChild(div);
@@ -200,8 +200,8 @@ function getPrefixNumber(li) {
 
 function autoSemester() {
     var semesterNum = document.getElementById("req_list").children.length - 1;
-    if(semesterNum<ASO.minSemester){
-        alert("you must add at least "+ASO.minSemester+" semesters first!");
+    if (semesterNum < ASO.minSemester) {
+        alert("you must add at least " + ASO.minSemester + " semesters first!");
         return;
     }
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
@@ -238,7 +238,7 @@ function autoSemester() {
             for ( i = 0; i < semesterObj.length; i++) {
                 var courses = semesterObj[i].courses;
                 var semester = semesterUls[i];
-                semester.innerHTML="";
+                semester.innerHTML = "";
                 for ( j = 0; j < courses.length; j++) {
                     var li = document.createElement("li");
                     var id = courses[j];
@@ -300,7 +300,7 @@ function checkSemesterConstraints(id, num) {
     for ( i = 0; i < coreqlis.length; i++) {
         coreqs.push(coreqlis[i].id);
     }
-    if (!checkSemesterReq(id, prereqs)) {
+    if (!checkSemesterReq(id, prereqs, "pre")) {
         var str = "check the prerequisite constraints!\n";
         var prereqs = courseObjs[id].prereq;
         for ( i = 0; i < prereqs.length; i++)
@@ -308,7 +308,7 @@ function checkSemesterConstraints(id, num) {
         alert(str);
         return false;
     }
-    if (!checkSemesterReq(id, coreqs)) {
+    if (!checkSemesterReq(id, coreqs, "co")) {
         var str = "check the corequisite constraints!\n";
         var coreqs = courseObjs[id].coreq;
         for ( i = 0; i < coreqs.length; i++)
@@ -319,14 +319,17 @@ function checkSemesterConstraints(id, num) {
     return true;
 }
 
-function checkSemesterReq(id, courses) {
+function checkSemesterReq(id, courses, req) {
     var p = false;
 
     var prereq = new Array;
-
-    if (courseObjs[id].prereq)
-        prereq = courseObjs[id].prereq;
-
+    if (req == "pre") {
+        if (courseObjs[id].prereq)
+            prereq = courseObjs[id].prereq;
+    } else if (req == "co") {
+        if (courseObjs[id].coreq)
+            prereq = courseObjs[id].coreq;
+    }
     if (prereq.length == 0)
         return true;
 

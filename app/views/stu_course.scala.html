@@ -110,7 +110,7 @@
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
                                 	cont += Html("<div>You must take "+reqNum+" courses listed below.</div>");
                                 	for(courseId <- cg.getCourse_ids()){
-                                    cont += Html("<li>");
+                                    cont += Html("<li class=\"c" + courseId + "\">");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
                                     	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
                                         cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
