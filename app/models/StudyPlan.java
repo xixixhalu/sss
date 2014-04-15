@@ -48,7 +48,7 @@ public class StudyPlan {
 		calSemester.allCross_relation_example = allCross_relation;
 		calSemester.BFS_Max();
 		// calSemester.BFS_Min();
-		calSemester.Display_All_Headnode_Max();
+//		calSemester.Display_All_Headnode_Max();
 		// calSemester.Display_All_Headnode_Min();
 		return;
 	}
@@ -240,11 +240,19 @@ public class StudyPlan {
 		// System.out.print("\n");
 
 		// System.out.print("After AutoFill: \n");
+<<<<<<< HEAD
 		// degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
 
 		// allCross_relation.Display_All_Headnode();
 		allCross_relation.displayCrossLinkedList();
+=======
+//		degreeProgram.displayallComplexReq();
+		// degreeProgram.displayCourseList();
+
+//		allCross_relation.Display_All_Headnode();
+//		allCross_relation.displayCrossLinkedList();
+>>>>>>> origin/rtong
 
 		play.Logger.info("================================================");
 	}
@@ -567,12 +575,12 @@ public class StudyPlan {
 								int key = entry.getKey();
 								ArrayList<Node> courseNodeList = entry
 										.getValue();
-								System.out.print("The maxDepth is " + key
-										+ " include these courses: \n");
+//								System.out.print("The maxDepth is " + key
+//										+ " include these courses: \n");
 								for (Node courseNode : courseNodeList) {
 									if (complexReq.first.satisfied == false) {
-										System.out.print("Output course: "
-												+ courseNode.cName + " ");
+//										System.out.print("Output course: "
+//												+ courseNode.cName + " ");
 										ArrayList<Integer> courseList = new ArrayList<Integer>(); // store
 																									// its
 																									// pre
@@ -631,11 +639,7 @@ public class StudyPlan {
 									}
 								}
 
-								System.out
-										.print("\n ======================= \n");
 							}
-
-							System.out.print("\n");
 
 						}
 
@@ -646,13 +650,13 @@ public class StudyPlan {
 				}
 			}
 		}
-		System.out.print("*******");
-
-		for (Integer id : courseBinResult) {
-
-			Logger.info(id + " ");
-			System.out.print(id + " ");
-		}
+//		System.out.print("*******");
+//
+//		for (Integer id : courseBinResult) {
+//
+//			Logger.info(id + " ");
+//			System.out.print(id + " ");
+//		}
 
 		for (Integer id : degreeProgram.course.keySet()) {
 			ArrayList<Node> temp = degreeProgram.course.get(id);
@@ -663,7 +667,7 @@ public class StudyPlan {
 			}
 		}
 
-		System.out.print("\n");
+//		System.out.print("\n");
 		courseBin = courseBinResult;
 		return courseBinResult;
 	}
@@ -964,12 +968,12 @@ public class StudyPlan {
 		return;
 	}
 
-	public void ShowRelatedCourse(ArrayList<Integer> pre_and_core) {
-		for (int i = 0; i < pre_and_core.size(); i++) {
-
-			System.out.print(pre_and_core.get(i) + "\n");
-		}
-	}
+//	public void ShowRelatedCourse(ArrayList<Integer> pre_and_core) {
+//		for (int i = 0; i < pre_and_core.size(); i++) {
+//
+//			System.out.print(pre_and_core.get(i) + "\n");
+//		}
+//	}
 
 	public ArrayList<Integer> RemoveTheLastCourseItSelf(
 			ArrayList<Integer> courseList) {
