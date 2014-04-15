@@ -149,6 +149,7 @@ function semesterDorpDown(evt) {
             var div2 = div1.getElementsByTagName("div")[1];
             if (div2.style.display == "block") {
                 div1.getElementsByTagName("div")[1].style.display = "none";
+                div1.getElementsByTagName("div")[0].style.backgroundColor = '#FFF';
                 break;
             }
         }
@@ -185,10 +186,19 @@ function addCourseToSemester(course, id) {
 }
 
 function removeCourseFromSemester(a, id) {
-    var li = a.parentElement;
-    li.parentElement.removeChild(li);
-    //var course = getPrefixNumber(li);
-    document.getElementById(id).style.textDecoration = "none";
+	var r = confirm("Are you sure to remove this course from this semester?");
+	if (r == true)
+ 	{
+  		var li = a.parentElement;
+    	li.parentElement.removeChild(li);
+    	//var course = getPrefixNumber(li);
+    	document.getElementById(id).style.textDecoration = "none";
+    	return true;
+  	}
+	else
+  	{
+  		return false;
+	}   
 }
 
 function getPrefixNumber(li) {
@@ -252,6 +262,8 @@ function autoSemester() {
                 }
             }
             $("#wantTake li").css("text-decoration", "line-through");
+            
+            $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
         });
     }
 }
@@ -439,3 +451,15 @@ function checkSemesterReq(id, courses, req) {
     }
 }
 
+function auto_next_semester_action()
+{
+	var element_text = $('#auto_next_semester_button').html();
+	if(element_text == 'AUTO ASSIGN SEMESTERS')
+	{
+		autoSemester();
+	}
+	else if(element_text == 'GET FINAL STUDY PLAN')
+	{
+		window.location.href = 'studyplan';
+	}
+}

@@ -47,12 +47,14 @@
             </ul>
         </div>
         <!-- end of step bar -->
-        <div id="helpPanelLeft" style="position : fixed;  margin-left : 10px; ">
-            <h2 style="text-align : center; color : green;">How to use</h2>
-            <p><b>1. </b> Pick your desired courses into "Want to take" course bin</p>
-            <p><b>2. </b> Pick your previous passed courses into "Already taken" course bin</p>
-            <p><b>3. </b> Undo above operation by clicking &otimes; button at right hand side of the course bin</p>
-            <p></p>
+        <div id="helpPanelLeft" style="position : fixed;  margin-left : 10px;">
+            <h3 style="text-align : center; color : green;">How to use</h3>
+            <b>1. </b>Expand requirement boxes to see the requirment details. You can
+            <br/>&nbsp;&nbsp;<b>a) </b>Click &oplus;: to pick your desired courses into "Want to take" course bin
+            <br/>&nbsp;&nbsp;<b>b) </b>Click &radic;: to pick your previous passed courses into "Already taken" course bin
+            <br/><b>2. </b>To remove the course from course bin, click &otimes; button at right side of the course bin
+            <br/><b>3. </b>Click "AUTO FILL COURSES" button to ask the system to help you choose required courses
+            <br/><b>4. </b>Click "NEXT STEP" button after "AUTO FILL COURSES"</p>
         </div>
         <div class="content">
             <div class="left float_left">
@@ -74,8 +76,7 @@
                 <div>
                 	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
                 		<input type="hidden" value="" name="">
-                    	<a class="button left_auto" onclick='autoCourse()'>AUTO</a>
-                    	<a class="button left_next" onclick='submitCourse(this.parentElement)'>NEXT</a>
+                    	<a class="button left_auto" id="auto_next_course_button" onclick='auto_next_course_action(this.parentElement)'>AUTO FILL COURSES</a>
                 	</form>
                 </div>
             </div>
@@ -120,7 +121,7 @@
                                     cont += Html("<li class=\"c" + courseId + "\">");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
                                     	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
-                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&otimes;</a><a onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
+                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&radic;</a><a class='likebutton' onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
                                     cont += Html("</li>");
                                     }
                                     //cont += Html("<li>");
@@ -178,6 +179,13 @@
                 </div>
             </div>
         </div>
+        <!-- <div id="helpPanelRight" style="position : fixed; float: right;">
+            <h2 style="text-align : center; color : green;">How to use</h2>
+            <p><b>1. </b> Pick your desired courses into "Want to take" course bin</p>
+            <p><b>2. </b> Pick your previous passed courses into "Already taken" course bin</p>
+            <p><b>3. </b> Undo above operation by clicking &otimes; button at right hand side of the course bin</p>
+            <p></p>
+        </div> -->
         <div class="footer">
             
             <span>Student Scheduling System for Stevens Institute of Technology</span>
