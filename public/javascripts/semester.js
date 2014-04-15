@@ -185,10 +185,19 @@ function addCourseToSemester(course, id) {
 }
 
 function removeCourseFromSemester(a, id) {
-    var li = a.parentElement;
-    li.parentElement.removeChild(li);
-    //var course = getPrefixNumber(li);
-    document.getElementById(id).style.textDecoration = "none";
+	var r = confirm("Are you sure to remove this course from this semester?");
+	if (r == true)
+ 	{
+  		var li = a.parentElement;
+    	li.parentElement.removeChild(li);
+    	//var course = getPrefixNumber(li);
+    	document.getElementById(id).style.textDecoration = "none";
+    	return true;
+  	}
+	else
+  	{
+  		return false;
+	}   
 }
 
 function getPrefixNumber(li) {
