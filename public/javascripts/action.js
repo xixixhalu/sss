@@ -16,6 +16,7 @@ $(document).ready(function() {
     $(window).resize(function() {
         helpPanelWidth = (document.body.clientWidth - 1000) / 2;
         $('#helpPanelLeft').css("width", helpPanelWidth);
+        $('helpPanelRight').css('width', helpPanelWidth);
     });
 });
 //dropdown effect
