@@ -7,8 +7,17 @@ window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     courseObjs = eval("(" + jsonData + ")");
 };
-$(document).ready(function(){
-    $("ul.req_course_list li:odd").css("background-color","#F8F8F8");
+$(document).ready(function() {
+    $("ul.req_course_list li:odd").css("background-color", "#F8F8F8");
+    
+    var helpPanelWidth = (document.body.clientWidth - 1000) / 2;
+    $("#helpPanelLeft").css("width", helpPanelWidth);
+    
+    $(window).resize(function() {
+        helpPanelWidth = (document.body.clientWidth - 1000) / 2;
+        $('#helpPanelLeft').css("width", helpPanelWidth);
+        $('helpPanelRight').css('width', helpPanelWidth);
+    });
 });
 //dropdown effect
 function dropDown(id) {
@@ -32,6 +41,11 @@ function addLikeCourse(id, curNode) {
     }
     var wantTake = document.getElementById("wantTake");
     wantTake.appendChild(generateLi(id, curNode));
+    var name = curNode.parentElement.className;
+    var sameCourse = document.getElementsByClassName(name);
+    for ( i = 0; i < sameCourse.length; i++) {
+        sameCourse[i].style.display = "none";
+    }
 }
 
 //adding course to already-taken list
@@ -42,12 +56,17 @@ function addTakenCourse(id, curNode) {
     }
     var wantTake = document.getElementById("alreadyTaken");
     wantTake.appendChild(generateLi(id, curNode));
+    var name = curNode.parentElement.className;
+    var sameCourse = document.getElementsByClassName(name);
+    for ( i = 0; i < sameCourse.length; i++) {
+        sameCourse[i].style.display = "none";
+    }
 }
 
 function generateLi(id, curNode) {
     var courseLi = document.createElement("li");
     courseLi.id = id;
-    courseLi.innerHTML = courseObjs[id].prefix + " " + courseObjs[id].num + " - " + courseObjs[id].title;
+    courseLi.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title;
     var simpleReqId = curNode.parentElement.parentElement.id;
     var complexReqId = curNode.parentElement.parentElement.parentElement.parentElement.parentElement.id;
     simpleReqId = simpleReqId.substring(3);
@@ -156,6 +175,10 @@ function removeCourse(curId) {
         }
     }
     courseLi.parentElement.removeChild(courseLi);
+    var sameCourses=document.getElementsByClassName("c"+curId);
+    for(i=0;i<sameCourses.length;i++){
+        sameCourses[i].style.display="block";
+    }
 }
 
 //check prerequisites
@@ -437,7 +460,9 @@ function submitCourse(form) {
 }
 
 function autoCourse() {
-
+    var c = confirm("Choose your desired courses first, after click the auto there is no going back.\nHave you finished your choice? ");
+    if (c == false)
+        return;
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
@@ -488,6 +513,8 @@ function autoCourse() {
                 li.id = id;
                 li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')">⊗</a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
                 ul_want.appendChild(li);
+                
+                document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
             }
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // for (var i = 0; i < alreadyArr.length; i++) {
@@ -498,4 +525,17 @@ function autoCourse() {
 
         });
     }
+}
+
+function auto_next_course_action(form)
+{
+	var element_text = $('#auto_next_course_button').html();
+	if(element_text == 'AUTO FILL COURSES')
+	{
+		autoCourse();
+	}
+	else if(element_text == 'NEXT STEP')
+	{
+		submitCourse(form);
+	}
 }

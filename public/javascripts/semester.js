@@ -2,7 +2,7 @@
  * @author Bohan Zheng
  */
 var ASO = {
-    "minSemester" : "4",
+    "minSemester" : "8",
     "courses" : {
         97 : "3",
         93 : "3",
@@ -80,10 +80,10 @@ function add() {
 
 function generateSemesterList(num) {
     var table = document.getElementById("semesterTable");
-    table.innerHTML = "<tr><td>Semester</td><td>Year</td><td>Max Credits</td><td> Min Credits</td></tr>";
+    table.innerHTML = "<tr><td>Semester</td><td>Year</td></tr>";
     for ( i = 0; i < num; i++) {
         var tr = document.createElement("tr");
-        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='number' /></td><td><input type='number' /></td>";
+        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='hidden' /></td><td><input type='hidden' /></td>";
         table.appendChild(tr);
     }
 }
@@ -128,7 +128,7 @@ function appendSemester() {
         //<a class='auto button'>AUTO</a>";
 
         div.appendChild(req_course_list);
-        div.appendChild(credits);
+        //div.appendChild(credits);
 
         right_list.appendChild(sem_title);
         right_list.appendChild(div);
@@ -149,12 +149,15 @@ function semesterDorpDown(evt) {
             var div2 = div1.getElementsByTagName("div")[1];
             if (div2.style.display == "block") {
                 div1.getElementsByTagName("div")[1].style.display = "none";
+                div1.getElementsByTagName("div")[0].style.backgroundColor = '#FFF';
                 break;
             }
         }
         thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
+        thisDiv.style.backgroundColor = '#DDD';
     } else {
         thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
+        thisDiv.style.backgroundColor = 'white';
     }
 }
 
@@ -183,10 +186,19 @@ function addCourseToSemester(course, id) {
 }
 
 function removeCourseFromSemester(a, id) {
-    var li = a.parentElement;
-    li.parentElement.removeChild(li);
-    //var course = getPrefixNumber(li);
-    document.getElementById(id).style.textDecoration = "none";
+	var r = confirm("Are you sure to remove this course from this semester?");
+	if (r == true)
+ 	{
+  		var li = a.parentElement;
+    	li.parentElement.removeChild(li);
+    	//var course = getPrefixNumber(li);
+    	document.getElementById(id).style.textDecoration = "none";
+    	return true;
+  	}
+	else
+  	{
+  		return false;
+	}   
 }
 
 function getPrefixNumber(li) {
@@ -199,7 +211,11 @@ function getPrefixNumber(li) {
 }
 
 function autoSemester() {
-
+    var semesterNum = document.getElementById("req_list").children.length - 1;
+    if (semesterNum < ASO.minSemester) {
+        alert("you must add at least " + ASO.minSemester + " semesters first!");
+        return;
+    }
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var wantDataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
@@ -229,13 +245,25 @@ function autoSemester() {
             /* [semester:{num:1,title:spring 2014,;minCredit:1,maxCredit:10,courses:[1,2,3]},...]*/
             semesterData : JSON.stringify(getSemesterData())
         }, function(data) {
-            // var coursesObj = eval("(" + data + ")");
-            // var courses = coursesObj.courses;
-            // for ( i = 0; i < courses.length; i++) {
-            // var li = document.createElement("li");
-            // li.innerHTML = courses[i].prefix + courses[i].num + " - " + courses[i].title;
-            // ul.appendChild(li);
-            // }
+            var semesterObj = eval("(" + data + ")");
+            var semesterUls = document.getElementById("req_list").getElementsByClassName("req_course_list");
+            for ( i = 0; i < semesterObj.length; i++) {
+                var courses = semesterObj[i].courses;
+                var semester = semesterUls[i];
+                semester.innerHTML = "";
+                for ( j = 0; j < courses.length; j++) {
+                    var li = document.createElement("li");
+                    var id = courses[j];
+                    li.id = id;
+                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+                    semester.appendChild(li);
+
+                    //this.parentElement.style.textDecoration = "line-through";
+                }
+            }
+            $("#wantTake li").css("text-decoration", "line-through");
+            
+            $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
         });
     }
 }
@@ -255,8 +283,10 @@ function getSemesterData() {
     for ( i = 1; i < semesterLis.length; i++) {
         var num = i;
         var title = semesterLis[i].getElementsByClassName("sem_title")[0].innerText;
-        var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
-        var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
+        var minCredit = 1;
+        var maxCredit = 1;
+        // var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
+        // var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
         var courses = new Array();
         var courseLis = semesterLis[i].getElementsByClassName("req_course_list")[0].children;
         for ( j = 0; j < courseLis.length; j++) {
@@ -286,7 +316,7 @@ function checkSemesterConstraints(id, num) {
     for ( i = 0; i < coreqlis.length; i++) {
         coreqs.push(coreqlis[i].id);
     }
-    if (!checkSemesterReq(id, prereqs)) {
+    if (!checkSemesterReq(id, prereqs, "pre")) {
         var str = "check the prerequisite constraints!\n";
         var prereqs = courseObjs[id].prereq;
         for ( i = 0; i < prereqs.length; i++)
@@ -294,7 +324,7 @@ function checkSemesterConstraints(id, num) {
         alert(str);
         return false;
     }
-    if (!checkSemesterReq(id, coreqs)) {
+    if (!checkSemesterReq(id, coreqs, "co")) {
         var str = "check the corequisite constraints!\n";
         var coreqs = courseObjs[id].coreq;
         for ( i = 0; i < coreqs.length; i++)
@@ -305,14 +335,17 @@ function checkSemesterConstraints(id, num) {
     return true;
 }
 
-function checkSemesterReq(id, courses) {
+function checkSemesterReq(id, courses, req) {
     var p = false;
 
     var prereq = new Array;
-
-    if (courseObjs[id].prereq)
-        prereq = courseObjs[id].prereq;
-
+    if (req == "pre") {
+        if (courseObjs[id].prereq)
+            prereq = courseObjs[id].prereq;
+    } else if (req == "co") {
+        if (courseObjs[id].coreq)
+            prereq = courseObjs[id].coreq;
+    }
     if (prereq.length == 0)
         return true;
 
@@ -418,3 +451,15 @@ function checkSemesterReq(id, courses) {
     }
 }
 
+function auto_next_semester_action()
+{
+	var element_text = $('#auto_next_semester_button').html();
+	if(element_text == 'AUTO ASSIGN SEMESTERS')
+	{
+		autoSemester();
+	}
+	else if(element_text == 'GET FINAL STUDY PLAN')
+	{
+		window.location.href = 'studyplan';
+	}
+}

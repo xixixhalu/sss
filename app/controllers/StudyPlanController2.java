@@ -39,7 +39,7 @@ public class StudyPlanController2 extends Controller {
 		if(filledForm.hasErrors()) {
     		return badRequest("Not all mandatory fields correct or entered.");
     	}
-		try{
+		//try{
 			DegreeForm degreeForm = filledForm.get();
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
@@ -63,10 +63,10 @@ public class StudyPlanController2 extends Controller {
 			}
 			
 			return ok(views.html.stu_course.render(degree, json.toString()));
-		}catch(Exception e)
-		{
-			return badRequest(views.html.error.render("Cannot retrieve course list"));
-		}
+		//}catch(Exception e)
+		//{
+		//	return badRequest(views.html.error.render("Cannot retrieve course list"));
+		//}
 	}
 	
 	public static Result autoFillCourse(){
@@ -102,6 +102,7 @@ public class StudyPlanController2 extends Controller {
 				
 				studyplan.degreeProgram.displayallComplexReq();
 				studyplan.AutoFillCourseBin();
+				studyplan.changeCourseStatus();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
 				
 				for (Integer id : courseBin) {
@@ -178,6 +179,7 @@ public class StudyPlanController2 extends Controller {
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
 				studyplan.AutoFillCourseBin();
 			}
+			studyplan.degreeProgram.displayallComplexReq();
 			return ok(views.html.stu_semester.render(json.toString(), 
 					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)
@@ -238,7 +240,7 @@ public class StudyPlanController2 extends Controller {
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
-			HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8, semesterData);
+			studyplan.AutoAssignSemester(8, semesterData);
 			
 			/**
 			 * @author tongrui
@@ -249,7 +251,7 @@ public class StudyPlanController2 extends Controller {
 				
 				int semesterID = semester.getInt("num");
 				JSONArray courses = (JSONArray) semester.get("courses");
-				ArrayList<Integer> coursesFilled = result.get(semesterID);
+				ArrayList<Integer> coursesFilled = studyplan.studyplanResult.get(semesterID);
 				
 				for (Integer course : coursesFilled) {
 					boolean flag = false;
@@ -275,5 +277,6 @@ public class StudyPlanController2 extends Controller {
 	public static Result generateStudyPlan(){
 		return ok(views.html.stu_studyplan.render());
 	}
+	
 	
 }

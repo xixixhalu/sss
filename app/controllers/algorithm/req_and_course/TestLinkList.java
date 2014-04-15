@@ -16,9 +16,15 @@ public class TestLinkList {
 	
 	public void displayAllCourse(){
 		for (Integer key : this.course.keySet()) {
-		    System.out.println("Key = " + key + " - " 
-		    		+ this.course.get(key).get(0).cName + " - "
-		    		+ this.course.get(key).size());
+			ArrayList<Node> theSameCourse = this.course.get(key);
+			System.out.print(theSameCourse.size());
+			for(Node eachCourse:theSameCourse){
+				System.out.println("Key = " + key + " - " 
+			    		+ eachCourse.cName + " - "+
+			    		eachCourse.chosen);
+				
+			}
+	    
 		}
 	}
 	

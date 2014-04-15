@@ -7,6 +7,7 @@ function add() {
     for ( i = 0; i < courses.length; i++) {
         if (courses[i].checked == true) {
             checked_course.push(courses[i].value);
+            courses[i].checked=false;
         }
     }
     var selected = document.getElementById("selected");
@@ -95,7 +96,6 @@ function onCgSub(e) {
     hidden.value = selected_course;
     hidden.name = "course_ids";
     document.getElementById("selected").appendChild(hidden);
-    
     e.submit();
 }
 
