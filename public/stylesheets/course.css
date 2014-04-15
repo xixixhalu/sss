@@ -94,7 +94,7 @@ a {
 }
 .req_course_list li a {
 	float: right;
-	margin-left: 10px;
+	/*margin-left: 10px;*/
 }
 .req_title {
 	padding-top: 8px;
@@ -163,4 +163,8 @@ a {
 .credits span {
 	float: left;
 	margin-left: 20px;
+}
+
+.likebutton{
+	margin-right: 20px;
 }

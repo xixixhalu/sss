@@ -149,6 +149,7 @@ function semesterDorpDown(evt) {
             var div2 = div1.getElementsByTagName("div")[1];
             if (div2.style.display == "block") {
                 div1.getElementsByTagName("div")[1].style.display = "none";
+                div1.getElementsByTagName("div")[0].style.backgroundColor = '#FFF';
                 break;
             }
         }
