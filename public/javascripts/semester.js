@@ -252,6 +252,8 @@ function autoSemester() {
                 }
             }
             $("#wantTake li").css("text-decoration", "line-through");
+            
+            $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
         });
     }
 }
@@ -439,3 +441,15 @@ function checkSemesterReq(id, courses, req) {
     }
 }
 
+function auto_next_semester_action()
+{
+	var element_text = $('#auto_next_semester_button').html();
+	if(element_text == 'AUTO ASSIGN SEMESTERS')
+	{
+		autoSemester();
+	}
+	else if(element_text == 'GET FINAL STUDY PLAN')
+	{
+		window.location.href = 'studyplan';
+	}
+}
