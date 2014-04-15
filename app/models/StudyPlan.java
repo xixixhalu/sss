@@ -240,19 +240,13 @@ public class StudyPlan {
 		// System.out.print("\n");
 
 		// System.out.print("After AutoFill: \n");
-<<<<<<< HEAD
-		// degreeProgram.displayallComplexReq();
-		// degreeProgram.displayCourseList();
 
-		// allCross_relation.Display_All_Headnode();
-		allCross_relation.displayCrossLinkedList();
-=======
 //		degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
 
 //		allCross_relation.Display_All_Headnode();
 //		allCross_relation.displayCrossLinkedList();
->>>>>>> origin/rtong
+
 
 		play.Logger.info("================================================");
 	}
