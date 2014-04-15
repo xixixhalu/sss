@@ -11,11 +11,11 @@ $(document).ready(function() {
     $("ul.req_course_list li:odd").css("background-color", "#F8F8F8");
     
     var helpPanelWidth = (document.body.clientWidth - 1000) / 2;
-    $("#helpPanel").css("width", helpPanelWidth);
+    $("#helpPanelLeft").css("width", helpPanelWidth);
     
     $(window).resize(function() {
         helpPanelWidth = (document.body.clientWidth - 1000) / 2;
-        $('#helpPanel').css("width", helpPanelWidth);
+        $('#helpPanelLeft').css("width", helpPanelWidth);
     });
 });
 //dropdown effect

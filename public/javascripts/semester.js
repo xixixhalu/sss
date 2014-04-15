@@ -153,8 +153,10 @@ function semesterDorpDown(evt) {
             }
         }
         thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
+        thisDiv.style.backgroundColor = '#DDD';
     } else {
         thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
+        thisDiv.style.backgroundColor = 'white';
     }
 }
 
