@@ -21,11 +21,12 @@
         <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
         <script src="/assets/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
         <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/font-awesome-4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet"/>
         <script src="/assets/javascripts/action.js"></script>
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
-        <div class="nav_bar" style="background-color: #c72727; color: #ffef30">
+        <div class="nav_bar" >
             <div class="block">
                 <div class="degree_bar">
                     Degree: @degree.getTitle()
@@ -49,8 +50,9 @@
             </ul>
         </div>
         <!-- end of step bar -->
-        <div id="helpPanelLeft" style="position : fixed;  margin-left : 10px;">
-            <h2 style="text-align : center; color : green;">How to use</h2>
+        <div id="helpPanelLeft" style="position : fixed;  margin-left : 5px; padding-left: 5px; border: #AAAAAA 1px solid; background-color: #eaeaea">
+            <a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
+            <h2 style="text-align : center; color : green; ">How to use</h2>
             <b>1. </b>Expand requirement list to pick up courses into course bin
             <br/><b>2. </b>To remove the course from course bin, click &otimes; button at right side of the course bin
             <br/><b>3. </b>Click "AUTO FILL COURSES" button to ask the system to help you choose required courses
@@ -170,7 +172,8 @@
                     -->
                 </ul>
         
-                <div id="helpPanelRight" style="position : fixed; margin-left: 570px; ">
+                <div id="helpPanelRight" style="position : fixed; margin-left: 560px; padding-left: 5px; border: #AAAAAA 1px solid; background-color: #eaeaea">
+                    <a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
                     <h2 style="text-align : center; color : green;">How to use</h2>
                     <p><b>1. </b> Pick up desired courses by clicking &oplus; button</p>
                     <p><b>2. </b> Pick up previous passed courses by clicking &radic; button</p>
