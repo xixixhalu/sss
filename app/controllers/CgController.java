@@ -18,6 +18,11 @@ import play.mvc.Result;
 public class CgController extends Controller{
 	
 	public static Result retrieveCgs() {
+		String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
 		try{
 			return ok(views.html.cg_list.render(Cg.getAll()));
 		}catch(Exception e)
@@ -27,6 +32,11 @@ public class CgController extends Controller{
     }
 	
 	public static Result deleteCg(Integer id){
+		String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
     		Cg.delete(id);
     		return redirect(routes.CgController.retrieveCgs());
@@ -37,6 +47,11 @@ public class CgController extends Controller{
     }
     
     public static Result requestEditCgPage(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
     		Form<CgEditForm> form = Form.form(CgEditForm.class);
     		return ok(views.html.cg_edit.render(Course.getAll(), Cg.findById(id), form));
@@ -48,6 +63,11 @@ public class CgController extends Controller{
     }
     
     public static Result updateCg(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<CgEditForm> filledForm = Form.form(CgEditForm.class).bindFromRequest();
     	
     	if(filledForm.hasErrors()) {
@@ -70,6 +90,11 @@ public class CgController extends Controller{
     }
     
     public static Result requestCreateCgPage(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
 	    	Form<CgAddForm> form = Form.form(CgAddForm.class);
 	    	return ok(views.html.cg_add.render(Course.getAll(), form));
@@ -80,6 +105,11 @@ public class CgController extends Controller{
     }
     
     public static Result addCg(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<CgAddForm> filledForm = Form.form(CgAddForm.class).bindFromRequest();
     	if (filledForm.hasErrors())
 			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));

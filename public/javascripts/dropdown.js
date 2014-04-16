@@ -11,12 +11,15 @@ function dropdown() {
 }
 
 function onDelConf(e){
-	var c=confirm("Are you sure? (For now, deleting referred items will incur failure in retrieving data!)");
+	var c=confirm("Are you sure? Cascading deletion might be involved.");
 	if(c==true)	{
 		e.submit();
 	}
 }
-
+$(document).ready(function(){
+    $(".list_row:odd").css({"background-color":"#F8F8F8"});
+    
+});
 function submit(node){
     
     node.submit();

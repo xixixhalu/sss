@@ -1,0 +1,55 @@
+@(UserLoginForm: Form[controllers.forms.UserLoginForm])
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>index</title>
+        <link href="/assets/stylesheets/index.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/global.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/font-awesome-4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet"/>
+        <script>
+			function validateForm()
+			{
+				var username=document.getElementById('username').value;
+				var password=document.getElementById('password').value;
+				if (username==null || username=="" || password==null || password=="")
+			  	{
+				  alert("Username AND/OR password cannot be blank");
+				  return false;
+			  	}
+			}
+		</script>
+    </head>
+    <body>
+    	<div id="helpPanelLeft" style="margin-left : 10px; width:10%" class="tip">
+    		<a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
+            <h2 style="text-align : center; color : green;">Tip</h2>
+            <p>Username: admin</p>
+            <p>Password: admin</p>
+            <p></p>
+        </div>
+        <div class="content">
+            <img class="logo" src="/assets/images/management logo.png" width="960px;">
+            <form action="index" method="post" onsubmit="return validateForm()" class="pure-form">
+                <span>Username:</span>
+                <input id="username" name="username" type="text" placeholder="username"/>
+                <br/>
+                <br/>
+                <span>Password:</span>
+                <input id="password" name="password" type="password" placeholder="password"/>
+                <br/>
+                <br/>
+                <div>
+                    <button class="pure-button">
+                    <i class="fa fa-sign-in"></i>
+                    Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+

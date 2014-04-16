@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.google.common.collect.Multimap;
+
 import controllers.algorithm.req_and_course.Node;
 
 public class CrossLinkedList {
 	// store all head nodes;
 	public ArrayList<NodeInGraph> headNodeList = new ArrayList<NodeInGraph>();
+	
 
 	// 默认的构造方法
 	public CrossLinkedList() {
@@ -117,6 +120,41 @@ public class CrossLinkedList {
 
 		return;
 	}
-
+	
+	public HashMap<Integer, Integer> TraverCore(){
+		HashMap<Integer, Integer> core = new HashMap<Integer, Integer>(); 
+		for(int i=0; i<this.headNodeList.size();i++){
+			ArcBox arc = this.headNodeList.get(i).firstIn;
+			while(arc !=null){
+				if(arc.info==2){
+					if(arc.tailCourseID<=0){
+						for(int j=0; j<this.headNodeList.size();j++){
+							if(this.headNodeList.get(j).courseID==arc.tailCourseID){
+								ArcBox arc2 = this.headNodeList.get(j).firstIn;
+								while(arc2!=null){
+									core.put(arc2.tailCourseID, arc2.headCourseID);
+									arc2=arc2.hlink;
+								}
+							}
+						}
+						core.put(arc.tailCourseID, arc.headCourseID);
+					}else{
+						core.put(arc.tailCourseID, arc.headCourseID); // A==>B
+						
+					}
+					
+				}
+				
+				arc =arc.hlink;
+			}
+		}
+		return core;
+	}
+	
+	public void DisplayCore(Multimap<Integer, Integer> core){
+		for(Integer key : core.keySet()){
+			System.out.println(key +" "+ core.get(key));
+		}
+	}
 
 }

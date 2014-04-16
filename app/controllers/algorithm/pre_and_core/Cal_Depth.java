@@ -1,17 +1,13 @@
 package controllers.algorithm.pre_and_core;
 
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Cal_Depth {
-	public ArrayBlockingQueue<ArcBox> level = new ArrayBlockingQueue<ArcBox>(256); // put
-																			// each
-																			// level
-																			// course
-																			// in
-																			// this
-																			// queue
+	public ArrayBlockingQueue<ArcBox> level = new ArrayBlockingQueue<ArcBox>(256); // put each level course in this queue
 	public CrossLinkedList allCross_relation_example = new CrossLinkedList();
-
+	public ArrayList<ArcBox> core = new ArrayList<ArcBox>(); 
+	
 	public void Create_Graph() {
 
 		allCross_relation_example.addCourse(115);

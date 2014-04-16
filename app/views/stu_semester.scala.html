@@ -10,8 +10,16 @@
         <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/popwindow.css" rel="stylesheet" type="text/css">
+        <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/font-awesome-4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet"/>
         <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
+        <script src="/assets/javascripts/action.js"></script>
         <script src="/assets/javascripts/semester.js"></script>
+        <style>       
+            menu, ol, ul {
+                padding: 0;
+            }
+        </style>
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
@@ -67,14 +75,21 @@
             </ul>
         </div>
         <!-- end of step bar -->
+        <div id="helpPanelLeft" style="margin-left : 5px;" class="tip">
+            <a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
+            <h2 style="text-align : center; color : green; ">How to use</h2>
+            <b>1. </b>Select desired courses by clicking <i class="fa fa-arrow-circle-right"></i> button
+            <br/><b>2. </b>Click "AUTO ASSIGN SEMESTERS" button to ask the system to help you automatically assign rest courses into semesters
+            <br/><b>3. </b>Click "NEXT STEP" button after "AUTO ASSIGN SEMESTERS" to get study plan</p>
+        </div>
         <div class="content">
             <div class="left float_left">
-                <div class="head">
+                <div class="head" onclick="getSemesterData()">
                     COURSE BIN
                 </div>
                 <div class="left_list">
                     <span>Want to take: </span>
-                    <ul id="wantTake">
+                    <ul id="wantTake" type="padding: 0 0 0 0px;">
                     </ul>
                 </div>
                 <div class="left_list">
@@ -83,15 +98,48 @@
                     </ul>
                 </div>
                 <div>
-                    <a class="button left_auto" href="javascript:{}"
-                    		onclick="autoSemester()">AUTO</a><a class="button left_next" href="studyplan">NEXT</a>
+                    <a class="button left_auto pure-button pure-button-primary" href="javascript:{}" id="auto_next_semester_button"
+                    		onclick="auto_next_semester_action()">AUTO ASSIGN SEMESTERS</a>
+                    		<!-- <a class="button left_next" href="studyplan">NEXT</a> -->
                 </div>
             </div>
             <div class="right float_right">
                 <ul class="req_list" id="req_list">
                     <li>
-                        <div class="addsemester sem_title" onclick="addSemesters()">
-                            ADD NEW SEMESTERS
+                        <style scoped>
+                            .button-success,
+                            .button-error,
+                            .button-warning,
+                            .button-secondary {
+                                color: white;
+                                border-radius: 4px;
+                                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                            }
+
+                            .button-success {
+                                background: rgb(28, 184, 65); /* this is a green */
+                            }
+
+                            .button-error {
+                                background: rgb(202, 60, 60); /* this is a maroon */
+                            }
+
+                            .button-warning {
+                                background: rgb(223, 117, 20); /* this is an orange */
+                            }
+
+                            .button-secondary {
+                                background: rgb(66, 184, 221); /* this is a light blue */
+                            }
+
+                            .button-submit {
+                                font-family: Helvetica;
+                                background: rgb(0, 0, 0);
+                                color: white;
+                            }
+                        </style>
+                        <div class="addsemester sem_add_title" onclick="addSemesters()">
+                            <button class="button-warning pure-button" style="width:100%">ADD NEW SEMESTERS</button>
                         </div>
                     </li>
                     <!-- <li>
@@ -122,6 +170,16 @@
                     </li> -->
 
                 </ul>
+                
+                <div id="helpPanelRight" style="margin-left: 560px; " class="tip">
+                    <a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
+                    <h2 style="text-align : center; color : green;">How to use</h2>
+                    <p><b>1. </b> Add new semesters by clicking "ADD NEW SEMESTERS" button</p>
+                    <p><b>2. </b> Expand specific semester list by clicking semester title</p>
+                    <p><b>3. </b> Remove the course from semester list by clicking <i class="fa fa-times-circle"></i> button</p>
+                    <p></p>
+                </div>
+                
             </div>
         </div>
 

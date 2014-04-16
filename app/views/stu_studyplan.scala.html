@@ -1,5 +1,6 @@
 @import java.util.ArrayList;
 @import java.util.HashMap;
+@import play.api.mvc.Results._
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -13,23 +14,32 @@
     	<div class="content">
     		<h2>Study Plan</h2>
     		@{
-    			var uuid : String = session().get("uuid");
-    			var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(uuid);
-    			var output : Html = Html("");
-    			var result : HashMap[Integer, ArrayList[Integer]] = studyplan.AutoAssignSemester(8);
-    			for(key <- result.keySet()){
-					var courseInSameSemester : ArrayList[Integer] = result.get(key);
-					output += Html("<h3>Semester "+ String.valueOf(key)+"</h3><br/>");
-					for(courseId <- courseInSameSemester){
-						var course : Course = Course.findById(courseId);
-						output += Html(course.getPrefix() + course.getNumber + " " + course.getTitle() + "<br/>");
+    			
+ 				var output : Html = Html("");
+    			
+    			if(!session().containsKey("uuid"))
+    			{
+    				output += Html("Session Cleared. Click <a href='index'><font color='blue'>HERE</font></a> to make a new study plan.");
+    			}
+    			else
+    			{
+    				var uuid : String = session().get("uuid"); 
+    				var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(uuid);
+    				var result : HashMap[Integer, ArrayList[Integer]] = studyplan.studyplanResult;
+    				for(key <- result.keySet()){
+						var courseInSameSemester : ArrayList[Integer] = result.get(key);
+						output += Html("<h3>Semester "+ String.valueOf(key)+"</h3><br/>");
+						for(courseId <- courseInSameSemester){
+							var course : Course = Course.findById(courseId);
+							output += Html(course.getPrefix() + course.getNumber + " " + course.getTitle() + "<br/>");
+						}
+		    			output += Html("<br/>");
 					}
-		    		output += Html("<br/>");
+					studyplan = null;
+					StudyPlanController2.studyPlanPool.remove(uuid);
+					session().clear();
 				}
-				studyplan = null;
-				StudyPlanController2.studyPlanPool.remove(uuid);
-				session().clear();
-				output;
+				output; 
     		}
     	</div>
     </body>

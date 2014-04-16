@@ -15,7 +15,11 @@ import java.util.List;
 public class CourseController extends Controller {
 
     public static Result retrieveCourses() {
-
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
     		return ok(views.html.course_list.render(Course.getAll()));
     	}catch(Exception e)
@@ -25,6 +29,11 @@ public class CourseController extends Controller {
     }
    
     public static Result deleteCourse(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
     		Course.delete(id);
     	}catch(Exception e)
@@ -35,6 +44,11 @@ public class CourseController extends Controller {
     }
     
     public static Result requestEditCoursePage(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
     		Form<CourseEditForm> form = Form.form(CourseEditForm.class);
     		return ok(views.html.course_edit.render(Course.findById(id), form));
@@ -45,6 +59,11 @@ public class CourseController extends Controller {
     }
     
     public static Result updateCourse(Integer id){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<CourseEditForm> filledForm = Form.form(CourseEditForm.class).bindFromRequest();
     	if (filledForm.hasErrors())
 			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));
@@ -71,6 +90,11 @@ public class CourseController extends Controller {
     }
     
     public static Result requestCreateCoursePage(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	try{
 	    	Form<CourseAddForm> form = Form.form(CourseAddForm.class);
 	    	return ok(views.html.course_add.render(form));
@@ -81,6 +105,11 @@ public class CourseController extends Controller {
     }
     
     public static Result addCourse(){
+    	String user = session().get("user");
+    	if(user == null)
+    	{
+    		return redirect(routes.UserController.retrieveLoginPage());
+    	}
     	Form<CourseAddForm> filledForm = Form.form(CourseAddForm.class).bindFromRequest();
     	if (filledForm.hasErrors())
 			return badRequest(views.html.error.render("Not all mandatory fields correct or entered."));
@@ -102,7 +131,6 @@ public class CourseController extends Controller {
     		return badRequest(views.html.error.render(e.toString()));
     	}
     }
-    
     
     public static Result retrieveWholeCourses() {
     	List<Course> list = Course.getAll();

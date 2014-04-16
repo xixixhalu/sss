@@ -6,3 +6,7 @@
 .list_row{
 height:22px;
 	}
+	.list_row ul li{
+		height:22px;
+		overflow: hidden;
+	}

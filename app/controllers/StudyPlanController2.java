@@ -26,7 +26,7 @@ public class StudyPlanController2 extends Controller {
 	
 	public static Result retrieveDegrees() {
 		try{
-			return ok(views.html.index.render(Degree.getAll()));
+			return ok(views.html.stu_index.render(Degree.getAll()));
 		}catch(Exception e)
     	{
     		return badRequest(views.html.error.render("Cannot retrieve degree list"));
@@ -39,7 +39,7 @@ public class StudyPlanController2 extends Controller {
 		if(filledForm.hasErrors()) {
     		return badRequest("Not all mandatory fields correct or entered.");
     	}
-		try{
+		//try{
 			DegreeForm degreeForm = filledForm.get();
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
@@ -63,10 +63,10 @@ public class StudyPlanController2 extends Controller {
 			}
 			
 			return ok(views.html.stu_course.render(degree, json.toString()));
-		}catch(Exception e)
-		{
-			return badRequest(views.html.error.render("Cannot retrieve course list"));
-		}
+		//}catch(Exception e)
+		//{
+		//	return badRequest(views.html.error.render("Cannot retrieve course list"));
+		//}
 	}
 	
 	public static Result autoFillCourse(){
@@ -78,7 +78,6 @@ public class StudyPlanController2 extends Controller {
 				String want = form.wantTakeCourses;
 				String already = form.alreadyTakenCourses;	
 				JSONObject coursesArr = new JSONObject();	
-			
 				JSONArray wantCourses = new JSONArray(want);
 				JSONArray alreadyCourses = new JSONArray(already);
 				for (int i = 0; i < wantCourses.length(); i++) {
@@ -100,7 +99,10 @@ public class StudyPlanController2 extends Controller {
 					
 				}
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
+				
+				studyplan.degreeProgram.displayallComplexReq();
 				studyplan.AutoFillCourseBin();
+				studyplan.changeCourseStatus();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
 				
 				for (Integer id : courseBin) {
@@ -145,7 +147,7 @@ public class StudyPlanController2 extends Controller {
 			JSONObject json = new JSONObject();
 			CourseWrapper cw = new CourseWrapper(true, true, true, true,
 						true, true, true, true, true);
-			Logger.info(String.valueOf(wantCourses.length()));
+//			Logger.info(String.valueOf(wantCourses.length()));
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
@@ -177,6 +179,7 @@ public class StudyPlanController2 extends Controller {
 				studyplan.degreeProgram.CheckAllSimpleAndComplex();
 				studyplan.AutoFillCourseBin();
 			}
+			studyplan.degreeProgram.displayallComplexReq();
 			return ok(views.html.stu_semester.render(json.toString(), 
 					wantCourses.toString(), alreadyCourses.toString()));
 		}catch(Exception e)
@@ -187,6 +190,7 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoAssignSemester(){
+		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
 		
@@ -195,9 +199,11 @@ public class StudyPlanController2 extends Controller {
 			
 			String wantTakeCourses = form.wantTakeCourses;
 			String alreadyTakeCourses = form.alreadyTakenCourses;
+			String semesterData = form.semesterData;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
+			JSONArray semesterArray = new JSONArray(semesterData);
 			
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
@@ -229,11 +235,38 @@ public class StudyPlanController2 extends Controller {
 					corequisites.put(Integer.valueOf(id), core);
 				}
 			}
+			
+			
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
-			//HashMap<Integer, ArrayList<Integer>> result = studyplan.AutoAssignSemester(8);
-			return ok();
+			studyplan.AutoAssignSemester(8, semesterData);
+			
+			/**
+			 * @author tongrui
+			 * return semester data filled with courses
+			 */
+			for (int i = 0; i < semesterArray.length(); i++) {
+				JSONObject semester = (JSONObject) semesterArray.get(i);
+				
+				int semesterID = semester.getInt("num");
+				JSONArray courses = (JSONArray) semester.get("courses");
+				ArrayList<Integer> coursesFilled = studyplan.studyplanResult.get(semesterID);
+				
+				for (Integer course : coursesFilled) {
+					boolean flag = false;
+					for (int j = 0; j < courses.length(); j++) {
+						if (courses.getInt(j) == course) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag)
+						courses.put(course);
+				}
+			}
+			
+			return ok(semesterArray.toString());
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -244,5 +277,6 @@ public class StudyPlanController2 extends Controller {
 	public static Result generateStudyPlan(){
 		return ok(views.html.stu_studyplan.render());
 	}
+	
 	
 }

@@ -103,7 +103,7 @@ public class StudyPlanController extends Controller {
 
 		createCrossLinkedList(allCross_relation, degreeProgram.course);
 
-		// degreeProgram.displayAllCourse();
+		 //degreeProgram.displayAllCourse();
 		// allCross_relation.Display_All_Headnode();
 
 		// degreeProgram.displayallComplexReq();
@@ -619,6 +619,10 @@ public class StudyPlanController extends Controller {
 		System.out.print("\n");
 		return courseBinResult;
 	}
+	
+	
+	
+	
 
 	public static void AutoAssignSemester(ArrayList<Integer> courseBin,
 			TestLinkList degreeProgram, int numOfSemester) {
@@ -707,17 +711,6 @@ public class StudyPlanController extends Controller {
 			}
 		}
 
-		for(Integer key : semesterBin.keySet()){
-			ArrayList<Node> temp = semesterBin.get(key);
-			for(Node course: temp){// get each 
-				
-				
-				
-				
-				
-				System.out.print(course.cName +" is in "+ course.semester);
-			}
-		}
 	}
 
 	public static void FillNonePreCoreReq(TestLinkList degreeProgram,

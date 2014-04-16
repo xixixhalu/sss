@@ -14,6 +14,11 @@ GET		/admin/createCourse				controllers.CourseController.requestCreateCoursePage
 POST	/admin/addCourse				controllers.CourseController.addCourse()
 GET		/admin/retrieveWholeCourses		controllers.CourseController.retrieveWholeCourses()
 
+#admin login
+GET		/admin/index				controllers.UserController.retrieveLoginPage()
+POST	/admin/index				controllers.UserController.Login()
+GET		/admin/logout				controllers.UserController.Logout()
+
 #Course Group Operation
 GET		/admin/cg_list				controllers.CgController.retrieveCgs()
 POST    /admin/deleteCg				controllers.CgController.deleteCg(id: Integer)
@@ -64,3 +69,5 @@ GET		/student/studyplan			controllers.StudyPlanController2.generateStudyPlan()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+GET		/*name				controllers.UserController.pageNotFound(name)

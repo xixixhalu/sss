@@ -73,6 +73,82 @@ public class Course extends Model{
 	/** delete(Integer), 
 	 * Corresponding to delete statement*/
 	public static void delete(Integer id) {
+		/**
+		 * cascade
+		 */
+		List<Course> courses = Course.getAll();
+		for (Course course : courses) {
+			try {
+				JSONArray jarr_pre = new JSONArray(course.getPrerequisite_ids());
+				JSONArray jarr_co = new JSONArray(course.getCorequisite_ids());
+				JSONArray newjarr_pre = new JSONArray();
+				JSONArray newjarr_co = new JSONArray();
+				for (int i = 0; i < jarr_pre.length(); i++) {
+					JSONObject json = jarr_pre.getJSONObject(i);
+					if (!id.toString().equals(json.get("id"))){
+						newjarr_pre.put(json);
+					}
+				}
+				for (int i = 0; i < jarr_co.length(); i++) {
+					JSONObject json = jarr_co.getJSONObject(i);
+					if (!id.toString().equals(json.get("id"))){
+						newjarr_co.put(json);
+					}
+				}
+				if (newjarr_pre.length() == 1) {
+					JSONObject json = newjarr_pre.getJSONObject(0);
+					json.remove("relation");
+					json.put("relation", "");
+				}
+				if (newjarr_co.length() == 1) {
+					JSONObject json = newjarr_co.getJSONObject(0);
+					json.remove("relation");
+					json.put("relation", "");
+				}
+				
+				course.setPrerequisite_ids(newjarr_pre.toString());
+				course.setCorequisite_ids(newjarr_co.toString());
+				
+				course.update();
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		List<Cg> cgs = Cg.getAll();
+		for (Cg cg : cgs) {
+			ArrayList<String> ids = cg.getCourse_ids();
+			ids.remove(id.toString());
+
+			StringBuffer updated_course_ids = new StringBuffer();
+			for (int i = 0; i < ids.size(); ++i) {
+				updated_course_ids.append(ids.get(i));
+				if (i != ids.size() - 1)
+					updated_course_ids.append(",");
+			}
+			
+			if (ids.size() == 0)
+				Cg.delete(cg.getId());
+			else
+				cg.setCourse_ids(updated_course_ids.toString());
+			cg.update();
+			
+			
+			List<Sr> srs = Sr.getAll();
+			for (Sr sr : srs) {
+				if (sr.getCg_id().equals(cg.getId())) {
+					if (sr.getRequired_num() > cg.getCourse_ids().size()) {
+						sr.setRequired_num(cg.getCourse_ids().size());
+						sr.update();
+						break;
+					}
+				}
+			}
+		}
+		
+		
 		ECourse ecourse = Ebean.find(ECourse.class, id);
 		if(ecourse != null)
 			ecourse.delete();
