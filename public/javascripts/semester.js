@@ -41,26 +41,29 @@ window.onload = function() {
         li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         alreadyTakenUL.appendChild(li);
     }
-    $(document).ready(function() {
-        $(".left_list a").click(function() {
-        	if (this.parentElement.style.textDecoration != "line-through") {
-	            var i = this.parentElement.innerHTML.indexOf("<a>");
-	            var course = this.parentElement.innerHTML.substring(0, i);
-	            // var j = course.lastIndexOf("     ");
-	            // if (j > 0) {
-	            // var course = course.substring(j + 5);
-	            // }
-	            var id = this.parentElement.id;
-	            if (addCourseToSemester(course, id)) {
-	                this.parentElement.style.textDecoration = "line-through";
-	                this.parentElement.innerHTML = course;
-	            }
-            } else {
-            	alert("You've already assigned this course to the semester!");
-            }
-        });
-    });
+    $(document).ready(clickable);
 };
+
+function clickable() {
+    $(".left_list a").click(function() {
+        if (this.parentElement.style.textDecoration != "line-through") {
+            var i = this.parentElement.innerHTML.indexOf("<a>");
+            var course = this.parentElement.innerHTML.substring(0, i);
+            // var j = course.lastIndexOf("     ");
+            // if (j > 0) {
+            // var course = course.substring(j + 5);
+            // }
+            var id = this.parentElement.id;
+            if (addCourseToSemester(course, id)) {
+                this.parentElement.style.textDecoration = "line-through";
+                this.parentElement.innerHTML = course;
+            }
+        } else {
+            alert("You've already assigned this course to the semester!");
+        }
+    });
+}
+
 var f = 0;
 function addSemesters() {
     f = 0;
@@ -119,7 +122,7 @@ function appendSemester() {
         var sem_title = document.createElement("div");
         sem_title.className = "sem_title";
         sem_title.innerHTML = semester + " " + year;
-        sem_title.onclick = semesterDorpDown;
+        sem_title.onclick = semesterDropDown;
 
         var div = document.createElement("div");
         div.style.display = "none";
@@ -147,7 +150,7 @@ function appendSemester() {
     }
 }
 
-function semesterDorpDown(evt) {
+function semesterDropDown(evt) {
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     if (thisDiv.parentElement.getElementsByTagName("div")[1].style.display == "none") {
         var lis = document.getElementById("req_list").getElementsByTagName("li");
@@ -204,6 +207,7 @@ function removeCourseFromSemester(a, id) {
     	//var course = getPrefixNumber(li);
     	document.getElementById(id).style.textDecoration = "none";
     	document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + "<a><i class='fa fa-arrow-circle-right'></i></a>";
+        clickable();
     	return true;
   	}
 	else
