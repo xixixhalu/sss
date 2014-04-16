@@ -4,7 +4,7 @@ body {
 	margin: 0px;
 	padding: 0px;
 	font-size: 15px;
-	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+	font-family: sans-serif;/*Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;*/
 	line-height: 150%;
 	color: #575757;
 }
@@ -25,7 +25,8 @@ ul, li {
 .nav_bar {
 	height: 32px;
 	border-bottom: 1px solid #D4DBE1;
-	background: #EEE;
+	background-color: #c72727;
+    color: #ffef30;
 }
 .block {
 	width: 980px;
@@ -150,4 +151,43 @@ ul, li {
 	float: left;
 	margin-top: 30px;
 	margin-bottom: 40px;
+}
+
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.button-submit {
+	font-family: Helvetica;
+	background: rgb(0, 0, 0);
+	color: white;
+}
+
+div.tip {
+    position : fixed;
+    padding: 0px 0px 0px 5px; 
+    border: #AAAAAA 1px solid; 
+    background-color: #eaeaea
 }

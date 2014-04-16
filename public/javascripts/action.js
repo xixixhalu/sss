@@ -9,6 +9,15 @@ window.onload = function() {
 };
 $(document).ready(function() {
     $("ul.req_course_list li:odd").css("background-color", "#F8F8F8");
+    
+    var helpPanelWidth = (document.body.clientWidth - 1000) / 2;
+    $("#helpPanelLeft").css("width", helpPanelWidth);
+    
+    $(window).resize(function() {
+        helpPanelWidth = (document.body.clientWidth - 1000) / 2;
+        $('#helpPanelLeft').css("width", helpPanelWidth);
+        $('helpPanelRight').css('width', helpPanelWidth);
+    });
 });
 //dropdown effect
 function dropDown(id) {
@@ -64,7 +73,7 @@ function generateLi(id, curNode) {
     complexReqId = complexReqId.substring(4);
     courseLi.innerHTML += "<input type='hidden' value='" + simpleReqId + "' name='simpleReqId'>";
     courseLi.innerHTML += "<input type='hidden' value='" + complexReqId + "' name='complexReqId'>";
-    courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'><i class='fa fa-times-circle'></i></a>";
     return courseLi;
 }
 
@@ -502,8 +511,10 @@ function autoCourse() {
                     continue;
                 var li = document.createElement('li');
                 li.id = id;
-                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')">⊗</a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
+                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
                 ul_want.appendChild(li);
+                
+                document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
             }
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // for (var i = 0; i < alreadyArr.length; i++) {
@@ -514,4 +525,17 @@ function autoCourse() {
 
         });
     }
+}
+
+function auto_next_course_action(form)
+{
+	var element_text = $('#auto_next_course_button').html();
+	if(element_text == 'AUTO FILL COURSES')
+	{
+		autoCourse();
+	}
+	else if(element_text == 'NEXT STEP')
+	{
+		submitCourse(form);
+	}
 }
