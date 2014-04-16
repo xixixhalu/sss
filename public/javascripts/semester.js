@@ -43,15 +43,21 @@ window.onload = function() {
     }
     $(document).ready(function() {
         $(".left_list a").click(function() {
-            var i = this.parentElement.innerHTML.indexOf("<a>");
-            var course = this.parentElement.innerHTML.substring(0, i);
-            // var j = course.lastIndexOf("     ");
-            // if (j > 0) {
-            // var course = course.substring(j + 5);
-            // }
-            var id = this.parentElement.id;
-            if (addCourseToSemester(course, id))
-                this.parentElement.style.textDecoration = "line-through";
+        	if (this.parentElement.style.textDecoration != "line-through") {
+	            var i = this.parentElement.innerHTML.indexOf("<a>");
+	            var course = this.parentElement.innerHTML.substring(0, i);
+	            // var j = course.lastIndexOf("     ");
+	            // if (j > 0) {
+	            // var course = course.substring(j + 5);
+	            // }
+	            var id = this.parentElement.id;
+	            if (addCourseToSemester(course, id)) {
+	                this.parentElement.style.textDecoration = "line-through";
+	                this.parentElement.innerHTML = course;
+	            }
+            } else {
+            	alert("You've already assigned this course to the semester!");
+            }
         });
     });
 };
@@ -193,6 +199,7 @@ function removeCourseFromSemester(a, id) {
     	li.parentElement.removeChild(li);
     	//var course = getPrefixNumber(li);
     	document.getElementById(id).style.textDecoration = "none";
+    	document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + "<a>&oplus;</a>";
     	return true;
   	}
 	else
@@ -261,7 +268,14 @@ function autoSemester() {
                     //this.parentElement.style.textDecoration = "line-through";
                 }
             }
-            $("#wantTake li").css("text-decoration", "line-through");
+            
+	        $("#wantTake li").css("text-decoration", "line-through");
+	        
+            for (var i = 0; i < $('#wantTake li').size(); i++) {
+	            var j = $('#wantTake li')[i].innerHTML.indexOf("<a>");
+	            var course = $('#wantTake li')[i].innerHTML.substring(0, j);
+	            $("#wantTake li")[i].innerHTML = course;
+            }
             
             $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
         });
