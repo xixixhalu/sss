@@ -21,12 +21,12 @@
 	border-right: #AAAAAA 1px solid;
 }
 .content {
-	height: 500px;
 	height: auto !important;
-	min-height: 500px;
+	min-height: 622px;
 }
 .left {
 	border: #AAAAAA 1px solid;
+	height:auto !important;
 	width: 360px;
 }
 .head {
