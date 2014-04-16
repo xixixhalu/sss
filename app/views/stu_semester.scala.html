@@ -10,9 +10,16 @@
         <link href="/assets/stylesheets/global.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/course.css" rel="stylesheet" type="text/css">
         <link href="/assets/stylesheets/popwindow.css" rel="stylesheet" type="text/css">
+        <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/font-awesome-4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet"/>
         <script src="/assets/javascripts/jquery-1.9.0.min.js"></script>
         <script src="/assets/javascripts/action.js"></script>
         <script src="/assets/javascripts/semester.js"></script>
+        <style>       
+            menu, ol, ul {
+                padding: 0;
+            }
+        </style>
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
@@ -75,7 +82,7 @@
                 </div>
                 <div class="left_list">
                     <span>Want to take: </span>
-                    <ul id="wantTake">
+                    <ul id="wantTake" type="padding: 0 0 0 0px;">
                     </ul>
                 </div>
                 <div class="left_list">
@@ -84,7 +91,7 @@
                     </ul>
                 </div>
                 <div>
-                    <a class="button left_auto" href="javascript:{}" id="auto_next_semester_button"
+                    <a class="button left_auto pure-button pure-button-primary" href="javascript:{}" id="auto_next_semester_button"
                     		onclick="auto_next_semester_action()">AUTO ASSIGN SEMESTERS</a>
                     		<!-- <a class="button left_next" href="studyplan">NEXT</a> -->
                 </div>
@@ -92,8 +99,40 @@
             <div class="right float_right">
                 <ul class="req_list" id="req_list">
                     <li>
-                        <div class="addsemester sem_title" onclick="addSemesters()">
-                            ADD NEW SEMESTERS
+                        <style scoped>
+                            .button-success,
+                            .button-error,
+                            .button-warning,
+                            .button-secondary {
+                                color: white;
+                                border-radius: 4px;
+                                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                            }
+
+                            .button-success {
+                                background: rgb(28, 184, 65); /* this is a green */
+                            }
+
+                            .button-error {
+                                background: rgb(202, 60, 60); /* this is a maroon */
+                            }
+
+                            .button-warning {
+                                background: rgb(223, 117, 20); /* this is an orange */
+                            }
+
+                            .button-secondary {
+                                background: rgb(66, 184, 221); /* this is a light blue */
+                            }
+
+                            .button-submit {
+                                font-family: Helvetica;
+                                background: rgb(0, 0, 0);
+                                color: white;
+                            }
+                        </style>
+                        <div class="addsemester sem_add_title" onclick="addSemesters()">
+                            <button class="button-warning pure-button" style="width:100%">ADD NEW SEMESTERS</button>
                         </div>
                     </li>
                     <!-- <li>

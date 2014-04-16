@@ -27,7 +27,7 @@ window.onload = function() {
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
-        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         wantTakeUL.appendChild(li);
     }
     var alreadyTakenUL = document.getElementById("alreadyTaken");
@@ -38,20 +38,26 @@ window.onload = function() {
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
-        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         alreadyTakenUL.appendChild(li);
     }
     $(document).ready(function() {
         $(".left_list a").click(function() {
-            var i = this.parentElement.innerHTML.indexOf("<a>");
-            var course = this.parentElement.innerHTML.substring(0, i);
-            // var j = course.lastIndexOf("     ");
-            // if (j > 0) {
-            // var course = course.substring(j + 5);
-            // }
-            var id = this.parentElement.id;
-            if (addCourseToSemester(course, id))
-                this.parentElement.style.textDecoration = "line-through";
+        	if (this.parentElement.style.textDecoration != "line-through") {
+	            var i = this.parentElement.innerHTML.indexOf("<a>");
+	            var course = this.parentElement.innerHTML.substring(0, i);
+	            // var j = course.lastIndexOf("     ");
+	            // if (j > 0) {
+	            // var course = course.substring(j + 5);
+	            // }
+	            var id = this.parentElement.id;
+	            if (addCourseToSemester(course, id)) {
+	                this.parentElement.style.textDecoration = "line-through";
+	                this.parentElement.innerHTML = course;
+	            }
+            } else {
+            	alert("You've already assigned this course to the semester!");
+            }
         });
     });
 };
@@ -126,6 +132,10 @@ function appendSemester() {
 
         credits.innerHTML = "<span>Minimun Credits:</span><input type='number' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='number' name='max' value='" + max + "'/>";
         //<a class='auto button'>AUTO</a>";
+        
+        var sem_hint = document.createElement("span");
+        sem_hint.innerHTML = "Desired courses go here...";
+        div.appendChild(sem_hint);
 
         div.appendChild(req_course_list);
         //div.appendChild(credits);
@@ -180,7 +190,7 @@ function addCourseToSemester(course, id) {
     }
     var li = document.createElement("li");
     li.id = id;
-    li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+    li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'><i class='fa fa-times-circle'></i></a>";
     ul.appendChild(li);
     return true;
 }
@@ -193,6 +203,7 @@ function removeCourseFromSemester(a, id) {
     	li.parentElement.removeChild(li);
     	//var course = getPrefixNumber(li);
     	document.getElementById(id).style.textDecoration = "none";
+    	document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + "<a><i class='fa fa-arrow-circle-right'></i></a>";
     	return true;
   	}
 	else
@@ -255,13 +266,20 @@ function autoSemester() {
                     var li = document.createElement("li");
                     var id = courses[j];
                     li.id = id;
-                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'><i class='fa fa-times-circle'></i></a>";
                     semester.appendChild(li);
 
                     //this.parentElement.style.textDecoration = "line-through";
                 }
             }
-            $("#wantTake li").css("text-decoration", "line-through");
+            
+	        $("#wantTake li").css("text-decoration", "line-through");
+	        
+            for (var i = 0; i < $('#wantTake li').size(); i++) {
+	            var j = $('#wantTake li')[i].innerHTML.indexOf("<a>");
+	            var course = $('#wantTake li')[i].innerHTML.substring(0, j);
+	            $("#wantTake li")[i].innerHTML = course;
+            }
             
             $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
         });
