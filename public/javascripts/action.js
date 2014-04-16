@@ -73,7 +73,7 @@ function generateLi(id, curNode) {
     complexReqId = complexReqId.substring(4);
     courseLi.innerHTML += "<input type='hidden' value='" + simpleReqId + "' name='simpleReqId'>";
     courseLi.innerHTML += "<input type='hidden' value='" + complexReqId + "' name='complexReqId'>";
-    courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'>&otimes;</a>";
+    courseLi.innerHTML += "<a onclick='removeCourse(" + id + ")'><i class='fa fa-times-circle'></i></a>";
     return courseLi;
 }
 
@@ -511,7 +511,7 @@ function autoCourse() {
                     continue;
                 var li = document.createElement('li');
                 li.id = id;
-                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')">⊗</a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
+                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
                 ul_want.appendChild(li);
                 
                 document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";

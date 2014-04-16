@@ -184,3 +184,10 @@ ul, li {
 	background: rgb(0, 0, 0);
 	color: white;
 }
+
+div.tip {
+    position : fixed;
+    padding: 0px 0px 0px 5px; 
+    border: #AAAAAA 1px solid; 
+    background-color: #eaeaea
+}

@@ -137,9 +137,16 @@ a {
 	float: left;
 }
 .sem_title {
+
 	padding-top: 8px;
 	padding-bottom: 6px;
 	padding-left: 30px;
+
+	font-size: 22px;
+	font-weight: 500;
+}
+.sem_add_title {
+
 	font-size: 22px;
 	font-weight: 500;
 }

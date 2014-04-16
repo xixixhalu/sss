@@ -23,6 +23,11 @@
         <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
         <link href="/assets/stylesheets/font-awesome-4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet"/>
         <script src="/assets/javascripts/action.js"></script>
+        <style>       
+            menu, ol, ul {
+                padding: 0;
+            }
+        </style>
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
@@ -50,11 +55,11 @@
             </ul>
         </div>
         <!-- end of step bar -->
-        <div id="helpPanelLeft" style="position : fixed;  margin-left : 5px; padding-left: 5px; border: #AAAAAA 1px solid; background-color: #eaeaea">
+        <div id="helpPanelLeft" style="margin-left : 5px;" class="tip">
             <a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
             <h2 style="text-align : center; color : green; ">How to use</h2>
             <b>1. </b>Expand requirement list to pick up courses into course bin
-            <br/><b>2. </b>To remove the course from course bin, click &otimes; button at right side of the course bin
+            <br/><b>2. </b>To remove the course from course bin, click <i class="fa fa-times-circle"></i> button at right side of the course bin
             <br/><b>3. </b>Click "AUTO FILL COURSES" button to ask the system to help you choose required courses
             <br/><b>4. </b>Click "NEXT STEP" button after "AUTO FILL COURSES"</p>
         </div>
@@ -91,12 +96,12 @@
                     cont += Html("<li id='req_"+ req.getId() +"'>");
                         cont += Html("<div class=\"req_title\" style=\"display: block;\">");
                         	cont += Html(req.getTitle());
-                            cont += Html(" <a onclick=\"dropDown('req_" + req.getId() +"')\">&oplus;</a>");
+                            cont += Html(" <a onclick=\"dropDown('req_" + req.getId() +"')\"><i class='fa fa-chevron-circle-down'></i></a>");
                         cont += Html("</div>");
                         cont += Html("<div class=\"right_list\" style=\"display: none;\">");
                             cont += Html("<div class=\"req_title\">");
                             	cont += Html(req.getTitle());
-                                cont += Html(" <a onclick=\"dropDown('req_"+ req.getId() +"')\">&otimes;</a>");
+                                cont += Html(" <a onclick=\"dropDown('req_"+ req.getId() +"')\"><i class='fa fa-chevron-circle-up'></i></a>");
                             cont += Html("</div>");
                           	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
                           	if(srReqs.length() > 1)
@@ -118,12 +123,12 @@
 								var cg : Cg = Cg.findById(cgId);
                                 cont += Html("<ul class=\"req_course_list\" style='padding-left: 0px;' id=\"sr_" + srId + "\">");
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
-                                	cont += Html("<div>You must take "+reqNum+" courses listed below.</div>");
+                                	cont += Html("<div><i>You must take "+reqNum+" courses listed below.</i></div>");
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li class=\"c" + courseId + "\">");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
                                     	cont += Html(course.getPrefix() + course.getNumber + " - " + course.getTitle());
-                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'>&radic;</a><a class='likebutton' onclick='addLikeCourse(" + course.getId() +",this)'>&oplus;</a>");
+                                        cont += Html("<a onclick='addTakenCourse(" + course.getId() +",this)'><i class='fa fa-check-square'></i></a><a class='likebutton' onclick='addLikeCourse(" + course.getId() +",this)'><i class='fa fa-plus-square'></i></a>");
                                     cont += Html("</li>");
                                     }
                                     //cont += Html("<li>");
@@ -172,11 +177,11 @@
                     -->
                 </ul>
         
-                <div id="helpPanelRight" style="position : fixed; margin-left: 560px; padding-left: 5px; border: #AAAAAA 1px solid; background-color: #eaeaea">
+                <div id="helpPanelRight" style="margin-left: 560px; " class="tip">
                     <a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
                     <h2 style="text-align : center; color : green;">How to use</h2>
-                    <p><b>1. </b> Pick up desired courses by clicking &oplus; button</p>
-                    <p><b>2. </b> Pick up previous passed courses by clicking &radic; button</p>
+                    <p><b>1. </b> Select desired courses by clicking <i class="fa fa-plus-square"></i> button</p>
+                    <p><b>2. </b> Select previous passed courses by clicking <i class="fa fa-check-square"></i> button</p>
                     <p></p>
                 </div>
             </div>

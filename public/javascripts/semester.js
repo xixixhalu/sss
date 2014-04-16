@@ -27,7 +27,7 @@ window.onload = function() {
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
-        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         wantTakeUL.appendChild(li);
     }
     var alreadyTakenUL = document.getElementById("alreadyTaken");
@@ -38,7 +38,7 @@ window.onload = function() {
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
-        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         alreadyTakenUL.appendChild(li);
     }
     $(document).ready(function() {
@@ -132,6 +132,10 @@ function appendSemester() {
 
         credits.innerHTML = "<span>Minimun Credits:</span><input type='number' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='number' name='max' value='" + max + "'/>";
         //<a class='auto button'>AUTO</a>";
+        
+        var sem_hint = document.createElement("span");
+        sem_hint.innerHTML = "Desired courses go here...";
+        div.appendChild(sem_hint);
 
         div.appendChild(req_course_list);
         //div.appendChild(credits);
@@ -186,7 +190,7 @@ function addCourseToSemester(course, id) {
     }
     var li = document.createElement("li");
     li.id = id;
-    li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+    li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'><i class='fa fa-times-circle'></i></a>";
     ul.appendChild(li);
     return true;
 }
@@ -199,7 +203,7 @@ function removeCourseFromSemester(a, id) {
     	li.parentElement.removeChild(li);
     	//var course = getPrefixNumber(li);
     	document.getElementById(id).style.textDecoration = "none";
-    	document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + "<a>&oplus;</a>";
+    	document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + "<a><i class='fa fa-arrow-circle-right'></i></a>";
     	return true;
   	}
 	else
@@ -262,7 +266,7 @@ function autoSemester() {
                     var li = document.createElement("li");
                     var id = courses[j];
                     li.id = id;
-                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'><i class='fa fa-times-circle'></i></a>";
                     semester.appendChild(li);
 
                     //this.parentElement.style.textDecoration = "line-through";
