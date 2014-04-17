@@ -539,11 +539,18 @@ function autoCourse() {
                     if (courses[j] == id)
                         f = true;
                 }
-                if (f)
+                if (f) {
+                    var inp = document.createElement('input');
+                    inp.setAttribute('type', 'hidden');
+                    inp.setAttribute('value', wantArr[i].maxDepth);
+                    inp.setAttribute('name', 'maxDepth');
+                    document.getElementById(id).appendChild(inp);
                     continue;
+                }
                 var li = document.createElement('li');
                 li.id = id;
                 li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">' + '<input type="hidden" value="' + wantArr[i].maxDepth + '" name="maxDepth">';
+                li.style.color = "#9f9f9f";
                 ul_want.appendChild(li);
                 
             }

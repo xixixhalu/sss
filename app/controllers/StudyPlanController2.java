@@ -105,6 +105,7 @@ public class StudyPlanController2 extends Controller {
 				studyplan.changeCourseStatus();
 				ArrayList<Integer> courseBin = studyplan.courseBin;
 				
+				JSONArray newWantCourses = new JSONArray();
 				for (Integer id : courseBin) {
 					Course course = Course.findById(id);
 					JSONObject auto_want = new JSONObject();
@@ -114,11 +115,11 @@ public class StudyPlanController2 extends Controller {
 					auto_want.put("title", course.getTitle());
 					auto_want.put("maxDepth", 
 							((Node)studyplan.degreeProgram.course.get(id).get(0)).maxDepth);
-					wantCourses.put(auto_want);
+					newWantCourses.put(auto_want);
 				}
 				// alreadyCourse: (NOT_IMPLEMENTED)
 				
-				coursesArr.put("want", wantCourses);
+				coursesArr.put("want", newWantCourses);
 				coursesArr.put("already", alreadyCourses);
 				
 				return ok(coursesArr.toString());
