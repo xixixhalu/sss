@@ -21,12 +21,12 @@
 	border-right: #AAAAAA 1px solid;
 }
 .content {
-	height: 500px;
 	height: auto !important;
-	min-height: 500px;
+	min-height: 622px;
 }
 .left {
 	border: #AAAAAA 1px solid;
+	height:auto !important;
 	width: 360px;
 }
 .head {
@@ -71,11 +71,15 @@ a {
 .right {
 	width: 550px;
 }
+#firstli{
+	border:none;
+}
 .req_list li {
 	width: 550px;
 	border: #AAA 1px solid;
 	margin-bottom: 20px;
 }
+
 .req_list span {
 	margin-left: 10px;
 }
@@ -137,7 +141,6 @@ a {
 	float: left;
 }
 .sem_title {
-
 	padding-top: 8px;
 	padding-bottom: 6px;
 	padding-left: 30px;

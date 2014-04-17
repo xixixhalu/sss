@@ -24,9 +24,9 @@ ul, li {
 }
 .nav_bar {
 	height: 32px;
-	border-bottom: 1px solid #D4DBE1;
-	background-color: #c72727;
-    color: #ffef30;
+	background-image: url(/assets/images/nav.bmp);
+	background-repeat:repeat-x;
+    color: #575757;
 }
 .block {
 	width: 980px;
