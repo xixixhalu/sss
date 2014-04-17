@@ -2,7 +2,7 @@
  * @author Bohan Zheng
  */
 var ASO = {
-    "minSemester" : "8",
+    "minSemester" : "6",
     "courses" : {
         97 : "3",
         93 : "3",
