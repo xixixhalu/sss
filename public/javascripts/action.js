@@ -36,7 +36,9 @@ function dropDown(id) {
 
 //adding course to want-to-take list
 function addLikeCourse(id, curNode) {
+    curNode.parentElement.style.color = 'red';
     if (!checkConstraints(id)) {
+        curNode.parentElement.style.color = 'black';
         return null;
     }
     var wantTake = document.getElementById("wantTake");
@@ -420,12 +422,17 @@ function wantTakeCourse(id, sid, cid) {
     this.cid = cid;
 }
 
+function ASO(id, maxDepth) {
+    this.id = id;
+    this.maxDepth = maxDepth;
+}
+
 function submitCourse(form) {
     /* create hidden field of selected courses */
     var acForm = document.getElementById("acForm");
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
-
+/***************************************************/
     var dataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
@@ -440,7 +447,7 @@ function submitCourse(form) {
     inp.setAttribute("name", "wantTakeCourses");
     inp.setAttribute("value", json);
     acForm.appendChild(inp);
-
+/***************************************************/
     var dataArray = new Array;
     for ( i = 0; i < alreadyTaken.length; i++) {
         var id = alreadyTaken[i].id;
@@ -455,7 +462,22 @@ function submitCourse(form) {
     inp.setAttribute("name", "alreadyTakenCourses");
     inp.setAttribute("value", json);
     acForm.appendChild(inp);
-
+/***************************************************/
+    
+    var dataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var maxDepth = wantTake[i].getElementsByTagName("input")[2].value;
+        dataArray.push(new ASO(id, maxDepth));
+    }
+    var _ASO = eval('({"courses":' + JSON.stringify(dataArray) + '})');
+    
+    var inpASO = document.createElement("input");
+    inpASO.setAttribute("type", "hidden");
+    inpASO.setAttribute("name", "ASO");
+    inpASO.setAttribute("value", JSON.stringify(_ASO));
+    acForm.appendChild(inpASO);
+/***************************************************/
     form.submit();
 }
 
@@ -511,11 +533,12 @@ function autoCourse() {
                     continue;
                 var li = document.createElement('li');
                 li.id = id;
-                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
+                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">' + '<input type="hidden" value="' + wantArr[i].maxDepth + '" name="maxDepth">';
                 ul_want.appendChild(li);
                 
-                document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
             }
+            document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
+            
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // for (var i = 0; i < alreadyArr.length; i++) {
             // var li = document.createElement('li');

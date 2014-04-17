@@ -112,8 +112,11 @@ public class StudyPlanController2 extends Controller {
 					auto_want.put("prefix", course.getPrefix());
 					auto_want.put("num", course.getNumber());
 					auto_want.put("title", course.getTitle());
+					auto_want.put("maxDepth", 
+							((Node)studyplan.degreeProgram.course.get(id).get(0)).maxDepth);
 					wantCourses.put(auto_want);
 				}
+				// alreadyCourse: (NOT_IMPLEMENTED)
 				
 				coursesArr.put("want", wantCourses);
 				coursesArr.put("already", alreadyCourses);
@@ -141,6 +144,7 @@ public class StudyPlanController2 extends Controller {
 			
 			String wantTakeCourses = form.wantTakeCourses;
 			String alreadyTakeCourses = form.alreadyTakenCourses;
+			String ASO = form.ASO;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
@@ -181,7 +185,7 @@ public class StudyPlanController2 extends Controller {
 			}
 			studyplan.degreeProgram.displayallComplexReq();
 			return ok(views.html.stu_semester.render(json.toString(), 
-					wantCourses.toString(), alreadyCourses.toString()));
+					wantCourses.toString(), alreadyCourses.toString(), ASO.toString()));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -200,6 +204,7 @@ public class StudyPlanController2 extends Controller {
 			String wantTakeCourses = form.wantTakeCourses;
 			String alreadyTakeCourses = form.alreadyTakenCourses;
 			String semesterData = form.semesterData;
+			String semesterNum = form.semesterNum;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
@@ -240,7 +245,7 @@ public class StudyPlanController2 extends Controller {
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
 			//Bowen: autoAssignSemester, hard code 8 semester
-			studyplan.AutoAssignSemester(8, semesterData);
+			studyplan.AutoAssignSemester(Integer.valueOf(semesterNum), semesterData);
 			
 			/**
 			 * @author tongrui
