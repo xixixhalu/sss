@@ -112,7 +112,6 @@
                           			cont += Html("<span>You must take courses all of options listed below</span>");
                           	}
                             cont += Html("<div>");
-                            	
                             	for(i <- 0 to srReqs.length()-1)
                             	{
                             	var srReqObject : JSONObject = srReqs.get(i).asInstanceOf[JSONObject];
@@ -121,7 +120,10 @@
 								var cgId : Integer = sr.getCg_id();
 								var reqNum : Integer = sr.getRequired_num();
 								var cg : Cg = Cg.findById(cgId);
+								var courseIds : List[String] = cg.getCourse_ids();
                                 cont += Html("<ul class=\"req_course_list\" style='padding-left: 0px;' id=\"sr_" + srId + "\">");
+                                	if(reqNum == courseIds.length)
+                                		cont += Html("<button class='pure-button' style='float:right; margin: 3px 3px;' onclick='take_all_action(this.parentElement)'><i class='fa fa-plus-square-o'></i>&nbsp;TAKE ALL</button>");	
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
                                 	cont += Html("<div><i>You must take "+reqNum+" courses listed below.</i></div>");
                                 	for(courseId <- cg.getCourse_ids()){

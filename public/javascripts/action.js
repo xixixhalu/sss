@@ -84,18 +84,28 @@ function checkConstraints(id) {
         return false;
     }
     if (!checkPrereq(id)) {
-        var str = "check the prerequisite constraints!\n";
+        var str = courseObjs[id].prefix + courseObjs[id].num + " has the prerequisite constraints!\n";
         var prereqs = courseObjs[id].prereq;
         for ( i = 0; i < prereqs.length; i++)
-            str += " " + prereqs[i].relation + " " + prereqs[i].prefix + prereqs[i].num;
+        {
+        	var relation = prereqs[i].relation;
+    		if(prereqs[i].relation == 'and')
+    			relation = ',';
+        	str += " " + relation + " " + prereqs[i].prefix + prereqs[i].num;
+        }
         alert(str);
         return false;
     }
     if (!checkCoreq(id)) {
-        var str = "check the corequisite constraints!\n";
+        var str = courseObjs[id].prefix + courseObjs[id].num + " has the corequisite constraints!\n";
         var coreqs = courseObjs[id].coreq;
         for ( i = 0; i < coreqs.length; i++)
+        {
+        	var relation = coreqs[i].relation;
+        	if(coreqs[i].relation == 'and')
+    			relation = ',';
             str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+	    }
         alert(str);
         return false;
     }
@@ -527,6 +537,7 @@ function autoCourse() {
     }
 }
 
+//switch button status in the bottom of course bin
 function auto_next_course_action(form)
 {
 	var element_text = $('#auto_next_course_button').html();
@@ -537,5 +548,45 @@ function auto_next_course_action(form)
 	else if(element_text == 'NEXT STEP')
 	{
 		submitCourse(form);
+	}
+}
+
+//take all courses of a specified simple requirement
+function take_all_action(srElement)
+{
+	var courses = srElement.getElementsByTagName('li');
+	for(var count in courses)
+	{
+		var id = courses[count].getAttribute('class').substring(1);
+		var curNode = courses[count].getElementsByTagName('a')[0];
+		if (checkCourseExist(id))
+			continue;
+		if (!checkPrereq(id)) {
+        	var str = courseObjs[id].prefix + courseObjs[id].num + " has the prerequisite constraints!\n";
+        	var prereqs = courseObjs[id].prereq;
+        	for ( i = 0; i < prereqs.length; i++)
+        	{
+        		var relation = prereqs[i].relation;
+        		if(prereqs[i].relation == 'and')
+        			relation = ',';
+            	str += " " + relation + " " + prereqs[i].prefix + prereqs[i].num;
+            }
+        	alert(str);
+        	return false;
+	    }
+	    if (!checkCoreq(id)) {
+	        var str = courseObjs[id].prefix + courseObjs[id].num + " has the corequisite constraints!\n";
+	        var coreqs = courseObjs[id].coreq;
+	        for ( i = 0; i < coreqs.length; i++)
+	        {
+	        	var relation = coreqs[i].relation;
+	        	if(coreqs[i].relation == 'and')
+        			relation = ',';
+	            str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+	        }
+	        alert(str);
+	        return false; 
+    	}
+    	addLikeCourse(id, curNode);	
 	}
 }
