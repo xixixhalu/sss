@@ -8,6 +8,7 @@ import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
 import controllers.forms.SrEditForm;
 import controllers.forms.TakeForm;
+import controllers.StudyPlanPoolController;
 import models.*;
 
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
-	public static ConcurrentHashMap<String, StudyPlan> studyPlanPool = 
-								new ConcurrentHashMap<String, StudyPlan>();
+//	public static ConcurrentHashMap<String, StudyPlan> studyPlanPool = 
+//								new ConcurrentHashMap<String, StudyPlan>();
 	
 	public static Result retrieveDegrees() {
 		try{
@@ -39,7 +40,7 @@ public class StudyPlanController2 extends Controller {
 		if(filledForm.hasErrors()) {
     		return badRequest("Not all mandatory fields correct or entered.");
     	}
-		//try{
+		try{
 			DegreeForm degreeForm = filledForm.get();
 			Integer degreeId = degreeForm.degreeId;
 			Degree degree = Degree.findById(degreeId);
@@ -47,10 +48,11 @@ public class StudyPlanController2 extends Controller {
 			//Initialize study plan graph.
 			
 			StudyPlan studyplan = new StudyPlan();
-			String uuid = UUID.randomUUID().toString();
-			session("uuid", uuid);
-			studyPlanPool.put(uuid, studyplan);
+//			String uuid = UUID.randomUUID().toString();
+//			session("uuid", uuid);
+//			studyPlanPool.put(uuid, studyplan);
 			//Logger.info(uuid);
+			StudyPlanPoolController.insertStudyPlan(studyplan);
 			studyplan.CreateDegreeProgram(Integer.valueOf(degreeId));
 			//get all courses' JSON
 			JSONObject json = new JSONObject();
@@ -61,16 +63,17 @@ public class StudyPlanController2 extends Controller {
 						true, true, true, false, false);
 				json.put(course.toJson(cw).getString("id"), course.toJson(cw));
 			}
-			
+			Logger.debug("c"+session().size() + session().get("uuid") + " "+StudyPlanPoolController.poolSize());
 			return ok(views.html.stu_course.render(degree, json.toString()));
-		//}catch(Exception e)
-		//{
-		//	return badRequest(views.html.error.render("Cannot retrieve course list"));
-		//}
+		}catch(Exception e)
+		{
+			return badRequest(views.html.error.render("Cannot retrieve course list"));
+		}
 	}
 	
 	public static Result autoFillCourse(){
-		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
+//		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
+		StudyPlan studyplan = StudyPlanPoolController.getStudyPlan();
 		if(studyplan.courseBin == null) {
 			Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();	
 			try {
@@ -135,7 +138,12 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result assignSemester(){
-		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
+		if(!StudyPlanPoolController.isStudyPlanExists())
+		{
+			badRequest(views.html.error.render("Session Expired or Wrong Operation"));
+		}
+//		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
+		StudyPlan studyplan = StudyPlanPoolController.getStudyPlan();
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		boolean needAuto = false;
 		if(studyplan.courseBin == null)
@@ -195,7 +203,8 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result autoAssignSemester(){
-		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
+//		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
+		StudyPlan studyplan = StudyPlanPoolController.getStudyPlan();
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
 		
@@ -245,7 +254,6 @@ public class StudyPlanController2 extends Controller {
 			
 			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
 			
-			//Bowen: autoAssignSemester, hard code 8 semester
 			studyplan.AutoAssignSemester(Integer.valueOf(semesterNum), semesterData);
 			
 			/**
@@ -281,6 +289,10 @@ public class StudyPlanController2 extends Controller {
 	}
 	
 	public static Result generateStudyPlan(){
+		if(!StudyPlanPoolController.isStudyPlanExists())
+		{
+			return badRequest(views.html.error.render("Session Expired or Wrong Operation"));
+		}
 		return ok(views.html.stu_studyplan.render());
 	}
 	

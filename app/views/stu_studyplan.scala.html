@@ -17,14 +17,15 @@
     			
  				var output : Html = Html("");
     			
-    			if(!session().containsKey("uuid"))
+    			if(!StudyPlanPoolController.isStudyPlanExists())
     			{
     				output += Html("Session Cleared. Click <a href='index'><font color='blue'>HERE</font></a> to make a new study plan.");
     			}
     			else
     			{
-    				var uuid : String = session().get("uuid"); 
-    				var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(uuid);
+    				<!-- var uuid : String = session().get("uuid"); 
+    				var studyplan : StudyPlan = StudyPlanController2.studyPlanPool.get(uuid); -->
+    				var studyplan : StudyPlan = StudyPlanPoolController.getStudyPlan();
     				var result : HashMap[Integer, ArrayList[Integer]] = studyplan.studyplanResult;
     				for(key <- result.keySet()){
 						var courseInSameSemester : ArrayList[Integer] = result.get(key);
@@ -35,9 +36,11 @@
 						}
 		    			output += Html("<br/>");
 					}
-					studyplan = null;
+					<!-- studyplan = null;
 					StudyPlanController2.studyPlanPool.remove(uuid);
-					session().clear();
+					session().clear(); -->
+					StudyPlanPoolController.removeStudyPlan();
+					output += Html("Click <a href='index'><font color='blue'>HERE</font></a> to make a new study plan.");
 				}
 				output; 
     		}
