@@ -41,6 +41,7 @@ function addLikeCourse(id, curNode) {
         curNode.parentElement.style.color = 'black';
         return null;
     }
+    curNode.parentElement.style.color = 'black';
     var wantTake = document.getElementById("wantTake");
     wantTake.appendChild(generateLi(id, curNode));
     var name = curNode.parentElement.className;
@@ -167,8 +168,10 @@ function removeCourse(curId) {
             for ( j = 0; j < prereq.length; j++) {
                 if (prereq[j].id == curId) {
                     //如果有，提示用户不能删除
+                    courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
-                    alert("This course is the prerequisite of " + curCourse);
+                    alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the prerequisite of " + curCourse);
+                    courseLi.style.color = 'black';
                     return false;
                 }
             }
@@ -179,13 +182,16 @@ function removeCourse(curId) {
             for ( j = 0; j < coreq.length; j++) {
                 if (coreq[j].id == curId) {
                     //如果有，提示用户不能删除
+                    courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
-                    alert("This course is the corequisite of " + curCourse);
+                    alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the corequisite of " + curCourse);
+                    courseLi.style.color = 'black';
                     return false;
                 }
             }
         }
     }
+    courseLi.style.color = 'black';
     courseLi.parentElement.removeChild(courseLi);
     var sameCourses=document.getElementsByClassName("c"+curId);
     for(i=0;i<sameCourses.length;i++){
@@ -480,12 +486,11 @@ function submitCourse(form) {
         var maxDepth = wantTake[i].getElementsByTagName("input")[2].value;
         dataArray.push(new ASO(id, maxDepth));
     }
-    var _ASO = eval('({"courses":' + JSON.stringify(dataArray) + '})');
     
     var inpASO = document.createElement("input");
     inpASO.setAttribute("type", "hidden");
-    inpASO.setAttribute("name", "ASO");
-    inpASO.setAttribute("value", JSON.stringify(_ASO));
+    inpASO.setAttribute("name", "aso");
+    inpASO.setAttribute("value", JSON.stringify(dataArray));
     acForm.appendChild(inpASO);
 /***************************************************/
     form.submit();
@@ -574,10 +579,12 @@ function auto_next_course_action(form)
 	if(element_text == 'AUTO FILL COURSES')
 	{
 		autoCourse();
+        return false;
 	}
 	else if(element_text == 'NEXT STEP')
 	{
 		submitCourse(form);
+        return true;
 	}
 }
 
@@ -601,7 +608,9 @@ function take_all_action(srElement)
         			relation = ',';
             	str += " " + relation + " " + prereqs[i].prefix + prereqs[i].num;
             }
+            curNode.parentElement.style.color = 'red';
         	alert(str);
+            curNode.parentElement.style.color = 'black';
         	return false;
 	    }
 	    if (!checkCoreq(id)) {
@@ -614,9 +623,12 @@ function take_all_action(srElement)
         			relation = ',';
 	            str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
 	        }
+            curNode.parentElement.style.color = 'red';
 	        alert(str);
+            curNode.parentElement.style.color = 'black';
 	        return false; 
     	}
+        curNode.parentElement.style.color = 'black';
     	addLikeCourse(id, curNode);	
 	}
 }

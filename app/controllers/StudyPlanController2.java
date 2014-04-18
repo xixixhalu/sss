@@ -145,14 +145,14 @@ public class StudyPlanController2 extends Controller {
 			
 			String wantTakeCourses = form.wantTakeCourses;
 			String alreadyTakeCourses = form.alreadyTakenCourses;
-			String ASO = form.ASO;
+			String ASO = form.aso;
 			
 			JSONArray wantCourses = new JSONArray(wantTakeCourses);
 			JSONArray alreadyCourses = new JSONArray(alreadyTakeCourses);
 			JSONObject json = new JSONObject();
 			CourseWrapper cw = new CourseWrapper(true, true, true, true,
 						true, true, true, true, true);
-//			Logger.info(String.valueOf(wantCourses.length()));
+//			Logger.info(ASO);
 			for (int i = 0; i < wantCourses.length(); i++) {
 				JSONObject wantCourse = (JSONObject) wantCourses.get(i);
 				int id = wantCourse.getInt("id");
@@ -186,7 +186,7 @@ public class StudyPlanController2 extends Controller {
 			}
 			studyplan.degreeProgram.displayallComplexReq();
 			return ok(views.html.stu_semester.render(json.toString(), 
-					wantCourses.toString(), alreadyCourses.toString(), ASO.toString()));
+					wantCourses.toString(), alreadyCourses.toString(), ASO));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
