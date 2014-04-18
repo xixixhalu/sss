@@ -105,7 +105,7 @@
                           	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
                           	if(srReqs.length() > 1)
                           	{
-                          		if(srReqs.get(2).asInstanceOf[JSONObject].get("relation").equals("or"))
+                          		if(srReqs.get(1).asInstanceOf[JSONObject].get("relation").equals("or"))
                           			cont += Html("<span>You must take courses in one of options listed below</span>");
                           		else
                           			cont += Html("<span>You must take courses all of options listed below</span>");

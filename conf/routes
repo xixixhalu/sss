@@ -54,8 +54,8 @@ POST	/admin/addDegree			controllers.DegreeController.addDegree()
 GET		/admin/help					controllers.Application.help()
 GET		/admin/retrieveCgCourses/:id		controllers.CgController.retrieveCgCourses(id: Integer)
 
-GET		/admin/header				controllers.Utility.getHeader()
-GET		/admin/footer				controllers.Utility.getFooter()
+GET		/admin/header				controllers.utility.Utility.getHeader()
+GET		/admin/footer				controllers.utility.Utility.getFooter()
 
 #student side
 GET		/student/index			controllers.StudyPlanController2.retrieveDegrees()
