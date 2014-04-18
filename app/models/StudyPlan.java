@@ -809,7 +809,7 @@ public class StudyPlan {
 				// if the course has not been assigned
 				int tempt = courseInSameLvl.get(i).cName;
 				if (corerequsiteList.containsKey(Integer.valueOf(tempt))) {
-					courseInSameLvl.get(i).semester = curSemester;// assign the
+					courseInSameLvl.get(i).semester = curSemester;  // assign the
 																	// current
 																	// semester
 																	// to the
@@ -818,10 +818,10 @@ public class StudyPlan {
 					num = BacktrackCore(courseInHash, courseInSameLvl.get(i).cName, curSemester, num);
 					// ArrayList<Integer> coreqs=(ArrayList<Integer>)
 					// corerequsiteList.get(courseInSameLvl.get(i).cName);
-					// for(Integer lalala:coreqs){
+					// for(Integer coreq:coreqs){
 					// for(int n = 0 ;n<courseBin.size();n++){
-					// if(courseInHash.get(lalala).get(0).cName==courseBin.get(n)){
-					// courseInHash.get(lalala).get(0).semester=curSemester;
+					// if(courseInHash.get(coreq).get(0).cName==courseBin.get(n)){
+					// courseInHash.get(coreq).get(0).semester=curSemester;
 					// num--;
 					// //迭代查找所有的corequisite.
 					// }
@@ -908,19 +908,20 @@ public class StudyPlan {
 		// the course
 		// num--;
 		Integer[] coreqs = corerequsiteList.get(courseID).toArray(new Integer[0]);
-		for (Integer lalala : coreqs) {
-			if (courseInHash.get(lalala).get(0).semester != -1)
-				continue;
-			for (int n = 0; n < courseBin.size(); n++) {
-				if (lalala.equals(courseBin.get(n))) {
-					courseInHash.get(lalala).get(0).semester = currentSemester;
-					num--;
-					num = BacktrackCore(courseInHash, lalala, currentSemester, num);
-					// 迭代查找所有的corequisite.
+		for (Integer coreq : coreqs) {
+			if (courseInHash.containsKey(coreq)) {
+				if (courseInHash.get(coreq).get(0).semester != -1)
+					continue;
+				for (int n = 0; n < courseBin.size(); n++) {
+					if (coreq.equals(courseBin.get(n))) {
+						courseInHash.get(coreq).get(0).semester = currentSemester;
+						num--;
+						num = BacktrackCore(courseInHash, coreq, currentSemester, num);
+						// 迭代查找所有的corequisite.
+					}
+	
 				}
-
 			}
-
 		}
 
 		return num;
