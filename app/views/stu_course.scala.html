@@ -82,8 +82,7 @@
                 </div>
                 <div>
                 	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
-                		<input type="hidden" value="" name="">
-                    	<a class="button left_auto pure-button pure-button-primary" id="auto_next_course_button" onclick='auto_next_course_action(this.parentElement)'>AUTO FILL COURSES</a>
+                    	<a class="button left_auto pure-button pure-button-primary" id="auto_next_course_button" onclick='return auto_next_course_action(this.parentElement)'>AUTO FILL COURSES</a>
                 	</form>
                 </div>
             </div>
@@ -106,13 +105,12 @@
                           	var srReqs : JSONArray = new JSONArray(req.getSr_ids());
                           	if(srReqs.length() > 1)
                           	{
-                          		if(srReqs.get(2).asInstanceOf[JSONObject].get("relation").equals("or"))
+                          		if(srReqs.get(1).asInstanceOf[JSONObject].get("relation").equals("or"))
                           			cont += Html("<span>You must take courses in one of options listed below</span>");
                           		else
                           			cont += Html("<span>You must take courses all of options listed below</span>");
                           	}
                             cont += Html("<div>");
-                            	
                             	for(i <- 0 to srReqs.length()-1)
                             	{
                             	var srReqObject : JSONObject = srReqs.get(i).asInstanceOf[JSONObject];
@@ -121,7 +119,10 @@
 								var cgId : Integer = sr.getCg_id();
 								var reqNum : Integer = sr.getRequired_num();
 								var cg : Cg = Cg.findById(cgId);
+								var courseIds : List[String] = cg.getCourse_ids();
                                 cont += Html("<ul class=\"req_course_list\" style='padding-left: 0px;' id=\"sr_" + srId + "\">");
+                                	if(reqNum == courseIds.length)
+                                		cont += Html("<button class='pure-button' style='float:right; margin: 3px 3px;' onclick='take_all_action(this.parentElement)'><i class='fa fa-plus-square-o'></i>&nbsp;TAKE ALL</button>");	
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
                                 	cont += Html("<div><i>You must take "+reqNum+" courses listed below.</i></div>");
                                 	for(courseId <- cg.getCourse_ids()){

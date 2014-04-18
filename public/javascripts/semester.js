@@ -1,24 +1,33 @@
 /**
  * @author Bohan Zheng
  */
-var ASO = {
-    "minSemester" : "6",
-    "courses" : {
-        97 : "3",
-        93 : "3",
-        89 : "2",
-        84 : "1",
-        86 : "1",
-        74 : "1",
-        180 : "1"
-    }
-};
+//var ASO = {
+//    "minSemester" : "6",
+//    "courses" : {
+//        97 : "3",
+//        93 : "3",
+//        89 : "2",
+//        84 : "1",
+//        86 : "1",
+//        74 : "1",
+//        180 : "1"
+//    }
+//};
 
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     courseObjs = eval("(" + jsonData + ")");
     var want = eval("(" + document.getElementById("want").innerText + ")");
     var already = eval("(" + document.getElementById("already").innerText + ")");
+    /****************************/
+    ASO = eval('(' + document.getElementById("ASO").innerText + ')');
+    minSemester = 0;
+    for (var i = 0; i < ASO.length; ++i) {
+        maxDepth = ASO[i].maxDepth;
+        if (maxDepth > minSemester)
+            minSemester = maxDepth;
+    }
+    /****************************/
     var wantTakeUL = document.getElementById("wantTake");
     for ( i = 0; i < want.length; i++) {
         var li = document.createElement("li");
@@ -227,8 +236,8 @@ function getPrefixNumber(li) {
 
 function autoSemester() {
     var semesterNum = document.getElementById("req_list").children.length - 1;
-    if (semesterNum < ASO.minSemester) {
-        alert("you must add at least " + ASO.minSemester + " semesters first!");
+    if (semesterNum < minSemester) {
+        alert("you must add at least " + minSemester + " semesters first!");
         return;
     }
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
@@ -258,7 +267,8 @@ function autoSemester() {
             wantTakeCourses : JSON.stringify(wantDataArray),
             alreadyTakenCourses : JSON.stringify(alreadyDataArray),
             /* [semester:{num:1,title:spring 2014,;minCredit:1,maxCredit:10,courses:[1,2,3]},...]*/
-            semesterData : JSON.stringify(getSemesterData())
+            semesterData : JSON.stringify(getSemesterData()),
+            semesterNum : semesterNum
         }, function(data) {
             var semesterObj = eval("(" + data + ")");
             var semesterUls = document.getElementById("req_list").getElementsByClassName("req_course_list");
@@ -321,8 +331,15 @@ function getSemesterData() {
 }
 
 function checkSemesterConstraints(id, num) {
-    if (num < ASO.courses[id]) {
-        alert("the eariliest possiblity for this course is No." + ASO.courses[id] + " semester");
+    var maxDepth = 0;
+    for (var i = 0; i < ASO.length; ++i) {
+        if (ASO[i].id == id){
+            maxDepth = ASO[i].maxDepth;
+            break;
+        }
+    }
+    if (num < maxDepth) {
+        alert("the eariliest possiblity for this course is No." + maxDepth + " semester");
         return false;
     }
     var reqList = document.getElementById("req_list").getElementsByClassName("req_course_list");
