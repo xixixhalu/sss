@@ -683,7 +683,8 @@ public class StudyPlan {
 	}
 
 
-	public void setAssignSemester(String semesterData, HashMap<Integer, ArrayList<Node>> courseInHash, HashMap<Integer, ArrayList<Integer>> result) {
+	public void setAssignSemester(String semesterData, HashMap<Integer, 
+			ArrayList<Node>> courseInHash, HashMap<Integer, ArrayList<Integer>> result) {
 
 		/**
 		 * @author tongrui assign semester to back end
@@ -716,7 +717,8 @@ public class StudyPlan {
 		}
 	}
 
-	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester, String semesterData) {
+	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(
+			int numOfSemester, String semesterData) {
 
 		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
 		//degreeProgram.displayAllCourse();
@@ -903,7 +905,8 @@ public class StudyPlan {
 		return result;
 	}
 
-	public int BacktrackCore(HashMap<Integer, ArrayList<Node>> courseInHash, Integer courseID, int currentSemester, int num) {
+	public int BacktrackCore(HashMap<Integer, ArrayList<Node>> courseInHash, 
+			Integer courseID, int currentSemester, int num) {
 		// course.semester = currentSemester;// assign the current semester to
 		// the course
 		// num--;
@@ -927,7 +930,8 @@ public class StudyPlan {
 		return num;
 	}
 
-	public void FillNonePreCoreReq(ComplexReq complexReq, Linklist simpleReq, ArrayList<Integer> courseBinResult) {
+	public void FillNonePreCoreReq(ComplexReq complexReq, Linklist simpleReq, 
+			ArrayList<Integer> courseBinResult) {
 		Node course = null;
 		Linklist tempSimple = null;
 		ComplexReq tempComplex = null;
@@ -946,7 +950,9 @@ public class StudyPlan {
 			}
 		}
 
-		while (course != null && course.chosen == false && tempSimple.first.statisfied == false && tempComplex.first.satisfied == false) {
+		while (course != null && course.chosen == false && 
+				tempSimple.first.statisfied == false && 
+				tempComplex.first.satisfied == false) {
 			degreeProgram.checkCourseIn_ReqList(tempSimple.first.cName, course.cName); // mark
 																						// this
 																						// course
