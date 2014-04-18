@@ -82,12 +82,57 @@
                 </div>
                 <div>
                 	<form action="@routes.StudyPlanController2.assignSemester()" method="post" id="acForm">
+                        <style scoped>
+                            .button-secondary {
+                                color: white;
+                                border-radius: 4px;
+                                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                            }
+                        </style>
+                                
+                        <a class="button left_auto pure-button button-secondary" style="margin-bottom:0px" id="undo_fill_button" onclick='undo_fill()'>UNDO</a>
                     	<a class="button left_auto pure-button pure-button-primary" id="auto_next_course_button" onclick='return auto_next_course_action(this.parentElement)'>AUTO FILL COURSES</a>
                 	</form>
                 </div>
             </div>
             <div class="right float_right">
                 <ul class="req_list" style="padding-left: 0px;">
+                    <style scoped>
+                        .button-success,
+                        .button-error,
+                        .button-warning,
+                        .button-secondary {
+                            color: white;
+                            border-radius: 4px;
+                            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                        }
+
+                        .button-success {
+                            background: rgb(28, 184, 65); /* this is a green */
+                        }
+
+                        .button-error {
+                            background: rgb(202, 60, 60); /* this is a maroon */
+                        }
+
+                        .button-warning {
+                            background: rgb(223, 117, 20); /* this is an orange */
+                        }
+
+                        .button-secondary {
+                            background: rgb(66, 184, 221); /* this is a light blue */
+                        }
+
+                        .button-submit {
+                            font-family: Helvetica;
+                            background: rgb(0, 0, 0);
+                            color: white;
+                        }
+                    </style>
+                    <div class="addsemester sem_add_title" onclick="addSemesters()" style="margin-bottom : 20px">
+                            <button class="button-warning pure-button" style="width:100%">TAKE ALL MANDATORY COURSES</button>
+                    </div>
+                    
                 	@{var cont : Html = Html("");
                 		for(reqId <- degree.getReq_ids()){
                 		var req : Requirement = Requirement.findById(Integer.parseInt(reqId));

@@ -632,3 +632,11 @@ function take_all_action(srElement)
     	addLikeCourse(id, curNode);	
 	}
 }
+
+function undo_fill(){
+    // first visually clear course bin
+    
+    var ul_want = document.getElementById('wantTake');
+    
+}
+
