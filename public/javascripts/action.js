@@ -220,7 +220,7 @@ function removeCourse(curId) {
                     courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
                     alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the prerequisite of " + curCourse);
-                    courseLi.style.color = 'black';
+                    courseLi.style.color = 'rgb(159, 159, 159)';
                     return false;
                 }
             }
