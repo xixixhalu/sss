@@ -36,9 +36,12 @@ function dropDown(id) {
 
 //adding course to want-to-take list
 function addLikeCourse(id, curNode) {
+    curNode.parentElement.style.color = 'red';
     if (!checkConstraints(id)) {
+        curNode.parentElement.style.color = 'black';
         return null;
     }
+    curNode.parentElement.style.color = 'black';
     var wantTake = document.getElementById("wantTake");
     wantTake.appendChild(generateLi(id, curNode));
     var name = curNode.parentElement.className;
@@ -84,18 +87,28 @@ function checkConstraints(id) {
         return false;
     }
     if (!checkPrereq(id)) {
-        var str = "check the prerequisite constraints!\n";
+        var str = courseObjs[id].prefix + courseObjs[id].num + " has the prerequisite constraints!\n";
         var prereqs = courseObjs[id].prereq;
         for ( i = 0; i < prereqs.length; i++)
-            str += " " + prereqs[i].relation + " " + prereqs[i].prefix + prereqs[i].num;
+        {
+        	var relation = prereqs[i].relation;
+    		if(prereqs[i].relation == 'and')
+    			relation = ',';
+        	str += " " + relation + " " + prereqs[i].prefix + prereqs[i].num;
+        }
         alert(str);
         return false;
     }
     if (!checkCoreq(id)) {
-        var str = "check the corequisite constraints!\n";
+        var str = courseObjs[id].prefix + courseObjs[id].num + " has the corequisite constraints!\n";
         var coreqs = courseObjs[id].coreq;
         for ( i = 0; i < coreqs.length; i++)
+        {
+        	var relation = coreqs[i].relation;
+        	if(coreqs[i].relation == 'and')
+    			relation = ',';
             str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+	    }
         alert(str);
         return false;
     }
@@ -155,8 +168,10 @@ function removeCourse(curId) {
             for ( j = 0; j < prereq.length; j++) {
                 if (prereq[j].id == curId) {
                     //如果有，提示用户不能删除
+                    courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
-                    alert("This course is the prerequisite of " + curCourse);
+                    alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the prerequisite of " + curCourse);
+                    courseLi.style.color = 'black';
                     return false;
                 }
             }
@@ -167,13 +182,16 @@ function removeCourse(curId) {
             for ( j = 0; j < coreq.length; j++) {
                 if (coreq[j].id == curId) {
                     //如果有，提示用户不能删除
+                    courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
-                    alert("This course is the corequisite of " + curCourse);
+                    alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the corequisite of " + curCourse);
+                    courseLi.style.color = 'black';
                     return false;
                 }
             }
         }
     }
+    courseLi.style.color = 'black';
     courseLi.parentElement.removeChild(courseLi);
     var sameCourses=document.getElementsByClassName("c"+curId);
     for(i=0;i<sameCourses.length;i++){
@@ -420,12 +438,17 @@ function wantTakeCourse(id, sid, cid) {
     this.cid = cid;
 }
 
+function ASO(id, maxDepth) {
+    this.id = id;
+    this.maxDepth = maxDepth;
+}
+
 function submitCourse(form) {
     /* create hidden field of selected courses */
     var acForm = document.getElementById("acForm");
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
     var alreadyTaken = document.getElementById("alreadyTaken").getElementsByTagName("li");
-
+/***************************************************/
     var dataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
@@ -440,7 +463,7 @@ function submitCourse(form) {
     inp.setAttribute("name", "wantTakeCourses");
     inp.setAttribute("value", json);
     acForm.appendChild(inp);
-
+/***************************************************/
     var dataArray = new Array;
     for ( i = 0; i < alreadyTaken.length; i++) {
         var id = alreadyTaken[i].id;
@@ -455,7 +478,21 @@ function submitCourse(form) {
     inp.setAttribute("name", "alreadyTakenCourses");
     inp.setAttribute("value", json);
     acForm.appendChild(inp);
-
+/***************************************************/
+    
+    var dataArray = new Array;
+    for ( i = 0; i < wantTake.length; i++) {
+        var id = wantTake[i].id;
+        var maxDepth = wantTake[i].getElementsByTagName("input")[2].value;
+        dataArray.push(new ASO(id, maxDepth));
+    }
+    
+    var inpASO = document.createElement("input");
+    inpASO.setAttribute("type", "hidden");
+    inpASO.setAttribute("name", "aso");
+    inpASO.setAttribute("value", JSON.stringify(dataArray));
+    acForm.appendChild(inpASO);
+/***************************************************/
     form.submit();
 }
 
@@ -507,15 +544,23 @@ function autoCourse() {
                     if (courses[j] == id)
                         f = true;
                 }
-                if (f)
+                if (f) {
+                    var inp = document.createElement('input');
+                    inp.setAttribute('type', 'hidden');
+                    inp.setAttribute('value', wantArr[i].maxDepth);
+                    inp.setAttribute('name', 'maxDepth');
+                    document.getElementById(id).appendChild(inp);
                     continue;
+                }
                 var li = document.createElement('li');
                 li.id = id;
-                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">';
+                li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + ' - ' + courseObjs[id].title + '<a onclick="removeCourse(' + id + ')"><i class="fa fa-times-circle"></i></a>' + '<input type="hidden" value="-1" name="simpleReqId">' + '<input type="hidden" value="-1" name="complexReqId">' + '<input type="hidden" value="' + wantArr[i].maxDepth + '" name="maxDepth">';
+                li.style.color = "#9f9f9f";
                 ul_want.appendChild(li);
                 
-                document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
             }
+            document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
+            
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // for (var i = 0; i < alreadyArr.length; i++) {
             // var li = document.createElement('li');
@@ -527,15 +572,63 @@ function autoCourse() {
     }
 }
 
+//switch button status in the bottom of course bin
 function auto_next_course_action(form)
 {
 	var element_text = $('#auto_next_course_button').html();
 	if(element_text == 'AUTO FILL COURSES')
 	{
 		autoCourse();
+        return false;
 	}
 	else if(element_text == 'NEXT STEP')
 	{
 		submitCourse(form);
+        return true;
+	}
+}
+
+//take all courses of a specified simple requirement
+function take_all_action(srElement)
+{
+	var courses = srElement.getElementsByTagName('li');
+	for(var count in courses)
+	{
+		var id = courses[count].getAttribute('class').substring(1);
+		var curNode = courses[count].getElementsByTagName('a')[0];
+		if (checkCourseExist(id))
+			continue;
+		if (!checkPrereq(id)) {
+        	var str = courseObjs[id].prefix + courseObjs[id].num + " has the prerequisite constraints!\n";
+        	var prereqs = courseObjs[id].prereq;
+        	for ( i = 0; i < prereqs.length; i++)
+        	{
+        		var relation = prereqs[i].relation;
+        		if(prereqs[i].relation == 'and')
+        			relation = ',';
+            	str += " " + relation + " " + prereqs[i].prefix + prereqs[i].num;
+            }
+            curNode.parentElement.style.color = 'red';
+        	alert(str);
+            curNode.parentElement.style.color = 'black';
+        	return false;
+	    }
+	    if (!checkCoreq(id)) {
+	        var str = courseObjs[id].prefix + courseObjs[id].num + " has the corequisite constraints!\n";
+	        var coreqs = courseObjs[id].coreq;
+	        for ( i = 0; i < coreqs.length; i++)
+	        {
+	        	var relation = coreqs[i].relation;
+	        	if(coreqs[i].relation == 'and')
+        			relation = ',';
+	            str += " " + coreqs[i].relation + " " + coreqs[i].prefix + coreqs[i].num;
+	        }
+            curNode.parentElement.style.color = 'red';
+	        alert(str);
+            curNode.parentElement.style.color = 'black';
+	        return false; 
+    	}
+        curNode.parentElement.style.color = 'black';
+    	addLikeCourse(id, curNode);	
 	}
 }
