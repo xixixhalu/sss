@@ -34,14 +34,53 @@ function dropDown(id) {
     }
 }
 
+function expand(id) {
+    var node = document.getElementById(id);
+    var nodes = node.children;
+    var titleStyle = nodes[0].style.display;
+    var listStyle = nodes[1].style.display;
+    
+    nodes[1].style.display = "block";
+    nodes[0].style.display = "none";
+}
+function shrink(id) {
+    var node = document.getElementById(id);
+    var nodes = node.children;
+    var titleStyle = nodes[0].style.display;
+    var listStyle = nodes[1].style.display;
+    
+    nodes[0].style.display = "block";
+    nodes[1].style.display = "none";
+}
+
+function expandAll() {
+    var req_list = $('#reqs_list')[0].children;
+    for (var i = 0; i < req_list.length; i++) {
+        var req = req_list[i];
+        if (req.tagName == 'LI') {
+            expand(req.id);
+        }
+    }
+}
+function shrinkAll() {
+    var req_list = $('#reqs_list')[0].children;
+    for (var i = 0; i < req_list.length; i++) {
+        var req = req_list[i];
+        if (req.tagName == 'LI') {
+            shrink(req.id);
+        }
+    }
+}
+
 //adding course to want-to-take list
 function addLikeCourse(id, curNode) {
+    var oldColor = curNode.parentElement.style.color;
     curNode.parentElement.style.color = 'red';
     if (!checkConstraints(id)) {
-        curNode.parentElement.style.color = 'black';
+        curNode.parentElement.style.color = oldColor;
         return null;
     }
-    curNode.parentElement.style.color = 'black';
+    curNode.parentElement.style.color = oldColor;
     var wantTake = document.getElementById("wantTake");
     wantTake.appendChild(generateLi(id, curNode));
     var name = curNode.parentElement.className;
@@ -154,6 +193,7 @@ function checkCourseExist(id) {
 function removeCourse(curId) {
     //获取需要删除的节点
     var courseLi = document.getElementById(curId);
+    var oldColor = courseLi.style.color;
     //获取course bin中的所有课
     var allCourses = getLikeCourses().concat(getTakenCourses());
     //循环course bin中的所有课，
@@ -171,7 +211,7 @@ function removeCourse(curId) {
                     courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
                     alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the prerequisite of " + curCourse);
-                    courseLi.style.color = 'black';
+                    courseLi.style.color = oldColor;
                     return false;
                 }
             }
@@ -185,13 +225,13 @@ function removeCourse(curId) {
                     courseLi.style.color = 'red';
                     var curCourse = courseObjs[id].prefix + courseObjs[id].num;
                     alert(courseObjs[curId].prefix + courseObjs[curId].num + " is the corequisite of " + curCourse);
-                    courseLi.style.color = 'black';
+                    courseLi.style.color = oldColor;
                     return false;
                 }
             }
         }
     }
-    courseLi.style.color = 'black';
+    courseLi.style.color = oldColor;
     courseLi.parentElement.removeChild(courseLi);
     var sameCourses=document.getElementsByClassName("c"+curId);
     for(i=0;i<sameCourses.length;i++){
@@ -558,8 +598,18 @@ function autoCourse() {
                 li.style.color = "#9f9f9f";
                 ul_want.appendChild(li);
                 
+                var name = 'c' + li.id;
+                var sameCourse = document.getElementsByClassName(name);
+                for (var j = 0; j < sameCourse.length; j++) {
+                    sameCourse[j].style.display = "none";
+                }
             }
+            
+            // post-condition
             document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
+            $('#undo_fill_button')[0].className = 'button left_auto pure-button button-secondary';
+            
+            expandAll();
             
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // for (var i = 0; i < alreadyArr.length; i++) {
@@ -596,6 +646,7 @@ function take_all_action(srElement)
 	{
 		var id = courses[count].getAttribute('class').substring(1);
 		var curNode = courses[count].getElementsByTagName('a')[0];
+        var oldColor = curNode.parentElement.style.color;
 		if (checkCourseExist(id))
 			continue;
 		if (!checkPrereq(id)) {
@@ -610,7 +661,7 @@ function take_all_action(srElement)
             }
             curNode.parentElement.style.color = 'red';
         	alert(str);
-            curNode.parentElement.style.color = 'black';
+            curNode.parentElement.style.color = oldColor;
         	return false;
 	    }
 	    if (!checkCoreq(id)) {
@@ -625,18 +676,90 @@ function take_all_action(srElement)
 	        }
             curNode.parentElement.style.color = 'red';
 	        alert(str);
-            curNode.parentElement.style.color = 'black';
+            curNode.parentElement.style.color = oldColor;
 	        return false; 
     	}
-        curNode.parentElement.style.color = 'black';
+        curNode.parentElement.style.color = oldColor;
     	addLikeCourse(id, curNode);	
 	}
 }
 
 function undo_fill(){
     // first visually clear course bin
-    
     var ul_want = document.getElementById('wantTake');
+    for (var i = 0; i < ul_want.children.length; i++) {
+        var li_want = ul_want.children[i];
+        if (li_want.style.color == "rgb(159, 159, 159)") {
+            ul_want.removeChild(li_want);
+            i--;
+        }
+    }
+    var element_text = $('#auto_next_course_button');
+    element_text.html('AUTO FILL COURSES');
     
+    $('#undo_fill_button')[0].className = 'button left_auto pure-button pure-button-disabled';
+    
+    
+    var req_course_list = $('.req_course_list');
+    for (var j = 0; j < req_course_list.length; j++) {
+        var courses = req_course_list[j].children;
+        for (var i = 0; i < courses.length; i++) {
+            var course = courses[i];
+            if (course.tagName == 'LI') {
+                var picked = 0;
+                var wantTake = document.getElementById("wantTake").children;
+                for (var k = 0; k < wantTake.length; k++) {
+                    if (course.className == 'c' + wantTake[k].id) {
+                        picked = 1;
+                        break;
+                    }
+                }
+                if (course.style.display == 'none' && picked == 0) {
+                    course.style.display = 'inline';
+                }
+            }
+        }
+    }
+
+    
+    shrinkAll();
+    
+    // ajax
+    var url = "/student/undo_fill";
+    var degreeid = $('#degreeid').val();
+    $.post(url, {
+        degreeId : degreeid
+    }, function(data) {});
 }
 
+function addLikeCourse(id, curNode) {
+    var wantTake = document.getElementById("wantTake");
+    wantTake.appendChild(generateLi(id, curNode));
+    var name = curNode.parentElement.className;
+    var sameCourse = document.getElementsByClassName(name);
+    for ( i = 0; i < sameCourse.length; i++) {
+        sameCourse[i].style.display = "none";
+    }
+}
+
+function take_all_mandatory_action(parentElem)
+{
+	var nodes = parentElem.getElementsByTagName("li");
+	for(var i = 0; i < nodes.length; i++)
+	{
+		var req_courses = nodes[i].getElementsByClassName("req_course_list");
+		if(req_courses.length != 1)
+			continue;
+		for(var j = 0; j < req_courses.length; j++)
+		{
+			var desc = req_courses[j].getElementsByClassName('req_desc')[0].innerHTML;
+			var patt = /[0-9]+/g;
+			var req_number = patt.exec(desc);
+			if(req_number == req_courses[j].getElementsByTagName('li').length)
+				alert(req_number);
+			return;
+			
+		}
+		
+	}
+}

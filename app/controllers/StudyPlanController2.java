@@ -296,5 +296,14 @@ public class StudyPlanController2 extends Controller {
 		return ok(views.html.stu_studyplan.render());
 	}
 	
-	
+	public static Result undo_fill() {
+		Form<DegreeForm> filledForm = Form.form(DegreeForm.class).bindFromRequest();
+		DegreeForm form = filledForm.get();
+			
+		StudyPlanPoolController.removeStudyPlan();
+		StudyPlan studyplan = new StudyPlan();
+		studyplan.CreateDegreeProgram(Integer.valueOf(form.degreeId));
+		StudyPlanPoolController.insertStudyPlan(studyplan);
+		return ok("");
+	}
 }
