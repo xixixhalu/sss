@@ -696,3 +696,34 @@ function undo_fill(){
     }, function(data) {});
 }
 
+function addLikeCourse(id, curNode) {
+    var wantTake = document.getElementById("wantTake");
+    wantTake.appendChild(generateLi(id, curNode));
+    var name = curNode.parentElement.className;
+    var sameCourse = document.getElementsByClassName(name);
+    for ( i = 0; i < sameCourse.length; i++) {
+        sameCourse[i].style.display = "none";
+    }
+}
+
+function take_all_mandatory_action(parentElem)
+{
+	var nodes = parentElem.getElementsByTagName("li");
+	for(var i = 0; i < nodes.length; i++)
+	{
+		var req_courses = nodes[i].getElementsByClassName("req_course_list");
+		if(req_courses.length != 1)
+			continue;
+		for(var j = 0; j < req_courses.length; j++)
+		{
+			var desc = req_courses[j].getElementsByClassName('req_desc')[0].innerHTML;
+			var patt = /[0-9]+/g;
+			var req_number = patt.exec(desc);
+			if(req_number == req_courses[j].getElementsByTagName('li').length)
+				alert(req_number);
+			return;
+			
+		}
+		
+	}
+}

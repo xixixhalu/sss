@@ -130,7 +130,7 @@
                             color: white;
                         }
                     </style>
-                    <div class="addsemester sem_add_title" onclick="addSemesters()" style="margin-bottom : 20px">
+                    <div class="addsemester sem_add_title" onclick="take_all_mandatory_action(this.parentElement)" style="margin-bottom : 20px">
                             <button class="button-warning pure-button" style="width:100%">TAKE ALL MANDATORY COURSES</button>
                     </div>
                     
@@ -170,7 +170,7 @@
                                 	if(reqNum == courseIds.length)
                                 		cont += Html("<button class='pure-button' style='float:right; margin: 3px 3px;' onclick='take_all_action(this.parentElement)'><i class='fa fa-plus-square-o'></i>&nbsp;TAKE ALL</button>");	
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
-                                	cont += Html("<div><i>You must take "+reqNum+" courses listed below.</i></div>");
+                                	cont += Html("<div><i class='req_desc'>You must take "+reqNum+" courses listed below.</i></div>");
                                 	for(courseId <- cg.getCourse_ids()){
                                     cont += Html("<li class=\"c" + courseId + "\">");
                                     	var course : Course = Course.findById(Integer.parseInt(courseId));
