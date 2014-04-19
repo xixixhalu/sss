@@ -175,11 +175,39 @@ function semesterDropDown(evt) {
                 break;
             }
         }
-        thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
-        thisDiv.style.backgroundColor = '#DDD';
+        expand(thisDiv);
     } else {
-        thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
-        thisDiv.style.backgroundColor = 'white';
+        shrink(thisDiv);
+    }
+}
+
+function expand(thisDiv) {
+    thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
+    thisDiv.style.backgroundColor = '#DDD';
+}
+
+function expandAll() {
+    var sem_list = $('.req_list')[0].children;
+    for (var i = 0; i < sem_list.length; i++) {
+        var sem = sem_list[i];
+        if (sem.tagName == 'LI' && sem.id != 'firstli') {
+            expand(sem.getElementsByTagName('div')[1]);
+        }
+    }
+}
+
+function shrink(thisDiv) {
+    thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
+    thisDiv.style.backgroundColor = 'white';
+}
+
+function shrinkAll() {
+    var sem_list = $('.req_list')[0].children;
+    for (var i = 0; i < sem_list.length; i++) {
+        var sem = sem_list[i];
+        if (sem.tagName == 'LI' && sem.id != 'firstli') {
+            shrink(sem.getElementsByTagName('div')[1]);
+        }
     }
 }
 
@@ -296,6 +324,8 @@ function autoSemester() {
             }
             
             $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
+            $('#undo_assign_button')[0].className = 'button left_auto pure-button button-secondary';
+            expandAll();
         });
     }
 }
@@ -501,4 +531,8 @@ function auto_next_semester_action()
 	{
 		window.location.href = 'studyplan';
 	}
+}
+
+function undo_assign() {
+    shrinkAll();
 }
