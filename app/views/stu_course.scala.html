@@ -33,9 +33,10 @@
     <body>
         <div class="nav_bar" >
             <div class="block">
-                <div class="degree_bar">
+                <div class="degree_bar" >
                     Degree: @degree.getTitle()
                 </div>
+                <input type="hidden" id='degreeid' value="@degree.getId()"/>
             </div>
         </div>
         <!-- end of top bar-->
@@ -90,13 +91,13 @@
                             }
                         </style>
                                 
-                        <a class="button left_auto pure-button button-secondary" style="margin-bottom:0px" id="undo_fill_button" onclick='undo_fill()'>UNDO</a>
+                        <a class="button left_auto pure-button pure-button-disabled" style="margin-bottom:0px" id="undo_fill_button" onclick='undo_fill()'>UNDO</a>
                     	<a class="button left_auto pure-button pure-button-primary" id="auto_next_course_button" onclick='return auto_next_course_action(this.parentElement)'>AUTO FILL COURSES</a>
                 	</form>
                 </div>
             </div>
             <div class="right float_right">
-                <ul class="req_list" style="padding-left: 0px;">
+                <ul class="req_list" style="padding-left: 0px;" id='reqs_list'>
                     <style scoped>
                         .button-success,
                         .button-error,
