@@ -642,7 +642,7 @@ function auto_next_course_action(form)
 function take_all_action(srElement)
 {
 	var courses = srElement.getElementsByTagName('li');
-	for(var count in courses)
+	for(var count = 0; count < courses.length; count++)
 	{
 		var id = courses[count].className.substring(1);
 		var curNode = courses[count].getElementsByClassName('likebutton')[0];
@@ -753,15 +753,20 @@ function take_all_mandatory_action(parentElem)
 				expand(nodes[i].id);
 				for(var z = 0; z < courses.length; z++)
 				{
-					var wantTake = document.getElementById("wantTake");
-					var id = courses[z].className.substring(1);
-					var curNode = courses[z].getElementsByClassName('likebutton')[0];
-	    			wantTake.appendChild(generateLi(id, curNode));
-	    			var name = courses[z].className;
-	    			var sameCourse = document.getElementsByClassName(name);
-	    			for (var y = 0; y < sameCourse.length; y++) {
-	        			sameCourse[y].style.display = "none";
-	    			}
+					var display = courses[z].getAttribute('style');
+					if(display == null || 
+						display.replace(/\s/g, "").indexOf('display:none') < 0)
+					{
+						var wantTake = document.getElementById("wantTake");
+						var id = courses[z].className.substring(1);
+						var curNode = courses[z].getElementsByClassName('likebutton')[0];
+		    			wantTake.appendChild(generateLi(id, curNode));
+		    			var name = courses[z].className;
+		    			var sameCourse = document.getElementsByClassName(name);
+		    			for (var y = 0; y < sameCourse.length; y++) {
+		        			sameCourse[y].style.display = "none";
+		    			}
+		    		}
 	    		}
 			}
 		}
