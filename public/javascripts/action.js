@@ -644,8 +644,8 @@ function take_all_action(srElement)
 	var courses = srElement.getElementsByTagName('li');
 	for(var count in courses)
 	{
-		var id = courses[count].getAttribute('class').substring(1);
-		var curNode = courses[count].getElementsByTagName('a')[0];
+		var id = courses[count].className.substring(1);
+		var curNode = courses[count].getElementsByClassName('likebutton')[0];
         var oldColor = curNode.parentElement.style.color;
 		if (checkCourseExist(id))
 			continue;
@@ -732,21 +732,13 @@ function undo_fill(){
     }, function(data) {});
 }
 
-function addLikeCourse(id, curNode) {
-    var wantTake = document.getElementById("wantTake");
-    wantTake.appendChild(generateLi(id, curNode));
-    var name = curNode.parentElement.className;
-    var sameCourse = document.getElementsByClassName(name);
-    for ( i = 0; i < sameCourse.length; i++) {
-        sameCourse[i].style.display = "none";
-    }
-}
-
 function take_all_mandatory_action(parentElem)
 {
-	var nodes = parentElem.getElementsByTagName("li");
+	var nodes = parentElem.children;
 	for(var i = 0; i < nodes.length; i++)
 	{
+		if(nodes[i].tagName != 'LI')
+			continue;
 		var req_courses = nodes[i].getElementsByClassName("req_course_list");
 		if(req_courses.length != 1)
 			continue;
@@ -755,10 +747,23 @@ function take_all_mandatory_action(parentElem)
 			var desc = req_courses[j].getElementsByClassName('req_desc')[0].innerHTML;
 			var patt = /[0-9]+/g;
 			var req_number = patt.exec(desc);
-			if(req_number == req_courses[j].getElementsByTagName('li').length)
-				alert(req_number);
-			return;
-			
+			var courses = req_courses[j].getElementsByTagName('li');
+			if(req_number == courses.length)
+			{
+				expand(nodes[i].id);
+				for(var z = 0; z < courses.length; z++)
+				{
+					var wantTake = document.getElementById("wantTake");
+					var id = courses[z].className.substring(1);
+					var curNode = courses[z].getElementsByClassName('likebutton')[0];
+	    			wantTake.appendChild(generateLi(id, curNode));
+	    			var name = courses[z].className;
+	    			var sameCourse = document.getElementsByClassName(name);
+	    			for (var y = 0; y < sameCourse.length; y++) {
+	        			sameCourse[y].style.display = "none";
+	    			}
+	    		}
+			}
 		}
 		
 	}
