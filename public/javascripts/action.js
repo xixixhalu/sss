@@ -34,6 +34,44 @@ function dropDown(id) {
     }
 }
 
+function expand(id) {
+    var node = document.getElementById(id);
+    var nodes = node.children;
+    var titleStyle = nodes[0].style.display;
+    var listStyle = nodes[1].style.display;
+    
+    nodes[1].style.display = "block";
+    nodes[0].style.display = "none";
+}
+function shrink(id) {
+    var node = document.getElementById(id);
+    var nodes = node.children;
+    var titleStyle = nodes[0].style.display;
+    var listStyle = nodes[1].style.display;
+    
+    nodes[0].style.display = "block";
+    nodes[1].style.display = "none";
+}
+
+function expandAll() {
+    var req_list = $('#reqs_list')[0].children;
+    for (var i = 0; i < req_list.length; i++) {
+        var req = req_list[i];
+        if (req.tagName == 'LI') {
+            expand(req.id);
+        }
+    }
+}
+function shrinkAll() {
+    var req_list = $('#reqs_list')[0].children;
+    for (var i = 0; i < req_list.length; i++) {
+        var req = req_list[i];
+        if (req.tagName == 'LI') {
+            shrink(req.id);
+        }
+    }
+}
+
 //adding course to want-to-take list
 function addLikeCourse(id, curNode) {
     var oldColor = curNode.parentElement.style.color;
@@ -571,13 +609,7 @@ function autoCourse() {
             document.getElementById('auto_next_course_button').innerHTML = "NEXT STEP";
             $('#undo_fill_button')[0].className = 'button left_auto pure-button button-secondary';
             
-            var req_list = $('#reqs_list')[0].children;
-            for (var i = 0; i < req_list.length; i++) {
-                var req = req_list[i];
-                if (req.tagName == 'LI') {
-                    dropDown(req.id);
-                }
-            }
+            expandAll();
             
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // for (var i = 0; i < alreadyArr.length; i++) {
@@ -674,19 +706,23 @@ function undo_fill(){
         for (var i = 0; i < courses.length; i++) {
             var course = courses[i];
             if (course.tagName == 'LI') {
-                if (course.style.display == 'none') {
+                var picked = 0;
+                var wantTake = document.getElementById("wantTake").children;
+                for (var k = 0; k < wantTake.length; k++) {
+                    if (course.className == 'c' + wantTake[k].id) {
+                        picked = 1;
+                        break;
+                    }
+                }
+                if (course.style.display == 'none' && picked == 0) {
                     course.style.display = 'inline';
                 }
             }
         }
     }
-    var req_list = $('#reqs_list')[0].children;
-    for (var i = 0; i < req_list.length; i++) {
-        var req = req_list[i];
-        if (req.tagName == 'LI') {
-            dropDown(req.id);
-        }
-    }
+
+    
+    shrinkAll();
     
     // ajax
     var url = "/student/undo_fill";
