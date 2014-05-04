@@ -911,6 +911,18 @@ public class StudyPlan {
 		// the course
 		// num--;
 		Integer[] coreqs = corerequsiteList.get(courseID).toArray(new Integer[0]);
+//<<<<<<< HEAD
+//		for (Integer lalala : coreqs) {
+//			if (courseInHash.get(lalala).get(0).semester != -1)
+//				continue;
+//			for (int n = 0; n < courseBin.size(); n++) {
+//				if (lalala.equals(courseBin.get(n))) {
+//					courseInHash.get(lalala).get(0).semester = currentSemester;
+//					
+//					num--;
+//					num = BacktrackCore(courseInHash, lalala, currentSemester, num);
+//					// 迭代查找所有的corequisite.
+//=======
 		for (Integer coreq : coreqs) {
 			if (courseInHash.containsKey(coreq)) {
 				if (courseInHash.get(coreq).get(0).semester != -1)
@@ -923,6 +935,7 @@ public class StudyPlan {
 						// 迭代查找所有的corequisite.
 					}
 	
+//>>>>>>> rtong
 				}
 			}
 		}
