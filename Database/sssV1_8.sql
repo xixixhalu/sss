@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.6.14)
-# Date: 2014-04-17 23:01:17
+# Date: 2014-04-18 14:35:34
 # Generator: MySQL-Front 5.3  (Build 4.115)
 
 /*!40101 SET NAMES utf8 */;
@@ -39,13 +39,13 @@ CREATE TABLE `course_group` (
   `cg_title` varchar(50) DEFAULT NULL,
   `cg_course_ids` text,
   PRIMARY KEY (`cg_id_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "course_group"
 #
 
-INSERT INTO `course_group` VALUES (13,'CS Course','Required Computer Science Courses','74,84,85,86,87,88,89,90,92,93,94,95,96,97,98'),(14,'Math Course','Required Math Courses','99,100,101,102,103'),(15,'MGT Course','Required Management Course','104'),(16,'PE Course','Required Physical Education Courses','105,191,192,193,194,195'),(17,'SCI Course I','Required Science Courses I','106,107,108'),(18,'SCI Course II','Required Science Courses II','109,110,111'),(19,'SCI Course III','Required Science Courses III','109,111,112'),(20,'SCI Course IV','Required Science Courses IV','109,112,113'),(21,'SCI Course V','Required Science Courses V','106,112,113'),(22,'L/P Group A','Group A: Literature / Philosophy','114,115,116,117,118,120,121,122,123,124,125,126'),(23,'H/SS Group B','Group B: History/ Social Science','114,115,127,128,129,130,131,132,133,189'),(24,'HSS 371','HSS 371','190'),(25,'SCI/MA Ele','Science/Math Electives','99,100,101,102,103,106,107,108,109,110,111,112,113,152,153,154,155,156,157,164'),(26,'Tech Ele','Technical Electives','74,84,85,86,87,88,89,90,92,93,94,95,96,97,98,134,135,136,144,158,159,160,161,162,163,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,184,185,186,187,188'),(27,'MA-2','Mathematics','86,102,103,180,196,197,198,199'),(28,'CS-2','Computer Science','74,84,85,87,88,90,92,93,94,95,96,98,175,176,184,200'),(29,'BT-2','Management','201'),(30,'PHY-2','Physics','106,107,108'),(31,'CHEM-2','Chemistry','109,110,111'),(32,'CHEM & BIO-2','Chem & Bio','109,111,112'),(33,'CHEN & BIO-2','Chem & Bio II','109,112,113'),(34,'PHY & BIO-2','Physics & Bio','106,112,113'),(35,'MGT-2','MGT Courses','201'),(36,'HMU-2','Must Taken Courses','203,204'),(37,'HMU-2','Selective Courses','123,124,130,131,205,206,207,208,209'),(38,'TE-2','Technical Elective Courses','86,87,88,89,90,92,94,95,96,98,175,176,181,184,185,186,187,188'),(39,'SDE-2','Software Development Elective','144,158,159,160,169,177,178,179,210');
+INSERT INTO `course_group` VALUES (13,'CS Course','Required Computer Science Courses','74,84,85,86,87,88,89,90,92,93,94,95,96,97,98'),(14,'Math Course','Required Math Courses','99,100,101,102,103'),(15,'MGT Course','Required Management Course','104'),(16,'PE Course','Required Physical Education Courses','105,191,192,193,194,195'),(17,'SCI Course I','Required Science Courses I','106,107,108'),(18,'SCI Course II','Required Science Courses II','109,110,111'),(19,'SCI Course III','Required Science Courses III','109,111,112'),(20,'SCI Course IV','Required Science Courses IV','109,112,113'),(21,'SCI Course V','Required Science Courses V','106,112,113'),(22,'L/P Group A','Group A: Literature / Philosophy','114,115,116,117,118,120,121,122,123,124,125,126'),(23,'H/SS Group B','Group B: History/ Social Science','114,115,127,128,129,130,131,132,133,189'),(24,'HSS 371','HSS 371','190'),(25,'SCI/MA Ele','Science/Math Electives','99,100,101,102,103,106,107,108,109,110,111,112,113,152,153,154,155,156,157,164'),(26,'Tech Ele','Technical Electives','74,84,85,86,87,88,89,90,92,93,94,95,96,97,98,134,135,136,144,158,159,160,161,162,163,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,184,185,186,187,188'),(27,'MA-2','Mathematics','86,102,103,180,196,197,198,199'),(28,'CS-2','Computer Science','74,84,85,87,88,90,92,93,94,95,96,98,175,176,184,200'),(29,'BT-2','Management','201'),(30,'PHY-2','Physics','106,107,108'),(31,'CHEM-2','Chemistry','109,110,111'),(32,'CHEM & BIO-2','Chem & Bio','109,111,112'),(33,'CHEN & BIO-2','Chem & Bio II','109,112,113'),(34,'PHY & BIO-2','Physics & Bio','106,112,113'),(35,'MGT-2','MGT Courses','201'),(36,'HMU-2','Must Taken Courses','203,204'),(37,'HMU-2','Selective Courses','123,124,130,131,205,206,207,208,209'),(38,'TE','Technical Elective Courses','86,87,88,89,90,92,94,95,96,98,175,176,181,184,185,186,187,188'),(39,'SDE','Software Development Elective','144,158,159,160,169,177,178,179,210'),(40,'CS-3','Computer Science (Start from CS105)','74,84,85,87,88,92,93,94,95,96,98,134,175,176,184,200,90'),(41,'CS-4','Required CS Courses CS181','84,87,90,92,93,94,95,96,98,135,136,184,200,175,176');
 
 #
 # Structure for table "degree"
@@ -57,13 +57,13 @@ CREATE TABLE `degree` (
   `degree_title` varchar(100) DEFAULT NULL,
   `degree_req_ids` text,
   PRIMARY KEY (`degree_id_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "degree"
 #
 
-INSERT INTO `degree` VALUES (5,'BS in CS for students entering in September 20XX','17,18,19,20,21,22,23,25'),(6,'BS in CS for students entering in September 20XX(Start from CS 115)','21,26,27,28,29,30,31');
+INSERT INTO `degree` VALUES (5,'BS in CS for students entering in September 20XX','17,18,19,20,21,22,23,25'),(6,'BS in CS for students entering in September 20XX(Start from CS 115)','21,26,27,28,29,30,31'),(7,'BS in CS for students entering in September 20XX(Start from CS 105)','21,26,28,29,30,31,32,33'),(8,'BS in CS for students entering in September 20XX(Start from CS 181)','21,26,28,29,30,31,34,35');
 
 #
 # Structure for table "requirement"
@@ -75,13 +75,13 @@ CREATE TABLE `requirement` (
   `req_title` varchar(50) NOT NULL,
   `req_sr_ids` text,
   PRIMARY KEY (`req_id_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "requirement"
 #
 
-INSERT INTO `requirement` VALUES (17,'Required Computer Science Courses','[{\"id\":\"7\",\"name\":\"Required Computer Science Courses\",\"group\":\"1\"}]'),(18,'Required Math Courses','[{\"id\":\"8\",\"name\":\"Required Math Courses\",\"group\":\"1\"}]'),(19,'Required Management Course','[{\"id\":\"9\",\"name\":\"Required Management Course\",\"group\":\"1\"}]'),(20,'Required Science Courses','[{\"id\":\"10\",\"name\":\"Required Science Courses I\",\"group\":\"1\"},{\"id\":\"11\",\"name\":\"Required Science Courses II\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"12\",\"name\":\"Required Science Courses III\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"13\",\"name\":\"Required Science Courses IV\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"14\",\"name\":\"Required Science Courses V\",\"relation\":\"or\",\"group\":\"1\"}]'),(21,'Required PE Course','[{\"id\":\"15\",\"name\":\"PE\",\"group\":\"1\"}]'),(22,'Required Humanities Course','[{\"id\":\"16\",\"name\":\"Group A: Literature / Philosophy\",\"group\":\"1\"},{\"id\":\"17\",\"name\":\" Group B: History/ Social Science\",\"relation\":\"and\",\"group\":\"1\"},{\"id\":\"18\",\"name\":\"HSS 371\",\"relation\":\"and\",\"group\":\"1\"}]'),(23,'Science/Math Electives ','[{\"id\":\"19\",\"name\":\"Science/Math Electives \",\"group\":\"1\"}]'),(25,'Technical Electives','[{\"id\":\"20\",\"name\":\"Technical Electives\",\"group\":\"1\"}]'),(26,'Required Math Courses CS115 ','[{\"id\":\"21\",\"name\":\"Required Math Courses-2\",\"group\":\"1\"}]'),(27,'Required CS Courses CS115','[{\"id\":\"22\",\"name\":\"Required Computer Science Courses-2\",\"group\":\"1\"}]'),(28,'Required Science Courses CS115','[{\"id\":\"23\",\"name\":\"Physics-2\",\"group\":\"1\"},{\"id\":\"24\",\"name\":\"Chemistry-2\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"25\",\"name\":\"Chem &amp; Bio-2\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"26\",\"name\":\"Chem &amp; Bio-2\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"27\",\"name\":\"Physics &amp; Bio-2\",\"relation\":\"or\",\"group\":\"1\"}]'),(29,'Required Humanities Courses CS115','[{\"id\":\"28\",\"name\":\"Must Taken HMU Courses-2\",\"group\":\"1\"},{\"id\":\"29\",\"name\":\"Elective HMU Courses-2\",\"relation\":\"and\",\"group\":\"2\"}]'),(30,'Software Development Elec. CS115','[{\"id\":\"31\",\"name\":\"Software Development Elective-2\",\"group\":\"1\"}]'),(31,'Technical Elective Courses CS115','[{\"id\":\"30\",\"name\":\"Technical Elective Courses-2\",\"group\":\"1\"}]');
+INSERT INTO `requirement` VALUES (17,'Required Computer Science Courses (T)','[{\"id\":\"7\",\"name\":\"Required Computer Science Courses\",\"group\":\"1\"}]'),(18,'Required Math Courses (T)','[{\"id\":\"8\",\"name\":\"Required Math Courses\",\"group\":\"1\"}]'),(19,'Required Management Course (T)','[{\"id\":\"9\",\"name\":\"Required Management Course\",\"group\":\"1\"}]'),(20,'Required Science Courses (T)','[{\"id\":\"10\",\"name\":\"Required Science Courses I\",\"group\":\"1\"},{\"id\":\"11\",\"name\":\"Required Science Courses II\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"12\",\"name\":\"Required Science Courses III\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"13\",\"name\":\"Required Science Courses IV\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"14\",\"name\":\"Required Science Courses V\",\"relation\":\"or\",\"group\":\"1\"}]'),(21,'Required PE Course ','[{\"id\":\"15\",\"name\":\"PE\",\"group\":\"1\"}]'),(22,'Required Humanities Course (T)','[{\"id\":\"16\",\"name\":\"Group A: Literature / Philosophy\",\"group\":\"1\"},{\"id\":\"17\",\"name\":\" Group B: History/ Social Science\",\"relation\":\"and\",\"group\":\"1\"},{\"id\":\"18\",\"name\":\"HSS 371\",\"relation\":\"and\",\"group\":\"1\"}]'),(23,'Science/Math Electives (T)','[{\"id\":\"19\",\"name\":\"Science/Math Electives \",\"group\":\"1\"}]'),(25,'Technical Electives (T)','[{\"id\":\"20\",\"name\":\"Technical Electives\",\"group\":\"1\"}]'),(26,'Required Math Courses ','[{\"id\":\"21\",\"name\":\"Required Math Courses-2\",\"group\":\"1\"}]'),(27,'Required CS Courses CS115','[{\"id\":\"22\",\"name\":\"Required Computer Science Courses-2\",\"group\":\"1\"}]'),(28,'Required Science Courses ','[{\"id\":\"23\",\"name\":\"Physics-2\",\"group\":\"1\"},{\"id\":\"24\",\"name\":\"Chemistry-2\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"25\",\"name\":\"Chem &amp; Bio-2\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"26\",\"name\":\"Chem &amp; Bio-2\",\"relation\":\"or\",\"group\":\"1\"},{\"id\":\"27\",\"name\":\"Physics &amp; Bio-2\",\"relation\":\"or\",\"group\":\"1\"}]'),(29,'Required Humanities Courses ','[{\"id\":\"28\",\"name\":\"Must Taken HMU Courses-2\",\"group\":\"1\"},{\"id\":\"29\",\"name\":\"Elective HMU Courses-2\",\"relation\":\"and\",\"group\":\"2\"}]'),(30,'Software Development Elec. ','[{\"id\":\"31\",\"name\":\"Software Development Elective-2\",\"group\":\"1\"}]'),(31,'Technical Elective Courses ','[{\"id\":\"30\",\"name\":\"Technical Elective Courses-2\",\"group\":\"1\"}]'),(32,'Required CS Courses CS105','[{\"id\":\"32\",\"name\":\"Required CS Courses CS105\",\"group\":\"1\"}]'),(33,'Technical Elective Courses CS105','[{\"id\":\"33\",\"name\":\"Technical Elective Courses CS105\",\"group\":\"1\"}]'),(34,'Required CS Courses CS181','[{\"id\":\"34\",\"name\":\"Required CS Courses CS181\",\"group\":\"1\"}]'),(35,'Technical Elective Courses CS115/181','[{\"id\":\"30\",\"name\":\"Technical Elective Courses CS115/181\",\"group\":\"1\"}]');
 
 #
 # Structure for table "simple_requirement"
@@ -94,13 +94,13 @@ CREATE TABLE `simple_requirement` (
   `sr_required_num` int(11) DEFAULT NULL,
   `sr_cg_ids` int(11) DEFAULT NULL,
   PRIMARY KEY (`sr_id_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "simple_requirement"
 #
 
-INSERT INTO `simple_requirement` VALUES (7,'Required Computer Science Courses',15,13),(8,'Required Math Courses',5,14),(9,'Required Management Course',1,15),(10,'Required Science Courses I',3,17),(11,'Required Science Courses II',3,18),(12,'Required Science Courses III',3,19),(13,'Required Science Courses IV',3,20),(14,'Required Science Courses V',3,21),(15,'PE',6,16),(16,'Group A: Literature / Philosophy',2,22),(17,' Group B: History/ Social Science',2,23),(18,'HSS 371',1,24),(19,'Science/Math Electives ',2,25),(20,'Technical Electives',2,26),(21,'Required Math Courses CS115 ',8,27),(22,'Required CS Courses CS115',16,28),(23,'Physics CS115',3,30),(24,'Chemistry CS115',3,31),(25,'Chem & Bio CS115',3,32),(26,'Chem & Bio CS115',3,33),(27,'Physics & Bio CS115',3,34),(28,'Must Taken HMU Courses CS115',2,36),(29,'Elective HMU Courses CS115',6,37),(30,'Technical Elective Courses CS115',2,38),(31,'Software Development Elec. CS115',1,39);
+INSERT INTO `simple_requirement` VALUES (7,'Required Computer Science Courses',15,13),(8,'Required Math Courses',5,14),(9,'Required Management Course',1,15),(10,'Required Science Courses I',3,17),(11,'Required Science Courses II',3,18),(12,'Required Science Courses III',3,19),(13,'Required Science Courses IV',3,20),(14,'Required Science Courses V',3,21),(15,'PE',6,16),(16,'Group A: Literature / Philosophy',2,22),(17,' Group B: History/ Social Science',2,23),(18,'HSS 371',1,24),(19,'Science/Math Electives ',2,25),(20,'Technical Electives',2,26),(21,'Required Math Courses CS115 ',8,27),(22,'Required CS Courses CS115',16,28),(23,'Physics CS115',3,30),(24,'Chemistry CS115',3,31),(25,'Chem & Bio CS115',3,32),(26,'Chem & Bio CS115',3,33),(27,'Physics & Bio CS115',3,34),(28,'Must Taken HMU Courses CS115',2,36),(29,'Elective HMU Courses CS115',6,37),(30,'Technical Elective Courses CS115/181',2,38),(31,'Software Development Elec. ',1,39),(32,'Required CS Courses CS105',17,40),(33,'Technical Elective Courses CS105',1,38),(34,'Required CS Courses CS181',15,41);
 
 #
 # Structure for table "test"
