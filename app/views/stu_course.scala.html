@@ -167,8 +167,8 @@
 								var cg : Cg = Cg.findById(cgId);
 								var courseIds : List[String] = cg.getCourse_ids();
                                 cont += Html("<ul class=\"req_course_list\" style='padding-left: 0px;' id=\"sr_" + srId + "\">");
-                                	if(reqNum == courseIds.length)
-                                		cont += Html("<button class='pure-button' style='float:right; margin: 3px 3px;' onclick='take_all_action(this.parentElement)'><i class='fa fa-plus-square-o'></i>&nbsp;TAKE ALL</button>");	
+                                	//if(reqNum == courseIds.length)
+                                	//	cont += Html("<button class='pure-button' style='float:right; margin: 3px 3px;' onclick='take_all_action(this.parentElement)'><i class='fa fa-plus-square-o'></i>&nbsp;TAKE ALL</button>");	
                                 	cont += Html(Sr.findById(Integer.parseInt(srId)).getTitle());
                                 	cont += Html("<div><i class='req_desc'>You must take "+reqNum+" courses listed below.</i></div>");
                                 	for(courseId <- cg.getCourse_ids()){
@@ -229,7 +229,7 @@
                     <h2 style="text-align : center; color : green;">How to use</h2>
                     <p><b>1. </b> Select desired courses by clicking <i class="fa fa-plus-square"></i> button</p>
                     <p><b>2. </b> Select previous passed courses by clicking <i class="fa fa-check-square"></i> button</p>
-                    <p><b>3. </b> Click <span style="border: 1px solid; padding: 5px 3px;"><i class='fa fa-plus-square-o'></i>&nbsp;TAKE ALL</span> to select the whole course group into course bin</p>
+                    <p><b>3. </b> Click "TAKE ALL MANDATORY COURSES" to select the whole course group into course bin</p>
                     <p></p>
                 </div>
             </div>
