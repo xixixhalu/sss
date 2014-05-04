@@ -845,6 +845,7 @@ public class StudyPlan {
 			for (int n = 0; n < courseBin.size(); n++) {
 				if (lalala.equals(courseBin.get(n))) {
 					courseInHash.get(lalala).get(0).semester = currentSemester;
+					
 					num--;
 					num = BacktrackCore(courseInHash, lalala, currentSemester, num);
 					// 迭代查找所有的corequisite.
