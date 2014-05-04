@@ -9,20 +9,57 @@
         <meta name="author" content="Bohan Zheng" />
         <link href="/assets/stylesheets/index.css" type="text/css" rel="stylesheet"/>
         <link href="/assets/stylesheets/global.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
+        
         <!-- Date: 2014-02-21 -->
     </head>
     <body>
         <div class="content">
+        	<style scoped>
+
+		        .button-success,
+		        .button-error,
+		        .button-warning,
+		        .button-secondary {
+		            color: white;
+		            border-radius: 4px;
+		            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+		        }
+		
+		        .button-success {
+		            background: rgb(28, 184, 65); /* this is a green */
+		        }
+		
+		        .button-error {
+		            background: rgb(202, 60, 60); /* this is a maroon */
+		        }
+		
+		        .button-warning {
+		            background: rgb(223, 117, 20); /* this is an orange */
+		        }
+		
+		        .button-secondary {
+		            background: rgb(66, 184, 221); /* this is a light blue */
+		        }
+		        
+		        .button-submit {
+		        	font-family: Helvetica;
+		        	background: rgb(0, 0, 0);
+		        	color: white;
+		        }
+		
+		    </style>
+		    
             <img class="biglogo" src="/assets/images/biglogo.png">
             <form action="course" method="POST">
                 <span>Choose your degree program: </span>
-                <select name="degreeId">
+                <select name="degreeId" class="pure-button-active">
                 	@for(degree <- degrees){
                     <option value="@degree.getId()">@degree.getTitle()</option>
                    }
                 </select>
-                <div>
-                    <input type="submit" value="SUBMIT"/>
+                <div style="margin-top: 50px">
+                    <input type="submit" class='pure-button pure-button-primary' value="SUBMIT"/>
                 </div>
             </form>
         </div>

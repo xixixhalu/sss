@@ -8,6 +8,8 @@
         <title>index</title>
         <link href="/assets/stylesheets/index.css" type="text/css" rel="stylesheet"/>
         <link href="/assets/stylesheets/global.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/pure-min.css" type="text/css" rel="stylesheet"/>
+        <link href="/assets/stylesheets/font-awesome-4.0.3/css/font-awesome.css" type="text/css" rel="stylesheet"/>
         <script>
 			function validateForm()
 			{
@@ -22,17 +24,30 @@
 		</script>
     </head>
     <body>
+    	<div id="helpPanelLeft" style="margin-left : 10px; width:10%" class="tip">
+    		<a onclick="javascript:{this.parentElement.style.display = 'none';}"><i class="fa fa-times"></i></a>
+            <h2 style="text-align : center; color : green;">Tip</h2>
+            <p>Username: admin</p>
+            <p>Password: admin</p>
+            <p></p>
+        </div>
         <div class="content">
             <img class="logo" src="/assets/images/management logo.png" width="960px;">
-            <form action="index" method="post" onsubmit="return validateForm()">
+            <form action="index" method="post" onsubmit="return validateForm()" class="pure-form">
                 <span>Username:</span>
-                <input id="username" name="username" type="text" placeholder="username"/><br/>
+                <input id="username" name="username" type="text" placeholder="username"/>
+                <br/>
+                <br/>
                 <span>Password:</span>
                 <input id="password" name="password" type="password" placeholder="password"/>
+                <br/>
+                <br/>
                 <div>
-                    <input type="submit" value="Login"/>
+                    <button class="pure-button">
+                    <i class="fa fa-sign-in"></i>
+                    Login
+                    </button>
                 </div>
-                <font color="gray">current username/password: admin/admin</font>
             </form>
         </div>
     </body>

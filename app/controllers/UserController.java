@@ -43,4 +43,9 @@ public class UserController extends Controller {
 	    flash("success", "You've been logged out");
     	return redirect(routes.UserController.retrieveLoginPage());
 	}
+	
+	public static Result pageNotFound(String name)
+	{
+    	return badRequest(views.html.error.render("Page not Found"));
+	}
 }

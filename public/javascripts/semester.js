@@ -1,24 +1,33 @@
 /**
  * @author Bohan Zheng
  */
-var ASO = {
-    "minSemester" : "4",
-    "courses" : {
-        97 : "3",
-        93 : "3",
-        89 : "2",
-        84 : "1",
-        86 : "1",
-        74 : "1",
-        180 : "1"
-    }
-};
+//var ASO = {
+//    "minSemester" : "6",
+//    "courses" : {
+//        97 : "3",
+//        93 : "3",
+//        89 : "2",
+//        84 : "1",
+//        86 : "1",
+//        74 : "1",
+//        180 : "1"
+//    }
+//};
 
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     courseObjs = eval("(" + jsonData + ")");
     var want = eval("(" + document.getElementById("want").innerText + ")");
     var already = eval("(" + document.getElementById("already").innerText + ")");
+    /****************************/
+    ASO = eval('(' + document.getElementById("ASO").innerText + ')');
+    minSemester = 0;
+    for (var i = 0; i < ASO.length; ++i) {
+        maxDepth = ASO[i].maxDepth;
+        if (maxDepth > minSemester)
+            minSemester = maxDepth;
+    }
+    /****************************/
     var wantTakeUL = document.getElementById("wantTake");
     for ( i = 0; i < want.length; i++) {
         var li = document.createElement("li");
@@ -27,7 +36,7 @@ window.onload = function() {
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
-        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         wantTakeUL.appendChild(li);
     }
     var alreadyTakenUL = document.getElementById("alreadyTaken");
@@ -38,11 +47,15 @@ window.onload = function() {
         var prefix = courseObjs[id].prefix;
         var num = courseObjs[id].num;
         var title = courseObjs[id].title;
-        li.innerHTML = prefix + num + " - " + title + "<a>&oplus;</a>";
+        li.innerHTML = prefix + num + " - " + title + "<a><i class='fa fa-arrow-circle-right'></i></a>";
         alreadyTakenUL.appendChild(li);
     }
-    $(document).ready(function() {
-        $(".left_list a").click(function() {
+    $(document).ready(clickable);
+};
+
+function clickable() {
+    $(".left_list a").click(function() {
+        if (this.parentElement.style.textDecoration != "line-through") {
             var i = this.parentElement.innerHTML.indexOf("<a>");
             var course = this.parentElement.innerHTML.substring(0, i);
             // var j = course.lastIndexOf("     ");
@@ -50,11 +63,16 @@ window.onload = function() {
             // var course = course.substring(j + 5);
             // }
             var id = this.parentElement.id;
-            if (addCourseToSemester(course, id))
+            if (addCourseToSemester(course, id)) {
                 this.parentElement.style.textDecoration = "line-through";
-        });
+                this.parentElement.innerHTML = course;
+            }
+        } else {
+            alert("You've already assigned this course to the semester!");
+        }
     });
-};
+}
+
 var f = 0;
 function addSemesters() {
     f = 0;
@@ -80,10 +98,10 @@ function add() {
 
 function generateSemesterList(num) {
     var table = document.getElementById("semesterTable");
-    table.innerHTML = "<tr><td>Semester</td><td>Year</td><td>Max Credits</td><td> Min Credits</td></tr>";
+    table.innerHTML = "<tr><td>Semester</td><td>Year</td></tr>";
     for ( i = 0; i < num; i++) {
         var tr = document.createElement("tr");
-        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='number' /></td><td><input type='number' /></td>";
+        tr.innerHTML = "<td><select><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option></select></td><td><select><option>2014</option><option>2015</option><option>2016</option><option>2017</option><option>2018</option></select></td><td><input type='hidden' /></td><td><input type='hidden' /></td>";
         table.appendChild(tr);
     }
 }
@@ -113,7 +131,7 @@ function appendSemester() {
         var sem_title = document.createElement("div");
         sem_title.className = "sem_title";
         sem_title.innerHTML = semester + " " + year;
-        sem_title.onclick = semesterDorpDown;
+        sem_title.onclick = semesterDropDown;
 
         var div = document.createElement("div");
         div.style.display = "none";
@@ -126,9 +144,13 @@ function appendSemester() {
 
         credits.innerHTML = "<span>Minimun Credits:</span><input type='number' name='min' value='" + min + "'/><span>Maximun Credits:</span><input type='number' name='max' value='" + max + "'/>";
         //<a class='auto button'>AUTO</a>";
+        
+        var sem_hint = document.createElement("span");
+        sem_hint.innerHTML = "Desired courses go here...";
+        div.appendChild(sem_hint);
 
         div.appendChild(req_course_list);
-        div.appendChild(credits);
+        //div.appendChild(credits);
 
         right_list.appendChild(sem_title);
         right_list.appendChild(div);
@@ -137,7 +159,7 @@ function appendSemester() {
     }
 }
 
-function semesterDorpDown(evt) {
+function semesterDropDown(evt) {
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     if (thisDiv.parentElement.getElementsByTagName("div")[1].style.display == "none") {
         var lis = document.getElementById("req_list").getElementsByTagName("li");
@@ -149,12 +171,43 @@ function semesterDorpDown(evt) {
             var div2 = div1.getElementsByTagName("div")[1];
             if (div2.style.display == "block") {
                 div1.getElementsByTagName("div")[1].style.display = "none";
+                div1.getElementsByTagName("div")[0].style.backgroundColor = '#FFF';
                 break;
             }
         }
-        thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
+        expand(thisDiv);
     } else {
-        thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
+        shrink(thisDiv);
+    }
+}
+
+function expand(thisDiv) {
+    thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
+    thisDiv.style.backgroundColor = '#DDD';
+}
+
+function expandAll() {
+    var sem_list = $('.req_list')[0].children;
+    for (var i = 0; i < sem_list.length; i++) {
+        var sem = sem_list[i];
+        if (sem.tagName == 'LI' && sem.id != 'firstli') {
+            expand(sem.getElementsByTagName('div')[1]);
+        }
+    }
+}
+
+function shrink(thisDiv) {
+    thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
+    thisDiv.style.backgroundColor = 'white';
+}
+
+function shrinkAll() {
+    var sem_list = $('.req_list')[0].children;
+    for (var i = 0; i < sem_list.length; i++) {
+        var sem = sem_list[i];
+        if (sem.tagName == 'LI' && sem.id != 'firstli') {
+            shrink(sem.getElementsByTagName('div')[1]);
+        }
     }
 }
 
@@ -177,16 +230,27 @@ function addCourseToSemester(course, id) {
     }
     var li = document.createElement("li");
     li.id = id;
-    li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+    li.innerHTML = course + "<a onclick='removeCourseFromSemester(this," + id + ")'><i class='fa fa-times-circle'></i></a>";
     ul.appendChild(li);
     return true;
 }
 
 function removeCourseFromSemester(a, id) {
-    var li = a.parentElement;
-    li.parentElement.removeChild(li);
-    //var course = getPrefixNumber(li);
-    document.getElementById(id).style.textDecoration = "none";
+	var r = confirm("Are you sure to remove this course from this semester?");
+	if (r == true)
+ 	{
+  		var li = a.parentElement;
+    	li.parentElement.removeChild(li);
+    	//var course = getPrefixNumber(li);
+    	document.getElementById(id).style.textDecoration = "none";
+    	document.getElementById(id).innerHTML = document.getElementById(id).innerHTML + "<a><i class='fa fa-arrow-circle-right'></i></a>";
+        clickable();
+    	return true;
+  	}
+	else
+  	{
+  		return false;
+	}   
 }
 
 function getPrefixNumber(li) {
@@ -200,8 +264,8 @@ function getPrefixNumber(li) {
 
 function autoSemester() {
     var semesterNum = document.getElementById("req_list").children.length - 1;
-    if(semesterNum<ASO.minSemester){
-        alert("you must add at least "+ASO.minSemester+" semesters first!");
+    if (semesterNum < minSemester) {
+        alert("you must add at least " + minSemester + " semesters first!");
         return;
     }
     var wantTake = document.getElementById("wantTake").getElementsByTagName("li");
@@ -231,25 +295,37 @@ function autoSemester() {
             wantTakeCourses : JSON.stringify(wantDataArray),
             alreadyTakenCourses : JSON.stringify(alreadyDataArray),
             /* [semester:{num:1,title:spring 2014,;minCredit:1,maxCredit:10,courses:[1,2,3]},...]*/
-            semesterData : JSON.stringify(getSemesterData())
+            semesterData : JSON.stringify(getSemesterData()),
+            semesterNum : semesterNum
         }, function(data) {
             var semesterObj = eval("(" + data + ")");
             var semesterUls = document.getElementById("req_list").getElementsByClassName("req_course_list");
             for ( i = 0; i < semesterObj.length; i++) {
                 var courses = semesterObj[i].courses;
                 var semester = semesterUls[i];
-                semester.innerHTML="";
+                semester.innerHTML = "";
                 for ( j = 0; j < courses.length; j++) {
                     var li = document.createElement("li");
                     var id = courses[j];
                     li.id = id;
-                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'>&otimes;</a>";
+                    li.innerHTML = courseObjs[id].prefix + courseObjs[id].num + " - " + courseObjs[id].title + "<a onclick='removeCourseFromSemester(this," + id + ")'><i class='fa fa-times-circle'></i></a>";
                     semester.appendChild(li);
 
                     //this.parentElement.style.textDecoration = "line-through";
                 }
             }
-            $("#wantTake li").css("text-decoration", "line-through");
+            
+	        $("#wantTake li").css("text-decoration", "line-through");
+	        
+            for (var i = 0; i < $('#wantTake li').size(); i++) {
+	            var j = $('#wantTake li')[i].innerHTML.indexOf("<a>");
+	            var course = $('#wantTake li')[i].innerHTML.substring(0, j);
+	            $("#wantTake li")[i].innerHTML = course;
+            }
+            
+            $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
+            $('#undo_assign_button')[0].className = 'button left_auto pure-button button-secondary';
+            expandAll();
         });
     }
 }
@@ -269,8 +345,10 @@ function getSemesterData() {
     for ( i = 1; i < semesterLis.length; i++) {
         var num = i;
         var title = semesterLis[i].getElementsByClassName("sem_title")[0].innerText;
-        var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
-        var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
+        var minCredit = 1;
+        var maxCredit = 1;
+        // var minCredit = semesterLis[i].getElementsByTagName("input")[0].value;
+        // var maxCredit = semesterLis[i].getElementsByTagName("input")[1].value;
         var courses = new Array();
         var courseLis = semesterLis[i].getElementsByClassName("req_course_list")[0].children;
         for ( j = 0; j < courseLis.length; j++) {
@@ -283,8 +361,15 @@ function getSemesterData() {
 }
 
 function checkSemesterConstraints(id, num) {
-    if (num < ASO.courses[id]) {
-        alert("the eariliest possiblity for this course is No." + ASO.courses[id] + " semester");
+    var maxDepth = 0;
+    for (var i = 0; i < ASO.length; ++i) {
+        if (ASO[i].id == id){
+            maxDepth = ASO[i].maxDepth;
+            break;
+        }
+    }
+    if (num < maxDepth) {
+        alert("the eariliest possiblity for this course is No." + maxDepth + " semester");
         return false;
     }
     var reqList = document.getElementById("req_list").getElementsByClassName("req_course_list");
@@ -300,7 +385,7 @@ function checkSemesterConstraints(id, num) {
     for ( i = 0; i < coreqlis.length; i++) {
         coreqs.push(coreqlis[i].id);
     }
-    if (!checkSemesterReq(id, prereqs)) {
+    if (!checkSemesterReq(id, prereqs, "pre")) {
         var str = "check the prerequisite constraints!\n";
         var prereqs = courseObjs[id].prereq;
         for ( i = 0; i < prereqs.length; i++)
@@ -308,7 +393,7 @@ function checkSemesterConstraints(id, num) {
         alert(str);
         return false;
     }
-    if (!checkSemesterReq(id, coreqs)) {
+    if (!checkSemesterReq(id, coreqs, "co")) {
         var str = "check the corequisite constraints!\n";
         var coreqs = courseObjs[id].coreq;
         for ( i = 0; i < coreqs.length; i++)
@@ -319,14 +404,17 @@ function checkSemesterConstraints(id, num) {
     return true;
 }
 
-function checkSemesterReq(id, courses) {
+function checkSemesterReq(id, courses, req) {
     var p = false;
 
     var prereq = new Array;
-
-    if (courseObjs[id].prereq)
-        prereq = courseObjs[id].prereq;
-
+    if (req == "pre") {
+        if (courseObjs[id].prereq)
+            prereq = courseObjs[id].prereq;
+    } else if (req == "co") {
+        if (courseObjs[id].coreq)
+            prereq = courseObjs[id].coreq;
+    }
     if (prereq.length == 0)
         return true;
 
@@ -432,3 +520,19 @@ function checkSemesterReq(id, courses) {
     }
 }
 
+function auto_next_semester_action()
+{
+	var element_text = $('#auto_next_semester_button').html();
+	if(element_text == 'AUTO ASSIGN SEMESTERS')
+	{
+		autoSemester();
+	}
+	else if(element_text == 'GET FINAL STUDY PLAN')
+	{
+		window.location.href = 'studyplan';
+	}
+}
+
+function undo_assign() {
+    shrinkAll();
+}
