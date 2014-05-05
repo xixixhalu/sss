@@ -1,15 +1,13 @@
 package controllers.algorithm.pre_and_core;
 
-//same as ArcBox
-public class ArcBox {
-
+public class CourseRelation {
 	public int tailCourseID; //node at the tail
 	public int headCourseID; //node at the head
-	public ArcBox tlink; //next arc with same tail
-	public ArcBox hlink; //next arc with same head
+	public CourseRelation tlink; //next arc with same tail
+	public CourseRelation hlink; //next arc with same head
 	public int info; //
 	
-	public ArcBox(){
+	public CourseRelation(){
 		this.headCourseID=0;
 		this.tailCourseID=0;
 		this.hlink=null;
@@ -17,7 +15,7 @@ public class ArcBox {
 	}
 	
 	
-	public ArcBox(int tail, int head, int info){ //构造函数,没有初始化指针
+	public CourseRelation(int tail, int head, int info){ //构造函数,没有初始化指针
 		this.tailCourseID = tail;//
 		this.headCourseID = head;
 		this.info = info;

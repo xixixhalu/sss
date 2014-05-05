@@ -14,7 +14,7 @@ public class NodeInGraph {
 	public int minDepth = 10000; //
 	public int maxDepth = 0;
 	public boolean assign = false;
-	public ArcBox firstIn, firstOut;
+	public CourseRelation firstIn, firstOut;
 	public boolean visited = false;  //course is marked, visited=true
 	public boolean finished = false; //course is selected successfully with pre/core-requisite finished = true ;
 	

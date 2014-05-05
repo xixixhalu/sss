@@ -2,11 +2,11 @@ package controllers.algorithm.pre_and_core;
 
 public class Course_Selection {
 
-	public void backtrackCourse(CrossLinkedList courseRelation,
+	public void backtrackCourse(ConstructCourseRelation courseRelation,
 			int courseID) { // given course name
-		CrossLinkedList cr = courseRelation;
+		ConstructCourseRelation cr = courseRelation;
 		int size = cr.headNodeList.size();
-		ArcBox tempArc = new ArcBox();
+		CourseRelation tempArc = new CourseRelation();
 		NodeInGraph tempNode = new NodeInGraph();
 		// int i = 0, j = 0; // 计数器
 		for (int i = 0; i < size; i++) {
@@ -77,7 +77,7 @@ public class Course_Selection {
 
 	// 创建graph example
 	public void Create_Graph() {
-		CrossLinkedList allCross_relation_example = new CrossLinkedList();
+		ConstructCourseRelation allCross_relation_example = new ConstructCourseRelation();
 		allCross_relation_example.addCourse(115);
 		allCross_relation_example.addCourse(334);
 		allCross_relation_example.addCourse(502);
@@ -96,21 +96,21 @@ public class Course_Selection {
 
 		allCross_relation_example.Display_All_Headnode();
 
-		allCross_relation_example.setArcBox(115, 334, 1);// (course1_ID, course2_ID, relation)
-		allCross_relation_example.setArcBox(115,  284, 1);
-		allCross_relation_example.setArcBox(135, 334, 1);
-		allCross_relation_example.setArcBox(502, -1, 3);
-		allCross_relation_example.setArcBox(135, -1, 3);
-		allCross_relation_example.setArcBox(135, 284, 2);
-		allCross_relation_example.setArcBox(284, -2, 3);
-		allCross_relation_example.setArcBox(181, -2, 3);
-		allCross_relation_example.setArcBox(-2, 383, 2);
-		allCross_relation_example.setArcBox(-1, 503, 1);
-		allCross_relation_example.setArcBox(503, 579, 1);
-		allCross_relation_example.setArcBox(594, -3, 3);
-		allCross_relation_example.setArcBox(579, -3, 3);
-		allCross_relation_example.setArcBox(548, 594, 1);
-		allCross_relation_example.setArcBox(-3, 578, 1);
+		allCross_relation_example.setCourseRelation(115, 334, 1);// (course1_ID, course2_ID, relation)
+		allCross_relation_example.setCourseRelation(115,  284, 1);
+		allCross_relation_example.setCourseRelation(135, 334, 1);
+		allCross_relation_example.setCourseRelation(502, -1, 3);
+		allCross_relation_example.setCourseRelation(135, -1, 3);
+		allCross_relation_example.setCourseRelation(135, 284, 2);
+		allCross_relation_example.setCourseRelation(284, -2, 3);
+		allCross_relation_example.setCourseRelation(181, -2, 3);
+		allCross_relation_example.setCourseRelation(-2, 383, 2);
+		allCross_relation_example.setCourseRelation(-1, 503, 1);
+		allCross_relation_example.setCourseRelation(503, 579, 1);
+		allCross_relation_example.setCourseRelation(594, -3, 3);
+		allCross_relation_example.setCourseRelation(579, -3, 3);
+		allCross_relation_example.setCourseRelation(548, 594, 1);
+		allCross_relation_example.setCourseRelation(-3, 578, 1);
 
 		allCross_relation_example.displayCrossLinkedList();
 		System.out.println();

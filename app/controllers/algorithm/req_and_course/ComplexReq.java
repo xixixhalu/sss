@@ -26,7 +26,7 @@ public class ComplexReq {
 		this.first = simple;
 	}
 
-	public void insertSimple(Linklist l){  //firstly find the simple requirement
+	public void insertSimple(SimpleReq l){  //firstly find the simple requirement
 		ComplexReq_Node simple = new ComplexReq_Node(l);
 		simple.next = this.first.next;
 		this.first.next = simple;

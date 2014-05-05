@@ -117,7 +117,7 @@ public class StudyPlanController2 extends Controller {
 					auto_want.put("num", course.getNumber());
 					auto_want.put("title", course.getTitle());
 					auto_want.put("maxDepth", 
-							((Node)studyplan.degreeProgram.course.get(id).get(0)).maxDepth);
+							((CourseInReq)studyplan.degreeProgram.course.get(id).get(0)).maxDepth);
 					newWantCourses.put(auto_want);
 				}
 				// alreadyCourse: (NOT_IMPLEMENTED)

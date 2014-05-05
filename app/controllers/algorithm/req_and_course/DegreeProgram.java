@@ -3,24 +3,22 @@ package controllers.algorithm.req_and_course;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-public class TestLinkList {
-
+public class DegreeProgram {
 	public String degreeName;
-	public ArrayList<Linklist> course_list = new ArrayList<Linklist>(); //requirement list
-	public ArrayList<Course_LinkList> course_list2 = new ArrayList<Course_LinkList>(); //course list
+	public ArrayList<SimpleReq> course_list = new ArrayList<SimpleReq>(); //each simple requirement stores all courses belongs to it
+	public ArrayList<ReqListForCourse> course_list2 = new ArrayList<ReqListForCourse>(); //each course stores all requirements that it belongs to
  
-	public HashMap<Integer, ArrayList<Node>> course  = new HashMap<Integer, ArrayList<Node>>();
+	public HashMap<Integer, ArrayList<CourseInReq>> course  = new HashMap<Integer, ArrayList<CourseInReq>>();
 	
 	public ArrayList<ComplexReq> allComplexReq = new ArrayList<ComplexReq>();  //a set of all complex requirement
 	
 	public void displayAllCourse(){
 		for (Integer key : this.course.keySet()) {
-			ArrayList<Node> theSameCourse = this.course.get(key);
+			ArrayList<CourseInReq> theSameCourse = this.course.get(key);
 			System.out.print(theSameCourse.size());
-			for(Node eachCourse:theSameCourse){
-				System.out.println("Key = " + key + " - " 
-			    		+ eachCourse.cName + " - "+
+			for(CourseInReq eachCourse:theSameCourse){
+				System.out.println( " - " 
+			    		+ eachCourse.cId + " - "+
 			    		eachCourse.chosen);
 				
 			}
@@ -35,7 +33,7 @@ public class TestLinkList {
 	
 	public boolean prepareInsertSimple(int simpleReqID){
 		for(int i =0; i<this.course_list.size();i++){
-			if(simpleReqID == this.course_list.get(i).first.cName)
+			if(simpleReqID == this.course_list.get(i).first.cId)
 				return true;
 		}
 		return false;
@@ -48,16 +46,16 @@ public class TestLinkList {
 	
 	public boolean prepareInsertCourseLinkList(int courseID){
 		for(int i =0; i<this.course_list2.size();i++){
-			if(courseID == this.course_list2.get(i).first.rName)
+			if(courseID == this.course_list2.get(i).first.rId)
 				return true; //this course exists!
 		}
 		return false;
 	}
 	
-	public TestLinkList(){
+	public DegreeProgram(){
 	}
 	
-	public TestLinkList(String degreeName){
+	public DegreeProgram(String degreeName){
 		this.degreeName = degreeName;
 	}
 	
@@ -76,7 +74,7 @@ public class TestLinkList {
 	}
 	
 	
-	public void addReq2List(Linklist linklist) {
+	public void addReq2List(SimpleReq linklist) {
 		this.course_list.add(linklist);
 	}
 
@@ -87,7 +85,7 @@ public class TestLinkList {
 		}
 	}
 
-	public void addReq2List(Course_LinkList course_linklist) {
+	public void addReq2List(ReqListForCourse course_linklist) {
 		this.course_list2.add(course_linklist);
 	}
 
@@ -119,7 +117,7 @@ public class TestLinkList {
 			return false;  //error detection: if no this course in this requirement
 		
 		for (; j < this.course_list2.size(); j++) {
-			if(this.course_list2.get(j).first.rName == courseID){
+			if(this.course_list2.get(j).first.rId == courseID){
 				ifChosen = this.course_list2.get(j).checkChosen();
 				
 				if (ifChosen) {
@@ -154,7 +152,7 @@ public class TestLinkList {
 				boolean ifBreakInOr = false;
 				while(simpleReq !=null){
 					int remainCourseInSimple=0;
-					Node course = simpleReq.SimpleReq.first.next;
+					CourseInReq course = simpleReq.SimpleReq.first.next;
 					while(course!=null && course.chosen==false){
 						remainCourseInSimple++;
 						course = course.next;
@@ -176,7 +174,7 @@ public class TestLinkList {
 				boolean ifBreakInAnd = false;
 				while(simpleReq!=null){
 					int remainCourseInSimple=0;
-					Node course = simpleReq.SimpleReq.first.next;
+					CourseInReq course = simpleReq.SimpleReq.first.next;
 					while(course!=null & course.chosen==false){
 						remainCourseInSimple++;
 						course = course.next;
@@ -242,5 +240,4 @@ public class TestLinkList {
 			}
 		}
 	}
-
 }

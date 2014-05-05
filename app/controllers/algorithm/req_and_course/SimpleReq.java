@@ -1,17 +1,17 @@
 package controllers.algorithm.req_and_course;
 
-public class Linklist {
-	public Node first; // head node
+public class SimpleReq {
+	public CourseInReq first; // head CourseInReq
 	//public boolean satisfied = false;
 
-	private int pos; // Node's position
+	private int pos; // CourseInReq's position
 
-	public Linklist() {
+	public SimpleReq() {
 		this.first = null;
 	}
 	
 	public boolean isNull(){
-		Node temp = first;
+		CourseInReq temp = first;
 		if(temp.next.isNull()==false){
 			return false;
 		}else{
@@ -19,28 +19,28 @@ public class Linklist {
 		}
 	}
 	
-	public Linklist(int simpleReqID, String simpleReqName, int needFinish){
+	public SimpleReq(int simpleReqID, String simpleReqName, int needFinish){
 		this.first = null;
 		addFirstNode(simpleReqID, simpleReqName, needFinish);
 	}
 
-	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {// cName here is requirement name
-		Node node = new Node(simpleReqID, simpleReqName, needFinish);
+	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {// cId here is requirement name
+		CourseInReq node = new CourseInReq(simpleReqID, simpleReqName, needFinish);
 		node.next = first;
 		first = node;
 	}
 
-	public Node deleteFirstNode() {
-		Node tempnode = first;
+	public CourseInReq deleteFirstNode() {
+		CourseInReq tempnode = first;
 		tempnode.next = first.next;
 		return tempnode;
 	}
 
-	public void insertNode(int index, int cName) { // cName here is course
+	public void insertNode(int index, int cId) { // cId here is course
 														// name
-		Node node = new Node(cName);
-		Node current = first;
-		Node previous = first;
+		CourseInReq node = new CourseInReq(cId);
+		CourseInReq current = first;
+		CourseInReq previous = first;
 		while (pos != index) {
 			previous = current;
 			current = current.next;
@@ -53,19 +53,19 @@ public class Linklist {
 
 	}
 
-	public void insertNode(Node course) { // cName here is course
+	public void insertNode(CourseInReq course) { // cId here is course
 		// name
 		
-		Node current = first;
+		CourseInReq current = first;
 
 		course.next = current.next;
 		current.next = course;
 
 	}
 	
-	public Node deleteByPos(int index) {
-		Node current = first;
-		Node previous = first;
+	public CourseInReq deleteByPos(int index) {
+		CourseInReq current = first;
+		CourseInReq previous = first;
 		while (pos != index) {
 			pos++;
 			previous = current;
@@ -82,10 +82,10 @@ public class Linklist {
 
 	}
 
-	public void deleteByData(int cName) {
-		Node current = first;
-		Node previous = first;
-		while (current.cName != cName) {
+	public void deleteByData(int cId) {
+		CourseInReq current = first;
+		CourseInReq previous = first;
+		while (current.cId != cId) {
 			if (current.next == null) {
 				return;
 			}
@@ -101,7 +101,7 @@ public class Linklist {
 	}
 
 	public void displayAllNodes() {
-		Node current = first;
+		CourseInReq current = first;
 		System.out.print("This simple need to "+ current.needFinish + " to be finished and status is "+current.statisfied +"\n");
 		
 		current.showFirstNode();
@@ -116,8 +116,8 @@ public class Linklist {
 
 	}
 
-	public Node findByPos(int index) {
-		Node current = first;
+	public CourseInReq findByPos(int index) {
+		CourseInReq current = first;
 		if (pos != index) {
 			current = current.next;
 			pos++;
@@ -125,9 +125,9 @@ public class Linklist {
 		return current;
 	}
 
-	public Node findByData(int cName) {
-		Node current = first;
-		while (current.cName != cName) {
+	public CourseInReq findByData(int cId) {
+		CourseInReq current = first;
+		while (current.cId != cId) {
 			if (current.next == null)
 				return null;
 			current = current.next;
@@ -137,8 +137,8 @@ public class Linklist {
 
 	// choose a course in a requirement link list
 	public boolean chooseCourse(int reqName, int courseName) { //传进requirement name，传进course name
-		if (this.first.cName == reqName) { //如果传进来的目标req_name和本身的requirement 相同
-			Node temp = this.findByData(courseName);
+		if (this.first.cId == reqName) { //如果传进来的目标req_name和本身的requirement 相同
+			CourseInReq temp = this.findByData(courseName);
 			if(temp != null){
 				return true;  // find this course in this requirement
 			}else{
@@ -150,11 +150,10 @@ public class Linklist {
 	}
 	
 	public void set2ChooseCourse(int courseName){
-		Node temp = this.findByData(courseName);
+		CourseInReq temp = this.findByData(courseName);
 		if(temp != null){
 			temp.chosen=true; // set the course chosen
 		}
 		
 	}
-
 }
