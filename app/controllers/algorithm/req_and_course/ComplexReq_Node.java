@@ -3,7 +3,7 @@ package controllers.algorithm.req_and_course;
 public class ComplexReq_Node {//head node name
 	public String Complex_Req_Name; //complex requirement name
 	
-	public Linklist SimpleReq; //simple requirement 
+	public SimpleReq SimpleReq; //simple requirement 
 	public int ComplexReq_Id; // complex requirement id
 	
 	public String relation; // simple requirement relation
@@ -14,7 +14,7 @@ public class ComplexReq_Node {//head node name
 	public ComplexReq_Node next;
 	
 
-	public ComplexReq_Node(Linklist l){
+	public ComplexReq_Node(SimpleReq l){
 		this.SimpleReq = l;
 		
 	}

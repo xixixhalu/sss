@@ -1,58 +1,43 @@
 package controllers.algorithm.req_and_course;
 
-public class Course_LinkList {
-	public CourseNode first; // head node
+public class ReqListForCourse {
+	public ReqNode first; // head node
 
 	private int pos; // Node's position
 
-	public Course_LinkList() {
+	public ReqListForCourse() {
 		this.first = null;
 	}
 
-	public Course_LinkList(int courseID) {
+	public ReqListForCourse(int courseID) {
 		addFirstNode(courseID);
 	}
 
-	public void addFirstNode(int rName) {
-		CourseNode node = new CourseNode(rName);
+	public void addFirstNode(int rId) {
+		ReqNode node = new ReqNode(rId);
 		node.beChosen = false;// initialize the course has not been selected by
 								// any requirement.
 		node.next = first;
 		first = node;
 	}
 
-	public CourseNode deleteFirstNode() {
-		CourseNode tempnode = first;
+	public ReqNode deleteFirstNode() {
+		ReqNode tempnode = first;
 		tempnode.next = first.next;
 		return tempnode;
 	}
 
-	// public void insertNode(int index, int rName) {
-	// CourseNode node = new CourseNode(rName);
-	// CourseNode current = first;
-	// CourseNode previous = first;
-	// while (pos != index) {
-	// previous = current;
-	// current = current.next;
-	// pos++;
-	// }
-	//
-	// node.next = current;
-	// previous.next = node;
-	// pos = 0;
-	//
-	// }
 
-	public void insertNode(CourseNode SimpleAndCompleReq) {
-		CourseNode current = first;
+	public void insertNode(ReqNode SimpleAndCompleReq) {
+		ReqNode current = first;
 		SimpleAndCompleReq.next = current.next;
 		current.next = SimpleAndCompleReq;
 
 	}
 
-	public CourseNode deleteByPos(int index) {
-		CourseNode current = first;
-		CourseNode previous = first;
+	public ReqNode deleteByPos(int index) {
+		ReqNode current = first;
+		ReqNode previous = first;
 		while (pos != index) {
 			pos++;
 			previous = current;
@@ -69,10 +54,10 @@ public class Course_LinkList {
 
 	}
 
-	public void deleteByData(int rName) {
-		CourseNode current = first;
-		CourseNode previous = first;
-		while (current.rName != rName) {
+	public void deleteByData(int rId) {
+		ReqNode current = first;
+		ReqNode previous = first;
+		while (current.rId != rId) {
 			if (current.next == null) {
 				return;
 			}
@@ -89,7 +74,7 @@ public class Course_LinkList {
 
 	public void displayAllNodes() {
 		int flag = 1;
-		CourseNode current = first;
+		ReqNode current = first;
 
 		while (current != null) {
 			if (flag == 1) {
@@ -107,8 +92,8 @@ public class Course_LinkList {
 
 	}
 
-	public CourseNode findByPos(int index) {
-		CourseNode current = first;
+	public ReqNode findByPos(int index) {
+		ReqNode current = first;
 		if (pos != index) {
 			current = current.next;
 			pos++;
@@ -116,9 +101,9 @@ public class Course_LinkList {
 		return current;
 	}
 
-	public CourseNode findByData(int rName) {
-		CourseNode current = first;
-		while (current.rName != rName) {
+	public ReqNode findByData(int rId) {
+		ReqNode current = first;
+		while (current.rId != rId) {
 			if (current.next == null)
 				return null;
 			current = current.next;
@@ -131,9 +116,9 @@ public class Course_LinkList {
 	// this function to update the head node of "course link list" as true.
 
 	public void set_course_be_chosen(int reqID) {
-		CourseNode temp = this.first;
+		ReqNode temp = this.first;
 		temp.beChosen = true;
-		while(temp.rName!=reqID){
+		while(temp.rId!=reqID){
 			temp=temp.next;
 		}
 		//this.first.beChosen = true;
@@ -151,5 +136,4 @@ public class Course_LinkList {
 		return false;
 
 	}
-
 }

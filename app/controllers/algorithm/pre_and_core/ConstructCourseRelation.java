@@ -7,15 +7,15 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.Multimap;
 
-import controllers.algorithm.req_and_course.Node;
+import controllers.algorithm.req_and_course.CourseInReq;
 
-public class CrossLinkedList {
+public class ConstructCourseRelation {
 	// store all head nodes;
 	public ArrayList<NodeInGraph> headNodeList = new ArrayList<NodeInGraph>();
 	
 
 	// 默认的构造方法
-	public CrossLinkedList() {
+	public ConstructCourseRelation() {
 //		Node firstNode = new Node();
 //		this.headNodeList.add(firstNode);
 	}
@@ -54,9 +54,9 @@ public class CrossLinkedList {
 	}
 
 	// add a arc to the linked list
-	public void setArcBox(int tail, int head, int info) {
+	public void setCourseRelation(int tail, int head, int info) {
 		int size = this.headNodeList.size();
-		ArcBox arc = new ArcBox(tail, head, info);
+		CourseRelation arc = new CourseRelation(tail, head, info);
 
 		for (int i = 0; i < size; i++) {
 			//I am the tail "me--->"
@@ -74,9 +74,9 @@ public class CrossLinkedList {
 		//System.out.println("this arc is: " + tail + "-->" + head + " " + info);
 	}
 	
-	public void addAllCourseInGraph(HashMap<Integer, ArrayList<Node>> list){
+	public void addAllCourseInGraph(HashMap<Integer, ArrayList<CourseInReq>> list){
 			
-			for(Entry<Integer, ArrayList<Node>> entry:list.entrySet()){
+			for(Entry<Integer, ArrayList<CourseInReq>> entry:list.entrySet()){
 				int courseId = entry.getKey();
 				addCourse(courseId);
 			}
@@ -102,7 +102,7 @@ public class CrossLinkedList {
 		System.out.print("Show Cross LinkedList from tail to head: " + '\n');
 		for (int i = 0; i < this.headNodeList.size(); i++) { // show head
 																// linklist
-			ArcBox arc = this.headNodeList.get(i).firstOut;
+			CourseRelation arc = this.headNodeList.get(i).firstOut;
 			while (arc != null) {
 				arc.showArcFromTail();
 				arc = arc.tlink;
@@ -111,7 +111,7 @@ public class CrossLinkedList {
 
 		System.out.print("Show Cross LinkedList from head to tail: " + '\n');
 		for (int i = 0; i < this.headNodeList.size(); i++) {
-			ArcBox arc = this.headNodeList.get(i).firstIn;
+			CourseRelation arc = this.headNodeList.get(i).firstIn;
 			while (arc != null) {
 				arc.showArcFromHead();
 				arc = arc.hlink;
@@ -124,13 +124,13 @@ public class CrossLinkedList {
 	public HashMap<Integer, Integer> TraverCore(){
 		HashMap<Integer, Integer> core = new HashMap<Integer, Integer>(); 
 		for(int i=0; i<this.headNodeList.size();i++){
-			ArcBox arc = this.headNodeList.get(i).firstIn;
+			CourseRelation arc = this.headNodeList.get(i).firstIn;
 			while(arc !=null){
 				if(arc.info==2){
 					if(arc.tailCourseID<=0){
 						for(int j=0; j<this.headNodeList.size();j++){
 							if(this.headNodeList.get(j).courseID==arc.tailCourseID){
-								ArcBox arc2 = this.headNodeList.get(j).firstIn;
+								CourseRelation arc2 = this.headNodeList.get(j).firstIn;
 								while(arc2!=null){
 									core.put(arc2.tailCourseID, arc2.headCourseID);
 									arc2=arc2.hlink;
@@ -156,5 +156,4 @@ public class CrossLinkedList {
 			System.out.println(key +" "+ core.get(key));
 		}
 	}
-
 }
