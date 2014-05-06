@@ -1,6 +1,10 @@
 /**
  * @author Bohan Zheng
  */
+
+/**
+ * add an simple requirement into the requirement list
+ */
 function addSimpleReq() {
     var simpleReq = document.getElementById("s_req");
     if (checkExistReq(simpleReq.value)) {
@@ -21,7 +25,11 @@ function addSimpleReq() {
     li.innerHTML += "<input type='text' name='simpleReqGroup' value='1'>";
     simpleReqList.appendChild(li);
 }
-
+/**
+ * check the simple requirement is already exist in the list
+ * @param id
+ *  id of simple requirement
+ */
 function checkExistReq(id) {
     var ids = document.getElementsByName("simpleReqId");
     for ( i = 0; i < ids.length; i++) {
@@ -31,7 +39,11 @@ function checkExistReq(id) {
     }
     return false;
 }
-
+/**
+ * delete the simple requirement from the list
+ * @param node
+ *  the li node contains the simple requirement
+ */
 function deleteSimpleReq(node) {
     var simpleReqList = document.getElementById("s_list");
     var d = node.parentNode;
@@ -52,7 +64,9 @@ function deleteSimpleReq(node) {
         fli.appendChild(fgroup);
     }
 }
-
+/**
+ * generate the wihte space before the first simple requirement
+ */
 function generateSpace() {
     var fspan = document.createElement("span");
     fspan.style.width = "29px";
@@ -61,7 +75,10 @@ function generateSpace() {
     fspan.setAttribute("name", "simpleReqRel");
     return fspan;
 }
-
+/**
+ * changing the node priority by changing it background color (not used)
+ * @param  node
+ */
 function changePriority(node) {
     var p = node.parentNode;
     if (node.style.backgroundColor == "rgb(221, 221, 221)")
@@ -71,7 +88,11 @@ function changePriority(node) {
     p.removeChild(node);
     p.appendChild(node);
 }
-
+/**
+ * get the text user select in the select box.
+ * @param obj
+ * the input object whose type is select
+ */
 function getSelectedText(obj) {
     for (var i = 0; i < obj.length; i++) {
         if (obj[i].selected == true) {
@@ -80,14 +101,31 @@ function getSelectedText(obj) {
     }
 }
 
-//define a course object
+/**
+ * define a course Object
+ * @param  cId
+ * course id
+ * @param  cName
+ * course name
+ * @param  cRelation
+ * the relation with the course before it
+ * @param  cGroup
+ * priority group. for example (cs101 and cs102) or (cs103 and cs104)
+ * in this case, we could define cs101, cs102 cGroup to be 1 and cs103, cs104 cGroup to be 2, 
+ * the courses with the same group value will group together, 
+ * (you need to store the same group together in an array)
+ */
 function courseObj(cId, cName, cRelation, cGroup) {
     this.id = cId;
     this.name = cName;
     this.relation = cRelation;
     this.group = cGroup;
 }
-
+/**
+ * generate a json object from simple requirement list
+ * @param {Object} simpleReqObjs
+ * array of li nodes containing simple requirement
+ */
 function generateJsonObj(simpleReqObjs) {
     var temp = new Array;
     for ( i = 0; i < simpleReqObjs.length; i++) {
@@ -103,7 +141,9 @@ function generateJsonObj(simpleReqObjs) {
     }
     return temp;
 }
-
+/**
+ * submit the data to the server
+ */
 function doSubmit() {
     if (checkRequirementForm()) {
         var hidden = document.createElement("input");
@@ -119,6 +159,10 @@ function doSubmit() {
         return false;
 }
 
+/**
+ * initiate the page
+ * @param simpleReqs
+ */
 function init(simpleReqs) {
 
     //var simpleReqs = eval("(" + simpleReqs + ")");
@@ -178,7 +222,7 @@ function init(simpleReqs) {
         text.value = simpleReqs[i].group;
         text.name = "simpleReqGroup";
         li.appendChild(text);
-        //添加组
+        //add group
         simpleReqList.appendChild(li);
     }
 }

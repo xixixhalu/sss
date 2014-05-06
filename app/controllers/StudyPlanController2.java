@@ -22,9 +22,10 @@ import org.json.JSONObject;
 
 public class StudyPlanController2 extends Controller {	
 	
-//	public static ConcurrentHashMap<String, StudyPlan> studyPlanPool = 
-//								new ConcurrentHashMap<String, StudyPlan>();
-	
+	/**
+	 * retrieve degree selection page
+	 * @return degree selection page
+	 */
 	public static Result retrieveDegrees() {
 		try{
 			return ok(views.html.stu_index.render(Degree.getAll()));
@@ -34,6 +35,10 @@ public class StudyPlanController2 extends Controller {
     	}
     }
 	
+	/**
+	 * retrieve courses selection page
+	 * @return	courses selection page
+	 */
 	public static Result retrieveCourses() {
 		Form<DegreeForm> filledForm = Form.form(DegreeForm.class).bindFromRequest();
 		
@@ -46,12 +51,8 @@ public class StudyPlanController2 extends Controller {
 			Degree degree = Degree.findById(degreeId);
 			
 			//Initialize study plan graph.
-			
 			StudyPlan studyplan = new StudyPlan();
-//			String uuid = UUID.randomUUID().toString();
-//			session("uuid", uuid);
-//			studyPlanPool.put(uuid, studyplan);
-			//Logger.info(uuid);
+
 			StudyPlanPoolController.insertStudyPlan(studyplan);
 			studyplan.CreateDegreeProgram(Integer.valueOf(degreeId));
 			//get all courses' JSON
@@ -71,8 +72,11 @@ public class StudyPlanController2 extends Controller {
 		}
 	}
 	
+	/**
+	 * automatically select the courses to satisfy a degree requirement
+	 * @return courses data (JSON format)
+	 */
 	public static Result autoFillCourse(){
-//		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		StudyPlan studyplan = StudyPlanPoolController.getStudyPlan();
 		if(studyplan.courseBin == null) {
 			Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();	
@@ -137,12 +141,15 @@ public class StudyPlanController2 extends Controller {
 			return ok("");
 	}
 	
+	/**
+	 * retrieve semester assignment page
+	 * @return	semester assignment page
+	 */
 	public static Result assignSemester(){
 		if(!StudyPlanPoolController.isStudyPlanExists())
 		{
 			badRequest(views.html.error.render("Session Expired or Wrong Operation"));
 		}
-//		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		StudyPlan studyplan = StudyPlanPoolController.getStudyPlan();
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		boolean needAuto = false;
@@ -166,7 +173,6 @@ public class StudyPlanController2 extends Controller {
 				int id = wantCourse.getInt("id");
 				int sid = wantCourse.getInt("sid");
 				int cid = wantCourse.getInt("cid");
-				//session("jsonCourseData", wantTakeCourses);
 				if(needAuto)
 				{
 					studyplan.CheckInSelectedCourse(cid, sid, id);
@@ -202,8 +208,11 @@ public class StudyPlanController2 extends Controller {
 		}
 	}
 	
+	/**
+	 * automatically assign the selected courses into the semester to satisfy a degree requirement
+	 * @return courses data (JSON format)
+	 */
 	public static Result autoAssignSemester(){
-//		StudyPlan studyplan = studyPlanPool.get(session().get("uuid"));
 		StudyPlan studyplan = StudyPlanPoolController.getStudyPlan();
 		Form<TakeForm> filledForm = Form.form(TakeForm.class).bindFromRequest();
 		HashMap<Integer, ArrayList<Integer>> corequisites = new HashMap<Integer, ArrayList<Integer>>();
@@ -251,9 +260,6 @@ public class StudyPlanController2 extends Controller {
 				}
 			}
 			
-			
-			//Bowen: CALL algorithm function and input "corequisites : HashMap<Integer, ArrayList<Integer>>" here;
-			
 			studyplan.AutoAssignSemester(Integer.valueOf(semesterNum), semesterData);
 			
 			/**
@@ -288,6 +294,10 @@ public class StudyPlanController2 extends Controller {
 		}	
 	}
 	
+	/**
+	 * retrieve final study plan page
+	 * @return study plan page
+	 */
 	public static Result generateStudyPlan(){
 		if(!StudyPlanPoolController.isStudyPlanExists())
 		{

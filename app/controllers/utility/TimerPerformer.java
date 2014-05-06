@@ -6,9 +6,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import models.StudyPlan;
 
 public class TimerPerformer extends TimerTask {
-	public long delay = 3600000;
+	public long delay = 7200000;
 	public String uuid = "";
 	public ConcurrentHashMap<String, StudyPlan> studyPlanPool = null;
+	
+	/**
+	 * remove the study plan from memory when time out
+	 * 
+	 * */
 	@Override
 	public void run() {
 		

@@ -12,6 +12,10 @@ import play.mvc.Result;
 
 public class RequirementController extends Controller{
 	
+	/**
+	 * retrieve Requirement Information
+	 * @return requirement list page
+	 */
 	public static Result retrieveRequirements() {
 		String user = session().get("user");
     	if(user == null)
@@ -26,6 +30,11 @@ public class RequirementController extends Controller{
     	}
     }
 	
+	/**
+	 * delete requirement
+	 * @param id
+	 *         - id of the requirement selected
+	 * */
 	public static Result deleteRequirement(Integer id){
 		String user = session().get("user");
     	if(user == null)
@@ -41,6 +50,11 @@ public class RequirementController extends Controller{
     	}
     }
     
+	/**
+	 * request edit requirement page
+	 * @param id
+	 *         - id of the requirement selected
+	 * */
     public static Result requestEditRequirementPage(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -56,6 +70,11 @@ public class RequirementController extends Controller{
     	}
     }
     
+    /**
+	 * update the selected requirement information
+	 * @param id
+	 *         - id of the requirement selected
+	 * */
     public static Result updateRequirement(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -82,6 +101,10 @@ public class RequirementController extends Controller{
     	
     }
     
+    /**
+     * request create requirement page
+     * @return requirement information input page
+     */
     public static Result requestCreateRequirementPage(){
     	String user = session().get("user");
     	if(user == null)
@@ -97,6 +120,10 @@ public class RequirementController extends Controller{
     	}
     }
     
+    /**
+     * submit a new requirement information
+     * @return requirement list page
+     */
     public static Result addRequirement(){
     	String user = session().get("user");
     	if(user == null)

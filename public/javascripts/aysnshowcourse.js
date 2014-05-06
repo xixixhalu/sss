@@ -7,6 +7,9 @@ function generateURL(url) {
     return url;
 }
 
+/**
+ * show courses of the selected course group
+ */
 function change() {
     // alert(1);
     var id = document.getElementById("changeCg").value;
@@ -28,7 +31,11 @@ function change() {
         });
     }
 }
-
+/**
+ * initiate the page, show courses of the selected course group
+ * @param id
+ * id of course group
+ */
 function init(id) {
     $("#changeCg option[value='"+id+"']").attr("selected","selected");
     var ul = document.getElementById("courseingroup");

@@ -11,13 +11,6 @@ import models.Cg;
 import models.entities.ECg;
 
 
-/* Bowen: 
- * This class is used for encapsulating the data entity, so that any extended functions
- * AND exceptions handling can be added here.
- * 
- * Exceptions have not been taken into account, and will be added later*/
-
-
 public class Cg extends Model{
 	
 	private ECg entity;
