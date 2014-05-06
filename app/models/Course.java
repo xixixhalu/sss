@@ -16,13 +16,6 @@ import models.Course;
 import models.entities.ECourse;
 
 
-/* Bowen: 
- * This class is used for encapsulating the data entity, so that any extended functions
- * AND exceptions handling can be added here.
- * 
- * Exceptions have not been taken into account, and will be added later*/
-
-
 public class Course extends Model{
 	
 	private ECourse entity;

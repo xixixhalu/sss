@@ -14,6 +14,10 @@ import java.util.List;
 
 public class CourseController extends Controller {
 
+	/**
+	 * retrieve Course Information
+	 * @return course list page
+	 */
     public static Result retrieveCourses() {
     	String user = session().get("user");
     	if(user == null)
@@ -28,6 +32,11 @@ public class CourseController extends Controller {
     	}
     }
    
+    /**
+	 * delete course
+	 * @param id
+	 *         - id of the course selected
+	 * */
     public static Result deleteCourse(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -43,6 +52,11 @@ public class CourseController extends Controller {
     	return redirect(routes.CourseController.retrieveCourses());
     }
     
+    /**
+	 * request edit course page
+	 * @param id
+	 *         - id of the course selected
+	 * */
     public static Result requestEditCoursePage(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -58,6 +72,11 @@ public class CourseController extends Controller {
     	}
     }
     
+    /**
+	 * update the selected course information
+	 * @param id
+	 *         - id of the course selected
+	 * */
     public static Result updateCourse(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -89,6 +108,10 @@ public class CourseController extends Controller {
     	}
     }
     
+    /**
+     * request create course page
+     * @return course information input page
+     */
     public static Result requestCreateCoursePage(){
     	String user = session().get("user");
     	if(user == null)
@@ -104,6 +127,10 @@ public class CourseController extends Controller {
     	}
     }
     
+    /**
+     * submit a new course information
+     * @return course list page
+     */
     public static Result addCourse(){
     	String user = session().get("user");
     	if(user == null)

@@ -11,6 +11,10 @@ import play.mvc.Result;
 
 public class DegreeController extends Controller{
 	
+	/**
+	 * retrieve Degree Information
+	 * @return degree list page
+	 */
 	public static Result retrieveDegrees() {
 		String user = session().get("user");
     	if(user == null)
@@ -25,6 +29,11 @@ public class DegreeController extends Controller{
     	}
     }
 	
+	/**
+	 * delete degree
+	 * @param id
+	 *         - id of the degree selected
+	 * */
 	public static Result deleteDegree(Integer id){
 		String user = session().get("user");
     	if(user == null)
@@ -40,6 +49,11 @@ public class DegreeController extends Controller{
     	}
     }
    
+	/**
+	 * request edit degree page
+	 * @param id
+	 *         - id of the degree selected
+	 * */
     public static Result requestEditDegreePage(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -55,6 +69,11 @@ public class DegreeController extends Controller{
     	}
     }
          
+    /**
+	 * update the selected degree information
+	 * @param id
+	 *         - id of the degree selected
+	 * */
     public static Result updateDegree(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -81,6 +100,10 @@ public class DegreeController extends Controller{
     	
     }
     
+    /**
+     * request create degree page
+     * @return degree information input page
+     */
     public static Result requestCreateDegreePage(){
     	String user = session().get("user");
     	if(user == null)
@@ -96,6 +119,10 @@ public class DegreeController extends Controller{
     	}
     }
     
+    /**
+     * submit a new degree information
+     * @return degree list page
+     */
     public static Result addDegree(){
     	String user = session().get("user");
     	if(user == null)

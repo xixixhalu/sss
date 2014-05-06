@@ -9,11 +9,18 @@ import controllers.forms.UserLoginForm;
 
 public class UserController extends Controller {
 	
+	/**
+	 * retrieve the Login Page
+	 * @return login page
+	 */
 	public static Result retrieveLoginPage() {
 		Form<UserLoginForm> form = Form.form(UserLoginForm.class);
 		return ok(views.html.admin_index.render(form));
     }
 	
+	/**
+	 * validate the username and password
+	 */
 	public static Result Login() {
 		try{
 			Form<UserLoginForm> filledForm = Form.form(UserLoginForm.class).bindFromRequest();
@@ -37,6 +44,10 @@ public class UserController extends Controller {
 		}
 	}
 	
+	/**
+	 * logout function
+	 * @return login page
+	 */
 	public static Result Logout()
 	{
 		session().clear();
@@ -44,6 +55,12 @@ public class UserController extends Controller {
     	return redirect(routes.UserController.retrieveLoginPage());
 	}
 	
+	/**
+	 * Error handling page
+	 * @param name
+	 * 			- the name of missing resource
+	 * @return Error prompt page
+	 */
 	public static Result pageNotFound(String name)
 	{
     	return badRequest(views.html.error.render("Page not Found"));
