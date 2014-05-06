@@ -13,6 +13,13 @@ public class CourseInReq {
 	public int maxDepth=0;
 	public int semester=-1;
 	
+	/**
+	 * Check if this course node is null
+	 * 
+	 * @param null
+	 * 
+	 * @return true is null, false is not null
+	 */
 	public boolean isNull(){//if this course is null
 		
 		if(this.cId==0){

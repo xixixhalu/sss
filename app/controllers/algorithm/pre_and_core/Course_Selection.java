@@ -2,8 +2,18 @@ package controllers.algorithm.pre_and_core;
 
 public class Course_Selection {
 
-	public void backtrackCourse(ConstructCourseRelation courseRelation,
-			int courseID) { // given course name
+	/**
+	 * Given a course id and existing course relation, the function find all
+	 * related prerequisite and corequisite courses of it. Dealing with the OR
+	 * relation
+	 * 
+	 * @param courseRelation
+	 *            course relation DAG courseID course id
+	 * 
+	 */
+	public void backtrackCourse(ConstructCourseRelation courseRelation, int courseID) { // given
+																						// course
+																						// name
 		ConstructCourseRelation cr = courseRelation;
 		int size = cr.headNodeList.size();
 		CourseRelation tempArc = new CourseRelation();
@@ -11,8 +21,8 @@ public class Course_Selection {
 		// int i = 0, j = 0; // 计数器
 		for (int i = 0; i < size; i++) {
 			tempNode = cr.headNodeList.get(i); // 找到这个将要被选的课程，开始回溯
-			if (tempNode.courseID==courseID) {// 找到了这个课名的headnode
-																	// 开始遍历链表
+			if (tempNode.courseID == courseID) {// 找到了这个课名的headnode
+												// 开始遍历链表
 				tempArc = tempNode.firstIn;
 				for (; tempArc != null; tempArc = tempArc.hlink) {
 					int relation_type = tempArc.info;// 边的权值，代表关系
@@ -21,19 +31,16 @@ public class Course_Selection {
 						for (int j = 0; j < size; j++) { // 这个for
 							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
 							NodeInGraph tempNode2 = cr.headNodeList.get(j);
-							if (tempNode2.courseID==tempTailCourseID) { // for
-																				// loop只需要做if判断为正的时候的事情
+							if (tempNode2.courseID == tempTailCourseID) { // for
+																			// loop只需要做if判断为正的时候的事情
 								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
 									break;
-								} else if (tempNode2.finished == false
-										&& tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
-									backtrackCourse(courseRelation,
-											tempNode2.courseID);
+								} else if (tempNode2.finished == false && tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
+									backtrackCourse(courseRelation, tempNode2.courseID);
 								} else { // tempNode2.finished == false &&
 											// tempNode2.visited == true
 									tempNode2.visited = true; // 先把这个节点标记为mark过
-									backtrackCourse(courseRelation,
-											tempNode2.courseID);
+									backtrackCourse(courseRelation, tempNode2.courseID);
 								}
 							}
 
@@ -43,19 +50,16 @@ public class Course_Selection {
 						for (int j = 0; j < size; j++) { // 这个for
 							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
 							NodeInGraph tempNode2 = cr.headNodeList.get(j);
-							if (tempNode2.courseID==tempTailCourseID) { // for
-																				// loop只需要做if判断为正的时候的事情
+							if (tempNode2.courseID == tempTailCourseID) { // for
+																			// loop只需要做if判断为正的时候的事情
 								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
 									break;
-								} else if (tempNode2.finished == false
-										&& tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
-									backtrackCourse(courseRelation,
-											tempNode2.courseID);
+								} else if (tempNode2.finished == false && tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
+									backtrackCourse(courseRelation, tempNode2.courseID);
 								} else { // tempNode2.finished == false &&
 											// tempNode2.visited == true
 									tempNode2.visited = true; // 先把这个节点标记为mark过
-									backtrackCourse(courseRelation,
-											tempNode2.courseID);
+									backtrackCourse(courseRelation, tempNode2.courseID);
 
 								}
 							}
@@ -96,8 +100,10 @@ public class Course_Selection {
 
 		allCross_relation_example.Display_All_Headnode();
 
-		allCross_relation_example.setCourseRelation(115, 334, 1);// (course1_ID, course2_ID, relation)
-		allCross_relation_example.setCourseRelation(115,  284, 1);
+		allCross_relation_example.setCourseRelation(115, 334, 1);// (course1_ID,
+																	// course2_ID,
+																	// relation)
+		allCross_relation_example.setCourseRelation(115, 284, 1);
 		allCross_relation_example.setCourseRelation(135, 334, 1);
 		allCross_relation_example.setCourseRelation(502, -1, 3);
 		allCross_relation_example.setCourseRelation(135, -1, 3);

@@ -2,29 +2,40 @@ package controllers.algorithm.req_and_course;
 
 public class SimpleReq {
 	public CourseInReq first; // head CourseInReq
-	//public boolean satisfied = false;
+	// public boolean satisfied = false;
 
 	private int pos; // CourseInReq's position
 
 	public SimpleReq() {
 		this.first = null;
 	}
-	
-	public boolean isNull(){
+
+	/**
+	 * Check if this simple requirement is null
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
+	public boolean isNull() {
 		CourseInReq temp = first;
-		if(temp.next.isNull()==false){
+		if (temp.next.isNull() == false) {
 			return false;
-		}else{
+		} else {
 			return true;
 		}
 	}
-	
-	public SimpleReq(int simpleReqID, String simpleReqName, int needFinish){
+
+	public SimpleReq(int simpleReqID, String simpleReqName, int needFinish) {
 		this.first = null;
 		addFirstNode(simpleReqID, simpleReqName, needFinish);
 	}
 
-	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {// cId here is requirement name
+	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {// cId
+																						// here
+																						// is
+																						// requirement
+																						// name
 		CourseInReq node = new CourseInReq(simpleReqID, simpleReqName, needFinish);
 		node.next = first;
 		first = node;
@@ -36,8 +47,17 @@ public class SimpleReq {
 		return tempnode;
 	}
 
-	public void insertNode(int index, int cId) { // cId here is course
-														// name
+	/**
+	 * insert a course into simple requirement
+	 * 
+	 * @param index
+	 *            insert position
+	 * @param cID
+	 *            course id
+	 * 
+	 * @return null
+	 */
+	public void insertNode(int index, int cId) { // cId here is course id
 		CourseInReq node = new CourseInReq(cId);
 		CourseInReq current = first;
 		CourseInReq previous = first;
@@ -53,16 +73,24 @@ public class SimpleReq {
 
 	}
 
+	/**
+	 * insert a course into simple requirement
+	 * 
+	 * @param course
+	 *            course node
+	 * 
+	 * @return null
+	 */
 	public void insertNode(CourseInReq course) { // cId here is course
 		// name
-		
+
 		CourseInReq current = first;
 
 		course.next = current.next;
 		current.next = course;
 
 	}
-	
+
 	public CourseInReq deleteByPos(int index) {
 		CourseInReq current = first;
 		CourseInReq previous = first;
@@ -82,6 +110,15 @@ public class SimpleReq {
 
 	}
 
+	/**
+	 * delete a course from simple requirement
+	 * 
+	 * @param cID
+	 *            course id
+	 * 
+	 * @return null
+	 */
+
 	public void deleteByData(int cId) {
 		CourseInReq current = first;
 		CourseInReq previous = first;
@@ -100,10 +137,17 @@ public class SimpleReq {
 		return;
 	}
 
+	/**
+	 * Display all course in simple requirement
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void displayAllNodes() {
 		CourseInReq current = first;
-		System.out.print("This simple need to "+ current.needFinish + " to be finished and status is "+current.statisfied +"\n");
-		
+		System.out.print("This simple need to " + current.needFinish + " to be finished and status is " + current.statisfied + "\n");
+
 		current.showFirstNode();
 		current = current.next;
 		while (current != null) {
@@ -125,6 +169,14 @@ public class SimpleReq {
 		return current;
 	}
 
+	/**
+	 * find a course in simple requirement
+	 * 
+	 * @param cId
+	 *            course id
+	 * 
+	 * @return null
+	 */
 	public CourseInReq findByData(int cId) {
 		CourseInReq current = first;
 		while (current.cId != cId) {
@@ -135,25 +187,44 @@ public class SimpleReq {
 		return current;
 	}
 
-	// choose a course in a requirement link list
-	public boolean chooseCourse(int reqName, int courseName) { //传进requirement name，传进course name
-		if (this.first.cId == reqName) { //如果传进来的目标req_name和本身的requirement 相同
-			CourseInReq temp = this.findByData(courseName);
-			if(temp != null){
-				return true;  // find this course in this requirement
-			}else{
+	/**
+	 * select a course in simple requirement
+	 * 
+	 * @param reqName
+	 *            requirement name
+	 * @param courseId
+	 *            course id
+	 * 
+	 * @return true selecting successfully
+	 * 
+	 */
+	public boolean chooseCourse(int reqName, int courseId) { 
+		if (this.first.cId == reqName) {
+			CourseInReq temp = this.findByData(courseId);
+			if (temp != null) {
+				return true; // find this course in this requirement
+			} else {
 				return false;
 			}
 		}
 		return false;
 
 	}
-	
-	public void set2ChooseCourse(int courseName){
-		CourseInReq temp = this.findByData(courseName);
-		if(temp != null){
-			temp.chosen=true; // set the course chosen
+
+	/**
+	 * set course status as chosen
+	 * 
+	 * @param courseId
+	 *            course id
+	 * 
+	 * @return true selecting successfully
+	 * 
+	 */
+	public void set2ChooseCourse(int courseId) {
+		CourseInReq temp = this.findByData(courseId);
+		if (temp != null) {
+			temp.chosen = true; // set the course chosen
 		}
-		
+
 	}
 }
