@@ -551,7 +551,9 @@ function wantTakeCourse(id, sid, cid) {
     this.sid = sid;
     this.cid = cid;
 }
-
+/**
+ * 
+ */
 function ASO(id, maxDepth) {
     this.id = id;
     this.maxDepth = maxDepth;
