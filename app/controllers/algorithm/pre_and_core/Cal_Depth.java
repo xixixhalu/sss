@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Cal_Depth {
-	public ArrayBlockingQueue<CourseRelation> level = new ArrayBlockingQueue<CourseRelation>(256); // put each level course in this queue
+	// put each level course in this queue
+	public ArrayBlockingQueue<CourseRelation> level = new ArrayBlockingQueue<CourseRelation>(256); 
 	public ConstructCourseRelation allCross_relation_example = new ConstructCourseRelation();
 	public ArrayList<CourseRelation> core = new ArrayList<CourseRelation>(); 
 	
@@ -49,64 +50,71 @@ public class Cal_Depth {
 //
 //	}
 
-	public void BFS_Min() {
-		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
+//	public void BFS_Min() {
+//		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
+//
+//			NodeInGraph course = this.allCross_relation_example.headNodeList.get(i);
+//			if (course.firstIn == null) {
+//				if (course.assign == false) {
+//					course.assign = true;
+//					course.minDepth = 1;
+//					CourseRelation arc = course.firstOut;
+//					while(arc !=null){
+//						level.add(arc);
+//						arc = arc.tlink;
+//					}
+//					BFS_Travese_Min();
+//				}
+//
+//			}
+//		}
+//
+//	}
 
-			NodeInGraph course = this.allCross_relation_example.headNodeList.get(i);
-			if (course.firstIn == null) {
-				if (course.assign == false) {
-					course.assign = true;
-					course.minDepth = 1;
-					CourseRelation arc = course.firstOut;
-					while(arc !=null){
-						level.add(arc);
-						arc = arc.tlink;
-					}
-					BFS_Travese_Min();
-				}
-
-			}
-		}
-
-	}
-
-	public void BFS_Travese_Min() {
-
-		ArrayBlockingQueue<CourseRelation> next = new ArrayBlockingQueue<CourseRelation>(50);
-
-		while (level.isEmpty() == false) {
-			while (level.isEmpty() == false) {
-				CourseRelation tempCourse = level.poll();
-				NodeInGraph temp = this.allCross_relation_example
-						.findHeadCourse(tempCourse.headCourseID);
-				int stepLength=0;
-				if(tempCourse.info==1){
-					stepLength=1;
-				}
-				CourseRelation arcOfTemp = temp.firstOut;
-				while (arcOfTemp != null) {
-					next.add(arcOfTemp);
-					arcOfTemp = arcOfTemp.tlink;
-				}
-				if (temp.assign == false) {
-					temp.assign = true;
-					//all course depth is equal to its tail course's depth + 1
-					temp.minDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength; 
-				} else { // courses in queue have been assigned with a depth
-					if (temp.minDepth > this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength)
-						temp.minDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength; 
-
-				}
-			}
-			next.drainTo(level);
-			//level = next;
-			next.clear();
-		}
-
-	}
+//	public void BFS_Travese_Min() {
+//
+//		ArrayBlockingQueue<CourseRelation> next = new ArrayBlockingQueue<CourseRelation>(50);
+//
+//		while (level.isEmpty() == false) {
+//			while (level.isEmpty() == false) {
+//				CourseRelation tempCourse = level.poll();
+//				NodeInGraph temp = this.allCross_relation_example
+//						.findHeadCourse(tempCourse.headCourseID);
+//				int stepLength=0;
+//				if(tempCourse.info==1){
+//					stepLength=1;
+//				}
+//				CourseRelation arcOfTemp = temp.firstOut;
+//				while (arcOfTemp != null) {
+//					next.add(arcOfTemp);
+//					arcOfTemp = arcOfTemp.tlink;
+//				}
+//				if (temp.assign == false) {
+//					temp.assign = true;
+//					//all course depth is equal to its tail course's depth + 1
+//					temp.minDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength; 
+//				} else { // courses in queue have been assigned with a depth
+//					if (temp.minDepth > this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength)
+//						temp.minDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).minDepth + stepLength; 
+//
+//				}
+//			}
+//			next.drainTo(level);
+//			//level = next;
+//			next.clear();
+//		}
+//
+//	}
 	
 	
-	
+	/**
+	 * Calculate in the worst case, one course can be assigned into the earliest semester
+	 * Recursively call BFS_Travese_Max()
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void BFS_Max() {
 		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
 
@@ -128,6 +136,13 @@ public class Cal_Depth {
 
 	}
 
+	/**
+	 * Calculate in the worst case, one course can be assigned into the earliest semester
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void BFS_Travese_Max() {
 
 		ArrayBlockingQueue<CourseRelation> next = new ArrayBlockingQueue<CourseRelation>(50);
@@ -162,13 +177,20 @@ public class Cal_Depth {
 		}
 
 	}
-	public void Display_All_Headnode_Min() {
-		System.out.print("Show all the head nodes: " + '\n');
-		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
-			this.allCross_relation_example.headNodeList.get(i).showNodeWithAssign_Min();
-		}
-	}
-	
+
+//	public void Display_All_Headnode_Min() {
+//		System.out.print("Show all the head nodes: " + '\n');
+//		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {
+//			this.allCross_relation_example.headNodeList.get(i).showNodeWithAssign_Min();
+//		}
+//	}
+	/**
+	 * Display all course with their own max_depth
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void Display_All_Headnode_Max() {
 		System.out.print("Show all the head nodes: " + '\n');
 		for (int i = 0; i < this.allCross_relation_example.headNodeList.size(); i++) {

@@ -15,7 +15,7 @@ public class CourseRelation {
 	}
 	
 	
-	public CourseRelation(int tail, int head, int info){ //构造函数,没有初始化指针
+	public CourseRelation(int tail, int head, int info){ 
 		this.tailCourseID = tail;//
 		this.headCourseID = head;
 		this.info = info;
@@ -24,6 +24,13 @@ public class CourseRelation {
 		
 	}
 	
+	/**
+	 * Display course relation 
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void showArcFromTail(){
 		String outPut = this.tailCourseID + "-->" +this.headCourseID+" with " +info;
 		System.out.println(outPut);
@@ -31,6 +38,13 @@ public class CourseRelation {
 		return;
 	}
 	
+	/**
+	 * Display course relation 
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void showArcFromHead(){
 		String outPut = this.tailCourseID + "-->" +this.headCourseID+" with " +info;
 		System.out.println(outPut);

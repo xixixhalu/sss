@@ -9,25 +9,55 @@ public class ReqListForCourse {
 		this.first = null;
 	}
 
+	/**
+	 * Initialize the course link list: course1->req1->re2
+	 * 
+	 * @param courseID
+	 *            course id
+	 * 
+	 * @return null
+	 */
 	public ReqListForCourse(int courseID) {
 		addFirstNode(courseID);
 	}
 
-	public void addFirstNode(int rId) {
-		ReqNode node = new ReqNode(rId);
+	/**
+	 * add the first node of course link list
+	 * 
+	 * @param cId
+	 *            course id
+	 * 
+	 * @return null
+	 */
+	public void addFirstNode(int cId) {
+		ReqNode node = new ReqNode(cId);
 		node.beChosen = false;// initialize the course has not been selected by
 								// any requirement.
 		node.next = first;
 		first = node;
 	}
 
+	/**
+	 * delete the first node of course link list
+	 * 
+	 * @param null
+	 * 
+	 * @return the new first node
+	 */
 	public ReqNode deleteFirstNode() {
 		ReqNode tempnode = first;
 		tempnode.next = first.next;
 		return tempnode;
 	}
 
-
+	/**
+	 * insert a simple and complex requirement node into course link list
+	 * 
+	 * @param SimpleAndCompleReq
+	 *            requirement node includes simple requirement and complex
+	 *            requirement
+	 * @return null
+	 */
 	public void insertNode(ReqNode SimpleAndCompleReq) {
 		ReqNode current = first;
 		SimpleAndCompleReq.next = current.next;
@@ -54,6 +84,14 @@ public class ReqListForCourse {
 
 	}
 
+	/**
+	 * Delete a requirement node from course link list, which means that the
+	 * course is no longer belonging to this requirement
+	 * 
+	 * @param rId
+	 *            requirement id
+	 * @return null
+	 */
 	public void deleteByData(int rId) {
 		ReqNode current = first;
 		ReqNode previous = first;
@@ -72,6 +110,13 @@ public class ReqListForCourse {
 		return;
 	}
 
+	/**
+	 * Display all requirements that the course belongs to
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	public void displayAllNodes() {
 		int flag = 1;
 		ReqNode current = first;
@@ -101,6 +146,13 @@ public class ReqListForCourse {
 		return current;
 	}
 
+	/**
+	 * Find the specific requirement that the course is belonging to
+	 * 
+	 * @param rId
+	 *            requirement id
+	 * @return requirement node
+	 */
 	public ReqNode findByData(int rId) {
 		ReqNode current = first;
 		while (current.rId != rId) {
@@ -111,24 +163,36 @@ public class ReqListForCourse {
 		return current;
 	}
 
-	// Once a course is chosen in requirement link list, there will be a
-	// function call
-	// this function to update the head node of "course link list" as true.
-
+	/**
+	 * Once a course is chosen in requirement link list, there will be a
+	 * function call this function to update the head node of "course link list"
+	 * as true.
+	 * 
+	 * @param rId
+	 *            requirement id
+	 * @return null
+	 */
 	public void set_course_be_chosen(int reqID) {
 		ReqNode temp = this.first;
 		temp.beChosen = true;
-		while(temp.rId!=reqID){
-			temp=temp.next;
+		while (temp.rId != reqID) {
+			temp = temp.next;
 		}
-		//this.first.beChosen = true;
+		// this.first.beChosen = true;
 		temp.beChosen = true;
 
 	}
 
-	// Every time we need to choose a course in requirement link list, we will
-	// first call this
-	// function to check is the course have been chosen.
+
+	/**
+	 * Every time we need to choose a course in requirement link list, we will
+	 * first call this function to check is the course have been chosen.
+	 * 
+	 * @param null
+	 * 
+	 * @return true if this course has been chosen
+	 * 
+	 */
 	public boolean checkChosen() {
 		if (this.first.beChosen == true) {
 			return true; // this course has been chosen.
