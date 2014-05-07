@@ -5,9 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import models.StudyPlan;
 
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import controllers.utility.TimerPerformer;
 import play.Logger;

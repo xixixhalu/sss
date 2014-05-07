@@ -4,7 +4,6 @@ import controllers.forms.RequirementAddForm;
 import controllers.forms.RequirementEditForm;
 import models.Requirement;
 import models.Sr;
-import models.Course;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;

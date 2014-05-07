@@ -2,11 +2,9 @@ package controllers;
 
 import models.Course;
 import models.CourseWrapper;
-import play.*;
 import play.data.Form;
 import play.mvc.*;
 import controllers.forms.CourseEditForm;
-import views.html.*;
 import controllers.forms.*;
 import org.json.JSONArray;
 import org.json.JSONObject;

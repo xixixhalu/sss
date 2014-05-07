@@ -10,6 +10,7 @@ import play.db.ebean.*;
 import models.entities.EUser;
 
 
+@SuppressWarnings("serial")
 public class User extends Model{
 	
 	private EUser entity;
@@ -24,6 +25,7 @@ public class User extends Model{
 
 	/** unwrap(User) : EUser,
 	 * Unwrap the user Entity*/
+	@SuppressWarnings("unused")
 	private static EUser unwrap(User user) {
 		return user == null ? null : user.entity;
 	}

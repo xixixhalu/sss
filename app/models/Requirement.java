@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.json.*;
-
 import com.avaje.ebean.Ebean;
 
-import play.Logger;
 import play.db.ebean.*;
 import models.entities.ERequirement;
 
 
+@SuppressWarnings("serial")
 public class Requirement extends Model{
 	
 	private ERequirement entity;
@@ -27,6 +25,7 @@ public class Requirement extends Model{
 
 	/** unwrap(Requirement) : ERequirement,
 	 * Unwrap the requirement Entity*/
+	@SuppressWarnings("unused")
 	private static ERequirement unwrap(Requirement requirement) {
 		return requirement == null ? null : requirement.entity;
 	}

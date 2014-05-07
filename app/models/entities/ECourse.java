@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import play.db.ebean.Model;
 
 
+@SuppressWarnings("serial")
 @Entity 
 @Table(name = "course")
 public class ECourse extends Model{

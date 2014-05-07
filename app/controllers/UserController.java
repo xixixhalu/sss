@@ -2,8 +2,6 @@ package controllers;
 
 import play.data.Form;
 import play.mvc.*;
-import views.html.*;
-import play.*;
 import models.User;
 import controllers.forms.UserLoginForm;
 
