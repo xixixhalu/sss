@@ -16,6 +16,7 @@ import models.Course;
 import models.entities.ECourse;
 
 
+@SuppressWarnings("serial")
 public class Course extends Model{
 	
 	private ECourse entity;
@@ -30,6 +31,7 @@ public class Course extends Model{
 
 	/** unwrap(Course) : ECourse,
 	 * Unwrap the course Entity*/
+	@SuppressWarnings("unused")
 	private static ECourse unwrap(Course course) {
 		return course == null ? null : course.entity;
 	}

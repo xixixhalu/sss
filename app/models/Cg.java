@@ -11,6 +11,7 @@ import models.Cg;
 import models.entities.ECg;
 
 
+@SuppressWarnings("serial")
 public class Cg extends Model{
 	
 	private ECg entity;
@@ -25,6 +26,7 @@ public class Cg extends Model{
 
 	/** unwrap(Cg) : ECg,
 	 * Unwrap the cg Entity*/
+	@SuppressWarnings("unused")
 	private static ECg unwrap(Cg cg) {
 		return cg == null ? null : cg.entity;
 	}

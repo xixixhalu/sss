@@ -6,7 +6,6 @@ import play.data.Form;
 import play.mvc.*;
 import controllers.algorithm.req_and_course.*;
 import controllers.forms.DegreeForm;
-import controllers.forms.SrEditForm;
 import controllers.forms.TakeForm;
 import controllers.StudyPlanPoolController;
 import models.*;
@@ -14,8 +13,6 @@ import models.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

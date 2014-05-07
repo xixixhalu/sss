@@ -14,6 +14,7 @@ import play.db.ebean.*;
 import models.entities.ESr;
 
 
+@SuppressWarnings("serial")
 public class Sr extends Model{
 	
 	private ESr entity;
@@ -28,6 +29,7 @@ public class Sr extends Model{
 
 	/** unwrap(Sr) : ESr,
 	 * Unwrap the sr Entity*/
+	@SuppressWarnings("unused")
 	private static ESr unwrap(Sr sr) {
 		return sr == null ? null : sr.entity;
 	}

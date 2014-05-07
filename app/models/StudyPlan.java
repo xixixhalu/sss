@@ -64,6 +64,7 @@ public class StudyPlan {
 	 * 
 	 * @return null
 	 */
+	@SuppressWarnings("unchecked")
 	public void GetAllCoureReq() {
 		HashMap<Integer, Integer> tempCoreList = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> tempCoreList2 = new HashMap<Integer, Integer>();
@@ -582,7 +583,7 @@ public class StudyPlan {
 							// simpleReq.SimpleReq.first.needFinish--;
 
 							for (Entry<Integer, ArrayList<CourseInReq>> entry : courseHash.entrySet()) {
-								int key = entry.getKey();
+//								int key = entry.getKey();
 								ArrayList<CourseInReq> courseCourseInReqList = entry.getValue();
 								// System.out.print("The maxDepth is " + key
 								// + " include these courses: \n");
@@ -786,7 +787,6 @@ public class StudyPlan {
 		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
 		int level = max;
 		int curSemester = numOfSemester;
-		int hhhhh = -1;
 		while (level >= 0 && curSemester > 0) {
 
 			ArrayList<CourseInReq> courseInSameLvl = semesterBin.get(level);
