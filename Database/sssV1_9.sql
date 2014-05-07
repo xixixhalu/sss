@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.6.14)
-# Date: 2014-04-18 14:35:34
+# Date: 2014-05-07 01:11:10
 # Generator: MySQL-Front 5.3  (Build 4.115)
 
 /*!40101 SET NAMES utf8 */;
@@ -63,7 +63,7 @@ CREATE TABLE `degree` (
 # Data for table "degree"
 #
 
-INSERT INTO `degree` VALUES (5,'BS in CS for students entering in September 20XX','17,18,19,20,21,22,23,25'),(6,'BS in CS for students entering in September 20XX(Start from CS 115)','21,26,27,28,29,30,31'),(7,'BS in CS for students entering in September 20XX(Start from CS 105)','21,26,28,29,30,31,32,33'),(8,'BS in CS for students entering in September 20XX(Start from CS 181)','21,26,28,29,30,31,34,35');
+INSERT INTO `degree` VALUES (5,'BS in CS for students entering in September 20XX','17,18,19,20,21,22,23,25'),(6,'BS in CS for students entering in September 20XX(Start from CS 115)','21,26,27,28,29,30,31'),(7,'BS in CS for students entering in September 20XX(Start from CS 105)','21,26,28,29,30,32,33'),(8,'BS in CS for students entering in September 20XX(Start from CS 181)','21,26,28,29,30,34,35');
 
 #
 # Structure for table "requirement"
