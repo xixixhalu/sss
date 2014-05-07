@@ -31,8 +31,8 @@ public class StudyPlan {
 
 	public int redCourseInReq = 0;
 	public DegreeProgram degreeProgram;
-	ConstructCourseRelation allCross_relation;
-	Cal_Depth calSemester;
+	public ConstructCourseRelation allCross_relation;
+	public Cal_Depth calSemester = new Cal_Depth();
 	public ArrayList<Integer> courseBin; // Course Info after auto fill course
 	public Multimap<Integer, Integer> corerequsiteList = ArrayListMultimap.create();
 
@@ -49,7 +49,7 @@ public class StudyPlan {
 	 * @return null
 	 */
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
-		calSemester.allCross_relation_example = allCross_relation;
+//		calSemester.allCross_relation_example = allCross_relation;
 		calSemester.BFS_Max();
 		// calSemester.BFS_Min();
 		// calSemester.Display_All_HeadCourseInReq_Max();
@@ -508,7 +508,7 @@ public class StudyPlan {
 	 */
 	public ArrayList<Integer> AutoFillCourseBin() {
 		// change the arguments and recursively call this function
-		calSemester = new Cal_Depth();
+//		calSemester = new Cal_Depth();
 		calSemester.allCross_relation_example = allCross_relation;
 		ArrayList<Integer> courseBinResult = new ArrayList<Integer>();
 		// mark the min and max in CourseInReqInGraph
@@ -527,6 +527,28 @@ public class StudyPlan {
 				}
 
 			}
+		}
+
+		// Display maxdepth
+		for (Integer key : degreeProgram.course.keySet()) {
+			ArrayList<CourseInReq> sameCourseList = degreeProgram.course.get(key);
+			for (CourseInReq course : sameCourseList) {
+				System.out.println(key+": max_depth is "+course.maxDepth);
+			}
+		}
+
+		// put all students' selecting courses into courseBinResult
+		for (Integer key : degreeProgram.course.keySet()) {
+			ArrayList<CourseInReq> theSameCourse = degreeProgram.course.get(key);
+
+			for (CourseInReq eachCourse : theSameCourse) {
+				if (eachCourse.chosen == true) {
+					courseBinResult.add(eachCourse.cId);
+					break;
+				}
+
+			}
+
 		}
 
 		for (int i = 0; i < degreeProgram.allComplexReq.size(); i++) {

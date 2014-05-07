@@ -30,17 +30,17 @@ public class SimpleReq {
 		this.first = null;
 		addFirstNode(simpleReqID, simpleReqName, needFinish);
 	}
-
-	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {// cId
-																						// here
-																						// is
-																						// requirement
-																						// name
+	// cId here is requirement name
+	public void addFirstNode(int simpleReqID, String simpleReqName, int needFinish) {
 		CourseInReq node = new CourseInReq(simpleReqID, simpleReqName, needFinish);
 		node.next = first;
 		first = node;
 	}
 
+	/**
+	 * Delete the head node from simple requirement, which is requirement node i
+	 * @return
+	 */
 	public CourseInReq deleteFirstNode() {
 		CourseInReq tempnode = first;
 		tempnode.next = first.next;
