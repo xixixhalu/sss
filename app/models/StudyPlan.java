@@ -293,6 +293,20 @@ public class StudyPlan {
 		return;
 	}
 
+	/**
+	 * build the crosslinkedlist
+	 * there are three types of relations:
+	 * 1. '1' means prerequisite relation
+	 * 2. '2' means corequisite relation
+	 * 3. '3' means special relation (which could be a combine of above two)
+	 * See details on algorithm evidence description document.
+	 * 
+	 * There still remain a issue with this function
+	 * One kind of relation cannot be represented
+	 * Which is (A, B or C)
+	 * 
+	 * @param course_list
+	 */
 	public void createCrossLinkedList(HashMap<Integer, ArrayList<CourseInReq>> course_list) {
 		/**
 		 * @author tongrui function: construct the crosslist
@@ -527,6 +541,17 @@ public class StudyPlan {
 					}
 				}
 
+			}
+		}
+		
+		for (Integer key : degreeProgram.course.keySet()) {
+			ArrayList<CourseInReq> theSameCourse = degreeProgram.course.get(key);
+			
+			for (CourseInReq eachCourse : theSameCourse) {
+				if (eachCourse.chosen == true) {
+					courseBinResult.add(eachCourse.cId);
+					break;
+				}
 			}
 		}
 
