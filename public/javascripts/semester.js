@@ -1,19 +1,10 @@
 /**
  * @author Bohan Zheng
  */
-//var ASO = {
-//    "minSemester" : "6",
-//    "courses" : {
-//        97 : "3",
-//        93 : "3",
-//        89 : "2",
-//        84 : "1",
-//        86 : "1",
-//        74 : "1",
-//        180 : "1"
-//    }
-//};
 
+/**
+ * initiate the page and all the json data
+ * */
 window.onload = function() {
     var jsonData = document.getElementById("jsonData").innerText;
     courseObjs = eval("(" + jsonData + ")");
@@ -52,7 +43,9 @@ window.onload = function() {
     }
     $(document).ready(clickable);
 };
-
+/**
+ * some pre-process when add course into a certain semester
+ * */
 function clickable() {
     $(".left_list a").click(function() {
         if (this.parentElement.style.textDecoration != "line-through") {
@@ -72,15 +65,26 @@ function clickable() {
         }
     });
 }
-
+/**
+ * initial add semester
+ * @param f
+ * - record the time the user clicked the add button
+ * */
 var f = 0;
 function addSemesters() {
-    f = 0;
-    document.getElementById("pop_back").style.display = "block";
-    document.getElementById("pop_window").style.display = "block";
-    document.getElementById("pop_content_a").style.display = "block";
+	if ($('#add_semesters_button')[0].className == 'button-warning pure-button') {
+	    f = 0;
+	    document.getElementById("pop_back").style.display = "block";
+	    document.getElementById("pop_window").style.display = "block";
+	    document.getElementById("pop_content_a").style.display = "block";
+   }
 }
-
+/**
+ * show add semester pop up window
+ * @param f
+ * - record the time the user clicked the add button, 
+ * the first time and the second time has different function
+ * */
 function add() {
     if (f == 0) {
         var semesterNum = document.getElementById("semesterNum").value;
@@ -95,7 +99,11 @@ function add() {
         appendSemester();
     }
 }
-
+/**
+ * generate the semester list in the pop up window
+ * @param num
+ * - number of semesters
+ * */
 function generateSemesterList(num) {
     var table = document.getElementById("semesterTable");
     table.innerHTML = "<tr><td>Semester</td><td>Year</td></tr>";
@@ -105,7 +113,9 @@ function generateSemesterList(num) {
         table.appendChild(tr);
     }
 }
-
+/**
+ * cancel add semester
+ * */
 function cancel() {
     document.getElementById("pop_back").style.display = "none";
     document.getElementById("pop_window").style.display = "none";
@@ -113,7 +123,9 @@ function cancel() {
     document.getElementById("pop_content_b").style.display = "none";
     f = 0;
 }
-
+/**
+ * add semester to the semester list
+ * */
 function appendSemester() {
     var semesterTrs = document.getElementById("semesterTable").getElementsByTagName("tr");
     var req_list = document.getElementById("req_list");
@@ -158,8 +170,13 @@ function appendSemester() {
         req_list.appendChild(li);
     }
 }
-
+/**
+ * drop down effect for semester
+ * @param evt
+ * - the element triggered the click event 
+ * */
 function semesterDropDown(evt) {
+	shrinkAll();
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     if (thisDiv.parentElement.getElementsByTagName("div")[1].style.display == "none") {
         var lis = document.getElementById("req_list").getElementsByTagName("li");
@@ -175,14 +192,58 @@ function semesterDropDown(evt) {
                 break;
             }
         }
-        thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
-        thisDiv.style.backgroundColor = '#DDD';
+        expand(thisDiv);
     } else {
-        thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
-        thisDiv.style.backgroundColor = 'white';
+        shrink(thisDiv);
     }
 }
 
+/**
+ * expand the clicked semester tab at the right side panel
+ */
+function expand(thisDiv) {
+    thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
+    thisDiv.style.backgroundColor = '#DDD';
+}
+/**
+ * expand all the semester tabs at the right side panel
+ */
+function expandAll() {
+    var sem_list = $('.req_list')[0].children;
+    for (var i = 0; i < sem_list.length; i++) {
+        var sem = sem_list[i];
+        if (sem.tagName == 'LI' && sem.id != 'firstli') {
+            expand(sem.getElementsByTagName('div')[1]);
+        }
+    }
+}
+
+/**
+ * shrink the clicked semester tab at the right side panel
+ */
+function shrink(thisDiv) {
+    thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
+    thisDiv.style.backgroundColor = 'white';
+}
+/**
+ * shrink all the semester tabs at the right side panel
+ */
+function shrinkAll() {
+    var sem_list = $('.req_list')[0].children;
+    for (var i = 0; i < sem_list.length; i++) {
+        var sem = sem_list[i];
+        if (sem.tagName == 'LI' && sem.id != 'firstli') {
+            shrink(sem.getElementsByTagName('div')[1]);
+        }
+    }
+}
+/**
+ * add course into semester
+ * @param course
+ * - course title
+ * @param id
+ * - course id
+ * */
 function addCourseToSemester(course, id) {
     var lis = document.getElementById("req_list").children;
     var num = 0;
@@ -206,7 +267,13 @@ function addCourseToSemester(course, id) {
     ul.appendChild(li);
     return true;
 }
-
+/**
+ * remove course from semester
+ * @param a
+ * - the <a> element triggered the click event
+ * @param id
+ * - course id
+ * */
 function removeCourseFromSemester(a, id) {
 	var r = confirm("Are you sure to remove this course from this semester?");
 	if (r == true)
@@ -224,7 +291,13 @@ function removeCourseFromSemester(a, id) {
   		return false;
 	}   
 }
-
+/**
+ * get the prefix and number of the course
+ * @param li
+ * <li> element that contain the course
+ * @return course
+ * course prefix and number in one string
+ * */
 function getPrefixNumber(li) {
     var course = li.innerHTML;
     var i = course.indexOf(" - ");
@@ -233,7 +306,9 @@ function getPrefixNumber(li) {
     course = course.substring(j);
     return course;
 }
-
+/**
+ *auto assign courses into semester
+ * */
 function autoSemester() {
     var semesterNum = document.getElementById("req_list").children.length - 1;
     if (semesterNum < minSemester) {
@@ -296,10 +371,25 @@ function autoSemester() {
             }
             
             $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
+            $('#undo_assign_button')[0].className = 'button left_auto pure-button button-secondary';
+            $('#add_semesters_button')[0].className = 'pure-button pure-button-disabled';
+            expandAll();
         });
     }
 }
-
+/**
+ * the semester object
+ * @param num
+ * the number of semester e.g. 1 means it is the first semester
+ * @param title
+ * e.g. spring 2014
+ * @param minCredit
+ * minimum credit 
+ * @param maxCredit
+ * maximum credit
+ * @param courses
+ * courses in the semester
+ * */
 function Semester(num, title, minCredit, maxCredit, courses) {
     this.num = num;
     this.title = title;
@@ -307,7 +397,11 @@ function Semester(num, title, minCredit, maxCredit, courses) {
     this.maxCredit = maxCredit;
     this.courses = courses;
 }
-
+/**
+ * get all semester data from the semester list
+ * @return semesters;
+ * - Array contains all semester object
+ * */
 function getSemesterData() {
     var semesterList = document.getElementById("req_list");
     var semesterLis = semesterList.children;
@@ -329,7 +423,13 @@ function getSemesterData() {
     }
     return semesters;
 }
-
+/**
+ * check all the constraints when adding course into semester
+ * @param id
+ * - course id
+ * @param num
+ * - semester number
+ * */
 function checkSemesterConstraints(id, num) {
     var maxDepth = 0;
     for (var i = 0; i < ASO.length; ++i) {
@@ -373,7 +473,16 @@ function checkSemesterConstraints(id, num) {
     }
     return true;
 }
-
+/**
+ * check prerequisite and corequisite constraint when adding course into semester
+ * @param id
+ * - course id
+ * @param courses, array contain some course id
+ * - check the constraints within this given set of course, 
+ * @param req
+ * -check prerequisite or corequisite, 
+ * only two value 'req' -> prerequisite 'co' -> corequisite
+ * */
 function checkSemesterReq(id, courses, req) {
     var p = false;
 
@@ -399,10 +508,7 @@ function checkSemesterReq(id, courses, req) {
     }
     //if exist check if they satisfy the relation
     if (prereqCourses.length > 0) {
-
-        //用来记录每组的条件是否满足
         var ifsatisfy = new Array;
-        //找出一共有多少组
         var gs = new Array;
         for ( i = 0; i < prereq.length; i++) {
             if (i == 0) {
@@ -413,12 +519,9 @@ function checkSemesterReq(id, courses, req) {
                 }
             }
         }
-        //先取出组之间的关系，便于以后处理
         var groupRelation = new Array;
         while (gs.length > 0) {
-            //先处理prerequisite里的第一组
             var g = gs.shift();
-            //取出第一组的课
             var group = new Array;
             for ( i = 0; i < prereq.length; i++) {
                 if (prereq[i].group == g) {
@@ -426,9 +529,7 @@ function checkSemesterReq(id, courses, req) {
                 }
             }
             var total = group.length;
-            //判断第一组课之间的关系
             try {
-                //如果这一组课里只有一门课,则无法取到这组课之间的关系，那么默认设置课之间的关系为or
                 var relation = group[1].relation;
             } catch(e) {
                 var relation = "or";
@@ -459,17 +560,12 @@ function checkSemesterReq(id, courses, req) {
                 } else
                     ifsatisfy.push(false);
             } else {
-                //留着处理not关系
             }
-            //第一组处理完了，准备处理下一组
         }
 
-        //处理组之间的关系
         if (groupRelation.length == 1) {
-            //如果只有一组
             return ifsatisfy[0];
         } else {
-            //不止一组
             if (groupRelation[1] == "or") {
                 var ret = false;
                 for ( i = 0; i < ifsatisfy.length; i++) {
@@ -481,7 +577,6 @@ function checkSemesterReq(id, courses, req) {
                     ret = ifsatisfy[i] && ret;
                 }
             } else {
-                //留着处理not关系
             }
         }
         return ret;
@@ -490,6 +585,9 @@ function checkSemesterReq(id, courses, req) {
     }
 }
 
+/**
+ * the function invoked after clicked "AUTO_NEXT_SEMESTER" button
+ */
 function auto_next_semester_action()
 {
 	var element_text = $('#auto_next_semester_button').html();
@@ -501,4 +599,12 @@ function auto_next_semester_action()
 	{
 		window.location.href = 'studyplan';
 	}
+}
+
+/**
+ * undo the step of "AUTO_NEXT_SEMESTER"
+ * NOT_IMPLEMENTED
+ */
+function undo_assign() {
+    alert("Still under construction...");
 }

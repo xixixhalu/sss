@@ -2,7 +2,6 @@ package models;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,46 +12,58 @@ import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import play.Logger;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import controllers.algorithm.pre_and_core.ArcBox;
 import controllers.algorithm.pre_and_core.Cal_Depth;
-import controllers.algorithm.pre_and_core.CrossLinkedList;
+import controllers.algorithm.pre_and_core.ConstructCourseRelation;
+import controllers.algorithm.pre_and_core.CourseRelation;
 import controllers.algorithm.pre_and_core.NodeInGraph;
 import controllers.algorithm.req_and_course.ComplexReq;
 import controllers.algorithm.req_and_course.ComplexReq_Node;
-import controllers.algorithm.req_and_course.CourseNode;
-import controllers.algorithm.req_and_course.Course_LinkList;
-import controllers.algorithm.req_and_course.Linklist;
-import controllers.algorithm.req_and_course.Node;
-import controllers.algorithm.req_and_course.TestLinkList;
+import controllers.algorithm.req_and_course.CourseInReq;
+import controllers.algorithm.req_and_course.DegreeProgram;
+import controllers.algorithm.req_and_course.ReqListForCourse;
+import controllers.algorithm.req_and_course.ReqNode;
+import controllers.algorithm.req_and_course.SimpleReq;
 
 public class StudyPlan {
 
-	public int redNode = 0;
-	public TestLinkList degreeProgram;
-	CrossLinkedList allCross_relation;
-	Cal_Depth calSemester;
+	public int redCourseInReq = 0;
+	public DegreeProgram degreeProgram;
+	public ConstructCourseRelation allCross_relation;
+	public Cal_Depth calSemester = new Cal_Depth();
 	public ArrayList<Integer> courseBin; // Course Info after auto fill course
 	public Multimap<Integer, Integer> corerequsiteList = ArrayListMultimap.create();
-	public HashMap<Integer, ArrayList<Integer>> studyplanResult; // Study Plan
-																	// Info
-																	// after
-																	// auto fill
-																	// semester
 
+	// Study Plan Info after auto fill semester
+
+	public HashMap<Integer, ArrayList<Integer>> studyplanResult;
+
+	/**
+	 * Get all courses' max_depth
+	 * 
+	 * @param calSemester
+	 *            course relation DAG
+	 * 
+	 * @return null
+	 */
 	public void GetCourseMaxDepthInGraph(Cal_Depth calSemester) {
-		calSemester.allCross_relation_example = allCross_relation;
+//		calSemester.allCross_relation_example = allCross_relation;
 		calSemester.BFS_Max();
 		// calSemester.BFS_Min();
-//		calSemester.Display_All_Headnode_Max();
-		// calSemester.Display_All_Headnode_Min();
+		// calSemester.Display_All_HeadCourseInReq_Max();
+		// calSemester.Display_All_HeadCourseInReq_Min();
 		return;
 	}
 
+	/**
+	 * Get all requirements
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
 	@SuppressWarnings("unchecked")
 	public void GetAllCoureReq() {
 		HashMap<Integer, Integer> tempCoreList = new HashMap<Integer, Integer>();
@@ -86,32 +97,36 @@ public class StudyPlan {
 
 		}
 		System.out.println("**************");
-		//allCross_relation.DisplayCore(tempCoreList5);
+		// allCross_relation.DisplayCore(tempCoreList5);
 		this.corerequsiteList = tempCoreList5;
 		return;
 	}
 
+	/**
+	 * Create degree program using degree program id, including all complex
+	 * requirements, simple requirements
+	 * 
+	 * @param id
+	 *            degree program id
+	 * 
+	 * @return null
+	 */
 	public void CreateDegreeProgram(Integer id) {
 		// boolean chooeseSuccess =false;//是否选课成功
 		Degree degree = Degree.findById(id);
-		degreeProgram = new TestLinkList(degree.getTitle()); // add new degree
+		degreeProgram = new DegreeProgram(degree.getTitle()); // add new degree
 		List<String> complexIds = degree.getReq_ids(); // get Requirement ids
-		allCross_relation = new CrossLinkedList();
+		allCross_relation = new ConstructCourseRelation();
 		for (String complexId : complexIds) {
 			try {
-				Requirement req = Requirement.findById(Integer
-						.valueOf(complexId)); // get
-												// Requirement
+				Requirement req = Requirement.findById(Integer.valueOf(complexId)); // get
+																					// Requirement
 				JSONArray srReqs = new JSONArray(req.getSr_ids());
 				ComplexReq complexReq = null;
 				if (srReqs.length() < 2)
-					complexReq = new ComplexReq(Integer.valueOf(req.getId()),
-							req.getTitle(), "or");
+					complexReq = new ComplexReq(Integer.valueOf(req.getId()), req.getTitle(), "or");
 				else
-					complexReq = new ComplexReq(Integer.valueOf(req.getId()),
-							req.getTitle(),
-							(String) ((JSONObject) srReqs.get(1))
-									.get("relation"));
+					complexReq = new ComplexReq(Integer.valueOf(req.getId()), req.getTitle(), (String) ((JSONObject) srReqs.get(1)).get("relation"));
 				JSONObject srReqObject = null;
 				for (int i = 0; i < srReqs.length(); i++) {
 					srReqObject = (JSONObject) srReqs.get(i);
@@ -120,8 +135,7 @@ public class StudyPlan {
 					Sr sr = Sr.findById(new Integer(srId));
 					int cgId = Integer.valueOf(sr.getCg_id());
 					int reqNum = Integer.valueOf(sr.getRequired_num());
-					Linklist simpleReq = find_or_create_simpleReq(srId,
-							sr.getTitle(), reqNum); // initiate
+					SimpleReq simpleReq = find_or_create_simpleReq(srId, sr.getTitle(), reqNum); // initiate
 					// simple
 					// requirement
 					Cg cg = Cg.findById(new Integer(cgId));
@@ -129,8 +143,7 @@ public class StudyPlan {
 					for (String courseId : courseIds) {
 						addCourse(simpleReq, Integer.valueOf(courseId)); // add
 																			// course
-						add2Course_List2(complexReq, simpleReq,
-								Integer.valueOf(courseId));
+						add2Course_List2(complexReq, simpleReq, Integer.valueOf(courseId));
 					}
 
 					complexReq.insertSimple(simpleReq);
@@ -151,14 +164,13 @@ public class StudyPlan {
 
 		// degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
-		// degreeProgram.displayAllCourse();
 
-		// TestLinkList degreeProgram =new TestLinkList("degreeName1"); //need
+		// TestSimpleReq degreeProgram =new TestSimpleReq("degreeName1"); //need
 		// degreeName input
 		// ComplexReq complexReq1 = new ComplexReq(1,"complexReq1","or");
 		//
 		//
-		// Linklist simpleReq1 = new Linklist(1,"simpleReq1",15);
+		// SimpleReq simpleReq1 = new SimpleReq(1,"simpleReq1",15);
 		//
 		// //req1 -> course1->course2
 		// addCourse(degreeProgram, simpleReq1, 100);
@@ -241,44 +253,67 @@ public class StudyPlan {
 
 		// System.out.print("After AutoFill: \n");
 
-//		degreeProgram.displayallComplexReq();
+		// degreeProgram.displayallComplexReq();
 		// degreeProgram.displayCourseList();
 
-//		allCross_relation.Display_All_Headnode();
-//		allCross_relation.displayCrossLinkedList();
-
+		// allCross_relation.Display_All_HeadCourseInReq();
+		// allCross_relation.displayCrossLinkedList();
 
 		play.Logger.info("================================================");
 	}
 
-	public void addCourse(Linklist simpleReq1, int courseID) {
+	/**
+	 * Add course into the simple requirement
+	 * 
+	 * @param simpleReq1
+	 *            simple requirement id
+	 * 
+	 * @param courseID
+	 *            course id
+	 * 
+	 * @return null
+	 */
+	public void addCourse(SimpleReq simpleReq1, int courseID) {
 		// System.out.println(ifCourseExist);
 
 		// System.out.println("OK");
 
-		Node newNode = new Node(courseID);
+		CourseInReq newCourseInReq = new CourseInReq(courseID);
 
 		if (degreeProgram.course.containsKey(courseID)) {
-			degreeProgram.course.get(courseID).add(newNode);
+			degreeProgram.course.get(courseID).add(newCourseInReq);
 		} else {
-			ArrayList<Node> clist = new ArrayList<Node>();
-			clist.add(newNode);
+			ArrayList<CourseInReq> clist = new ArrayList<CourseInReq>();
+			clist.add(newCourseInReq);
 			degreeProgram.course.put(courseID, clist);
 		}
 
-		simpleReq1.insertNode(newNode);
+		simpleReq1.insertNode(newCourseInReq);
 
 		return;
 	}
 
-	public void createCrossLinkedList(
-			HashMap<Integer, ArrayList<Node>> course_list) {
+	/**
+	 * build the crosslinkedlist
+	 * there are three types of relations:
+	 * 1. '1' means prerequisite relation
+	 * 2. '2' means corequisite relation
+	 * 3. '3' means special relation (which could be a combine of above two)
+	 * See details on algorithm evidence description document.
+	 * 
+	 * There still remain a issue with this function
+	 * One kind of relation cannot be represented
+	 * Which is (A, B or C)
+	 * 
+	 * @param course_list
+	 */
+	public void createCrossLinkedList(HashMap<Integer, ArrayList<CourseInReq>> course_list) {
 		/**
 		 * @author tongrui function: construct the crosslist
 		 */
 		allCross_relation.addAllCourseInGraph(course_list);
 
-		for (Entry<Integer, ArrayList<Node>> entry : course_list.entrySet()) {
+		for (Entry<Integer, ArrayList<CourseInReq>> entry : course_list.entrySet()) {
 			int courseID = entry.getKey();
 			Course course = Course.findById(entry.getKey());
 
@@ -289,49 +324,37 @@ public class StudyPlan {
 				String[] prelist = prereq.split(" ");
 
 				if (prelist.length - 2 == 1) {
-					allCross_relation.setArcBox(Integer.valueOf(prelist[2]),
-							courseID, 1);
+					allCross_relation.setCourseRelation(Integer.valueOf(prelist[2]), courseID, 1);
 				} else if (prelist.length - 2 == 3) {
 					if (prelist[3].equals(",")) {
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[2]), courseID, 1);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[4]), courseID, 1);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[2]), courseID, 1);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[4]), courseID, 1);
 					} else if (prelist[3].equals("or")) {
-						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[2]), redNode, 3);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[4]), redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 1);
+						allCross_relation.addCourse(--redCourseInReq);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[2]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[4]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(redCourseInReq, courseID, 1);
 					}
 				} else if (prelist.length - 2 == 5) {
 					if (prelist[3].equals(",")) {
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[2]), courseID, 1);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[4]), courseID, 1);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[2]), courseID, 1);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[4]), courseID, 1);
 
 						if (prelist[5].equals("or")) {
 							// issue
 						} else if (prelist[5].equals(",")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(prelist[6]), courseID, 1);
+							allCross_relation.setCourseRelation(Integer.valueOf(prelist[6]), courseID, 1);
 						}
 					} else if (prelist[3].equals("or")) {
-						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[2]), redNode, 3);
-						allCross_relation.setArcBox(
-								Integer.valueOf(prelist[4]), redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 1);
+						allCross_relation.addCourse(--redCourseInReq);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[2]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(Integer.valueOf(prelist[4]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(redCourseInReq, courseID, 1);
 						if (prelist[5].equals("or")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(prelist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
+							allCross_relation.setCourseRelation(Integer.valueOf(prelist[6]), redCourseInReq, 3);
+							allCross_relation.setCourseRelation(redCourseInReq, courseID, 3);
 						} else if (prelist[5].equals(",")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(prelist[6]), courseID, 1);
+							allCross_relation.setCourseRelation(Integer.valueOf(prelist[6]), courseID, 1);
 						}
 					}
 				}
@@ -341,50 +364,38 @@ public class StudyPlan {
 				String[] colist = coreq.split(" ");
 
 				if (colist.length - 2 == 1) {
-					allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-							courseID, 2);
+					allCross_relation.setCourseRelation(Integer.valueOf(colist[2]), courseID, 2);
 				} else if (colist.length - 2 == 3) {
 					if (colist[3].equals(",")) {
-						allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-								courseID, 2);
-						allCross_relation.setArcBox(Integer.valueOf(colist[4]),
-								courseID, 2);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[2]), courseID, 2);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[4]), courseID, 2);
 					} else if (colist[3].equals("or")) {
-						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-								redNode, 3);
-						allCross_relation.setArcBox(Integer.valueOf(colist[4]),
-								redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 2);
+						allCross_relation.addCourse(--redCourseInReq);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[2]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[4]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(redCourseInReq, courseID, 2);
 					}
 				} else if (colist.length - 2 == 5) {
 					if (colist[3].equals(",")) {
-						allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-								courseID, 2);
-						allCross_relation.setArcBox(Integer.valueOf(colist[4]),
-								courseID, 2);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[2]), courseID, 2);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[4]), courseID, 2);
 
 						if (colist[5].equals("or")) {
 							// issue
 						} else if (colist[5].equals(",")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(colist[6]), courseID, 2);
+							allCross_relation.setCourseRelation(Integer.valueOf(colist[6]), courseID, 2);
 						}
 					} else if (colist[3].equals("or")) {
-						allCross_relation.addCourse(--redNode);
-						allCross_relation.setArcBox(Integer.valueOf(colist[2]),
-								redNode, 3);
-						allCross_relation.setArcBox(Integer.valueOf(colist[4]),
-								redNode, 3);
-						allCross_relation.setArcBox(redNode, courseID, 2);
+						allCross_relation.addCourse(--redCourseInReq);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[2]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(Integer.valueOf(colist[4]), redCourseInReq, 3);
+						allCross_relation.setCourseRelation(redCourseInReq, courseID, 2);
 
 						if (colist[5].equals("or")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(colist[6]), redNode, 3);
-							allCross_relation.setArcBox(redNode, courseID, 3);
+							allCross_relation.setCourseRelation(Integer.valueOf(colist[6]), redCourseInReq, 3);
+							allCross_relation.setCourseRelation(redCourseInReq, courseID, 3);
 						} else if (colist[5].equals(",")) {
-							allCross_relation.setArcBox(
-									Integer.valueOf(colist[6]), courseID, 2);
+							allCross_relation.setCourseRelation(Integer.valueOf(colist[6]), courseID, 2);
 						}
 					}
 				}
@@ -395,58 +406,100 @@ public class StudyPlan {
 		allCross_relation.removeAloneNode();
 	}
 
-	public void add2Course_List2(ComplexReq complexReq, Linklist simpleReq1,
-			int courseID) {
-		boolean ifCourseExist = degreeProgram
-				.prepareInsertCourseLinkList(courseID);
+	/**
+	 * Given a course id, simple requirement id and complex requirement id, form
+	 * course link list: course1->req1->req2... each requirement node includes
+	 * simple requirement id and complex requirement id
+	 * 
+	 * @param complexReq
+	 *            complex requirement
+	 * 
+	 * @param simpleReq1
+	 *            simple requirement
+	 * 
+	 * @param courseID
+	 *            course id
+	 * 
+	 * 
+	 * @return null
+	 */
+	public void add2Course_List2(ComplexReq complexReq, SimpleReq simpleReq1, int courseID) {
+		boolean ifCourseExist = degreeProgram.prepareInsertCourseLinkList(courseID);
 		if (ifCourseExist) {
-			int simpleReqName = simpleReq1.first.cName;
+			int simpleReqName = simpleReq1.first.cId;
 			int complexReqID = complexReq.first.ComplexReq_Id;
-			CourseNode ReqInfo = new CourseNode(simpleReqName, complexReqID);
+			ReqNode ReqInfo = new ReqNode(simpleReqName, complexReqID);
 			for (int i = 0; i < degreeProgram.course_list2.size(); i++) {
-				if (courseID == degreeProgram.course_list2.get(i).first.rName) {
+				if (courseID == degreeProgram.course_list2.get(i).first.rId) {
 					degreeProgram.course_list2.get(i).insertNode(ReqInfo);
 				}
 
 			}
 		} else {
-			Course_LinkList courseNode = new Course_LinkList(courseID);
-			int simpleReqName = simpleReq1.first.cName;
+			ReqListForCourse courseCourseInReq = new ReqListForCourse(courseID);
+			int simpleReqName = simpleReq1.first.cId;
 			int complexReqID = complexReq.first.ComplexReq_Id;
-			CourseNode ReqInfo = new CourseNode(simpleReqName, complexReqID);
-			courseNode.insertNode(ReqInfo);
-			degreeProgram.addReq2List(courseNode);
+			ReqNode ReqInfo = new ReqNode(simpleReqName, complexReqID);
+			courseCourseInReq.insertNode(ReqInfo);
+			degreeProgram.addReq2List(courseCourseInReq);
 		}
 
 	}
 
-	public Linklist find_or_create_simpleReq(int srId, String srTitle,
-			int reqNum) {
+	/**
+	 * find a simple requirement existed or not. If not, create it.
+	 * 
+	 * @param srId
+	 *            simple requirement id
+	 * 
+	 * @param srTitle
+	 *            simple requirement title
+	 * 
+	 * @param reqNum
+	 *            required number of finished courses
+	 * 
+	 * @return simple requirement
+	 */
+	public SimpleReq find_or_create_simpleReq(int srId, String srTitle, int reqNum) {
 		boolean simpleReqExist = degreeProgram.prepareInsertSimple(srId);
 		if (simpleReqExist) {
 			int i = 0;
 			for (; i < degreeProgram.course_list.size(); i++) {
-				if (srId == degreeProgram.course_list.get(i).first.cName)
+				if (srId == degreeProgram.course_list.get(i).first.cId)
 					break;
 			}
 			return degreeProgram.course_list.get(i);
 		} else {
-			Linklist simpleReq = new Linklist(srId, srTitle, reqNum);
+			SimpleReq simpleReq = new SimpleReq(srId, srTitle, reqNum);
 			return simpleReq;
 		}
 	}
 
+	/**
+	 * If a course is selected in a requirement, then update its status as
+	 * chosen and minus each simple requirement
+	 * "needed finished number of course" 1
+	 * 
+	 * @param complexID
+	 *            complex requirement id
+	 * 
+	 * @param simpleReq1
+	 *            simple requirement id
+	 * 
+	 * @param courseID
+	 *            course id
+	 * 
+	 * @return null
+	 */
 	public void CheckInSelectedCourse(int complexID, int simpleID, int courseID) {
 		for (int i = 0; i < degreeProgram.allComplexReq.size(); i++) {
 			if (degreeProgram.allComplexReq.get(i).first.ComplexReq_Id == complexID) {
 				ComplexReq complexReq = degreeProgram.allComplexReq.get(i);
 				if (!complexReq.isNull()) { // if this complex has simples in it
 					for (int j = 0; j < degreeProgram.course_list.size(); j++) {
-						if (degreeProgram.course_list.get(j).first.cName == simpleID) {
-							degreeProgram.checkCourseIn_ReqList(simpleID,
-									courseID);
-							for (int k = 0; k < allCross_relation.headNodeList
-									.size(); k++) {
+						if (degreeProgram.course_list.get(j).first.cId == simpleID) {
+							degreeProgram.checkCourseIn_ReqList(simpleID, courseID);
+							for (int k = 0; k < allCross_relation.headNodeList.size(); k++) {
 								if (allCross_relation.headNodeList.get(k).courseID == courseID) {
 									allCross_relation.headNodeList.get(k).assign = true;
 									break;
@@ -459,37 +512,30 @@ public class StudyPlan {
 			}
 		}
 	}
-	
-	
 
-	public ArrayList<Integer> AutoFillCourseBin() { // change the arguments and
-													// recursively call this
-													// function
-		calSemester = new Cal_Depth();
+	/**
+	 * Based on student's selection, the algorithm automatically fill the course
+	 * bin
+	 * 
+	 * @param null
+	 * 
+	 * @return course bin result storing course id
+	 */
+	public ArrayList<Integer> AutoFillCourseBin() {
+		// change the arguments and recursively call this function
+//		calSemester = new Cal_Depth();
 		calSemester.allCross_relation_example = allCross_relation;
 		ArrayList<Integer> courseBinResult = new ArrayList<Integer>();
-		GetCourseMaxDepthInGraph(calSemester); // mark the min and max in
-												// nodeInGraph
-		for (int i = 0; i < calSemester.allCross_relation_example.headNodeList
-				.size(); i++) { // in
-								// node
-								// graph
-								// find
-								// all
-								// value
-			NodeInGraph courseInGraph = calSemester.allCross_relation_example.headNodeList
-					.get(i);
+		// mark the min and max in CourseInReqInGraph
+		GetCourseMaxDepthInGraph(calSemester);
+		for (int i = 0; i < calSemester.allCross_relation_example.headNodeList.size(); i++) {
+			// in CourseInReq graph find all value
+			NodeInGraph courseInGraph = calSemester.allCross_relation_example.headNodeList.get(i);
 			for (Integer key : degreeProgram.course.keySet()) {
-				if (degreeProgram.course.get(key).get(0).cName == courseInGraph.courseID) {// update
-																							// course
-																							// both
-																							// in
-																							// requirement
-																							// and
-																							// graph
-					ArrayList<Node> sameCourseList = degreeProgram.course
-							.get(key);
-					for (Node course : sameCourseList) {
+				if (degreeProgram.course.get(key).get(0).cId == courseInGraph.courseID) {
+					// update course both in requirement and graph
+					ArrayList<CourseInReq> sameCourseList = degreeProgram.course.get(key);
+					for (CourseInReq course : sameCourseList) {
 						course.maxDepth = courseInGraph.maxDepth;
 						// course.minDepth = courseInGraph.minDepth;
 					}
@@ -497,52 +543,55 @@ public class StudyPlan {
 
 			}
 		}
+		
+		for (Integer key : degreeProgram.course.keySet()) {
+			ArrayList<CourseInReq> theSameCourse = degreeProgram.course.get(key);
+			
+			for (CourseInReq eachCourse : theSameCourse) {
+				if (eachCourse.chosen == true) {
+					courseBinResult.add(eachCourse.cId);
+					break;
+				}
+			}
+		}
+
+		// Display maxdepth
+		for (Integer key : degreeProgram.course.keySet()) {
+			ArrayList<CourseInReq> sameCourseList = degreeProgram.course.get(key);
+			for (CourseInReq course : sameCourseList) {
+				System.out.println(key+": max_depth is "+course.maxDepth);
+			}
+		}
+
 
 		for (int i = 0; i < degreeProgram.allComplexReq.size(); i++) {
 			ComplexReq complexReq = degreeProgram.allComplexReq.get(i);
 			if (complexReq.first.satisfied == true) {
 				continue;// check next complex requirement
 			} else {
-				ComplexReq_Node simpleReq = complexReq.first.next;// find all
-																	// unsatisfied
-																	// complex
-																	// requirement,
-																	// fetch its
-																	// simple
-																	// requirement
+				// find all unsatisfied complex requirement and fetch its simple
+				// requirement
+				ComplexReq_Node simpleReq = complexReq.first.next;
 				while (simpleReq != null) {// as long as the simple is not null
 					if (simpleReq.SimpleReq.first.statisfied == true) {
 						// do nothing and check next simple requirement
 					} else {
 						// add a function to sort as semester as ascending
-						Node course = simpleReq.SimpleReq.first.next;// each
-																		// course
-																		// in
-																		// simple
-																		// requirement
-						// HashMap<Integer, Node> courseHash = new
-						// HashMap<Integer, Node>();
-						HashMap<Integer, ArrayList<Node>> courseHash = new HashMap<Integer, ArrayList<Node>>();
+						CourseInReq course = simpleReq.SimpleReq.first.next;
+						// each course in simple requirement
+						HashMap<Integer, ArrayList<CourseInReq>> courseHash = new HashMap<Integer, ArrayList<CourseInReq>>();
 
-						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();// each
-																							// simple
-																							// requirement
-																							// has
-																							// a
-																							// sortedset
-																							// stores
-																							// courses
-																							// maxDepth
-
+						SortedSet<Integer> courseOrderByMaxDepth = new TreeSet<Integer>();
+						// each simple requirement has a sortedset stores
+						// courses maxDepth
 						while (course != null) {
 							if (!courseHash.containsKey(course.maxDepth)) {
 								courseOrderByMaxDepth.add(course.maxDepth);
-								ArrayList<Node> alist = new ArrayList<Node>();
+								ArrayList<CourseInReq> alist = new ArrayList<CourseInReq>();
 								alist.add(course);
 								courseHash.put(course.maxDepth, alist);
 							} else {
-								ArrayList<Node> alist = courseHash
-										.get(course.maxDepth);
+								ArrayList<CourseInReq> alist = courseHash.get(course.maxDepth);
 								alist.add(course);
 								courseHash.put(course.maxDepth, alist);
 							}
@@ -552,84 +601,67 @@ public class StudyPlan {
 						int maxMaxDepth = courseOrderByMaxDepth.last();
 
 						if (maxMaxDepth == 0) {
-							// all course in this simple requirement has no pre
-							// and core relation
-							FillNonePreCoreReq(complexReq, simpleReq.SimpleReq,
-									courseBinResult);
+							/*
+							 * all course in this simple requirement has no pre
+							 * and core relation
+							 */
+							FillNonePreCoreReq(complexReq, simpleReq.SimpleReq, courseBinResult);
 
 						} else {
-							// the course in this simple requirement has pre and
-							// core relation
+							/*
+							 * the course in this simple requirement has pre and
+							 * core relation
+							 */
 							// test use:
 							// simpleReq.SimpleReq.first.statisfied=true;
 							// simpleReq.SimpleReq.first.needFinish--;
 
-							for (Entry<Integer, ArrayList<Node>> entry : courseHash
-									.entrySet()) {
-								int key = entry.getKey();
-								ArrayList<Node> courseNodeList = entry
-										.getValue();
-//								System.out.print("The maxDepth is " + key
-//										+ " include these courses: \n");
-								for (Node courseNode : courseNodeList) {
+							for (Entry<Integer, ArrayList<CourseInReq>> entry : courseHash.entrySet()) {
+//								int key = entry.getKey();
+								ArrayList<CourseInReq> courseCourseInReqList = entry.getValue();
+								// System.out.print("The maxDepth is " + key
+								// + " include these courses: \n");
+								for (CourseInReq courseCourseInReq : courseCourseInReqList) {
 									if (complexReq.first.satisfied == false) {
-//										System.out.print("Output course: "
-//												+ courseNode.cName + " ");
+										// System.out.print("Output course: "
+										// + courseCourseInReq.cId + " ");
 										ArrayList<Integer> courseList = new ArrayList<Integer>(); // store
 																									// its
 																									// pre
 																									// an
 																									// core
-										backtrackCourse(courseNode.cName,
-												courseList);
+										backtrackCourse(courseCourseInReq.cId, courseList);
 										RemoveTheLastCourseItSelf(courseList);
 										RemoveTheRedInRelatedCourseList(courseList);
 										for (Integer needToBeSelectedCourse : courseList) {
 											// if(degreeProgram.course.containsKey(needToBeSelectedCourse)){
-											for (Linklist assignSimple : degreeProgram.course_list) {
-												if (degreeProgram
-														.checkCourseIn_ReqList(
-																assignSimple.first.cName,
-																courseNode.cName)) {
-													degreeProgram
-															.CheckAllSimpleAndComplex();
+											for (SimpleReq assignSimple : degreeProgram.course_list) {
+												if (degreeProgram.checkCourseIn_ReqList(assignSimple.first.cId, courseCourseInReq.cId)) {
+													degreeProgram.CheckAllSimpleAndComplex();
 													break;
 												}
 											}
 											boolean f = false;
-											for (int ii = 0; ii < courseBinResult
-													.size(); ii++) {
-												if (needToBeSelectedCourse
-														.compareTo(courseBinResult
-																.get(ii)) == 0) {// *****************
+											for (int ii = 0; ii < courseBinResult.size(); ii++) {
+												if (needToBeSelectedCourse.compareTo(courseBinResult.get(ii)) == 0) {// *****************
 													f = true;
 												}
 											}
 											if (!f)
-												courseBinResult
-														.add(needToBeSelectedCourse);
+												courseBinResult.add(needToBeSelectedCourse);
 											degreeProgram.CheckAllSimpleAndComplex();
 										}
-										degreeProgram
-												.checkCourseIn_ReqList(
-														simpleReq.SimpleReq.first.cName,
-														courseNode.cName);
-										degreeProgram
-												.CheckAllSimpleAndComplex();
+										degreeProgram.checkCourseIn_ReqList(simpleReq.SimpleReq.first.cId, courseCourseInReq.cId);
+										degreeProgram.CheckAllSimpleAndComplex();
 										/*******/
 										boolean f = false;
-										for (int ii = 0; ii < courseBinResult
-												.size(); ii++) {
-											if (Integer.valueOf(
-													courseNode.cName)
-													.compareTo(
-															courseBinResult
-																	.get(ii)) == 0) {// *****************
+										for (int ii = 0; ii < courseBinResult.size(); ii++) {
+											if (Integer.valueOf(courseCourseInReq.cId).compareTo(courseBinResult.get(ii)) == 0) {// *****************
 												f = true;
 											}
 										}
 										if (!f)
-											courseBinResult.add(courseNode.cName);
+											courseBinResult.add(courseCourseInReq.cId);
 									}
 								}
 
@@ -644,46 +676,51 @@ public class StudyPlan {
 				}
 			}
 		}
-//		System.out.print("*******");
-//
-//		for (Integer id : courseBinResult) {
-//
-//			Logger.info(id + " ");
-//			System.out.print(id + " ");
-//		}
+		// System.out.print("*******");
+		//
+		// for (Integer id : courseBinResult) {
+		//
+		// Logger.info(id + " ");
+		// System.out.print(id + " ");
+		// }
 
 		for (Integer id : degreeProgram.course.keySet()) {
-			ArrayList<Node> temp = degreeProgram.course.get(id);
-			Node tempNode = temp.get(0);
-			if (tempNode.chosen == true
-					&& !courseBinResult.contains(tempNode.cName)) {
-				courseBinResult.add(tempNode.cName);
+			ArrayList<CourseInReq> temp = degreeProgram.course.get(id);
+			CourseInReq tempCourseInReq = temp.get(0);
+			if (tempCourseInReq.chosen == true && !courseBinResult.contains(tempCourseInReq.cId)) {
+				courseBinResult.add(tempCourseInReq.cId);
 			}
 		}
 
-//		System.out.print("\n");
+		// System.out.print("\n");
 		courseBin = courseBinResult;
 		return courseBinResult;
 	}
-	
-	public void changeCourseStatus(){
-		for(Integer key : degreeProgram.course.keySet()){
-			ArrayList<Node> eachCourseInstance = degreeProgram.course.get(key);
-			for(Node oneInstance : eachCourseInstance){
-				if(oneInstance.chosen==true){
-					if(eachCourseInstance.get(0).chosen==false){
-						eachCourseInstance.get(0).chosen=true;
+
+	/**
+	 * change unchosen course as status chosen
+	 * 
+	 * @param null
+	 * 
+	 * @return null
+	 */
+	public void changeCourseStatus() {
+		for (Integer key : degreeProgram.course.keySet()) {
+			ArrayList<CourseInReq> eachCourseInstance = degreeProgram.course.get(key);
+			for (CourseInReq oneInstance : eachCourseInstance) {
+				if (oneInstance.chosen == true) {
+					if (eachCourseInstance.get(0).chosen == false) {
+						eachCourseInstance.get(0).chosen = true;
 					}
 				}
 			}
-			
+
 		}
-	
+
 		return;
 	}
 
-
-	public void setAssignSemester(String semesterData, HashMap<Integer, ArrayList<Node>> courseInHash, HashMap<Integer, ArrayList<Integer>> result) {
+	public void setAssignSemester(String semesterData, HashMap<Integer, ArrayList<CourseInReq>> courseInHash, HashMap<Integer, ArrayList<Integer>> result) {
 
 		/**
 		 * @author tongrui assign semester to back end
@@ -703,9 +740,9 @@ public class StudyPlan {
 					int courseID = courses.getInt(j);
 					result.get(semesterNum).add(courseID);
 
-					ArrayList<Node> nodes = courseInHash.get(courseID);
-					for (Node node : nodes) {
-						node.semester = semesterNum;
+					ArrayList<CourseInReq> CourseInReqs = courseInHash.get(courseID);
+					for (CourseInReq CourseInReq : CourseInReqs) {
+						CourseInReq.semester = semesterNum;
 					}
 				}
 
@@ -716,17 +753,24 @@ public class StudyPlan {
 		}
 	}
 
+	/**
+	 * After course is full, based on student's semester assignment the
+	 * algorithm automatically assign course into semesters
+	 * 
+	 * @param numOfSemester
+	 *            how many semester
+	 * @param semesterData
+	 *            student's assignment
+	 * @return HashMap include each semesters and all courses in each semester
+	 */
 	public HashMap<Integer, ArrayList<Integer>> AutoAssignSemester(int numOfSemester, String semesterData) {
 
-		HashMap<Integer, ArrayList<Node>> courseInHash = degreeProgram.course;
-		//degreeProgram.displayAllCourse();
+		HashMap<Integer, ArrayList<CourseInReq>> courseInHash = degreeProgram.course;
+		// degreeProgram.displayAllCourse();
 		// courses in each level
-		HashMap<Integer, ArrayList<Node>> semesterBin = new HashMap<Integer, ArrayList<Node>>();
+		HashMap<Integer, ArrayList<CourseInReq>> semesterBin = new HashMap<Integer, ArrayList<CourseInReq>>();
 		// semester=>[courseID,courseID,courseID]
 		HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
-
-		// set student-specific semesters
-		//setAssignSemester(semesterData, courseInHash, result);
 
 		// initiate the courses, assign the courses with the semester which the
 		// student has choose.
@@ -734,14 +778,14 @@ public class StudyPlan {
 		HashMap<Integer, Integer> courseCountInSemester = new HashMap<Integer, Integer>();
 		try {
 			semesterJsonArray = new JSONArray(semesterData);
-			for(int i=0;i<semesterJsonArray.length();i++){
+			for (int i = 0; i < semesterJsonArray.length(); i++) {
 				JSONObject semester = (JSONObject) semesterJsonArray.get(i);
 				JSONArray courses = (JSONArray) semester.get("courses");
-				//Bowen: recored course count in per semester
+				// Bowen: recored course count in per semester
 				courseCountInSemester.put(semester.getInt("num"), courses.length());
-				for(int j=0;j<courses.length();j++){
-					int id= courses.getInt(j);
-					courseInHash.get(id).get(0).semester=semester.getInt("num");
+				for (int j = 0; j < courses.length(); j++) {
+					int id = courses.getInt(j);
+					courseInHash.get(id).get(0).semester = semester.getInt("num");
 				}
 			}
 		} catch (ParseException e) {
@@ -753,19 +797,18 @@ public class StudyPlan {
 		for (int i = 0; i < courseBin.size(); i++) {
 			for (Integer key : courseInHash.keySet()) {
 				if (courseBin.get(i).compareTo(key) == 0) {
-					Node temp = courseInHash.get(key).get(0);
+					CourseInReq temp = courseInHash.get(key).get(0);
 					if (max <= temp.maxDepth)
 						max = temp.maxDepth;
 					// semesterBin.put(temp.maxDepth,temp);
 
-					if (semesterBin.containsKey(temp.maxDepth)) { // if this
-																	// semester
-																	// exist
-						ArrayList<Node> alist = semesterBin.get(temp.maxDepth);
+					if (semesterBin.containsKey(temp.maxDepth)) {
+						// if this semester exist
+						ArrayList<CourseInReq> alist = semesterBin.get(temp.maxDepth);
 						alist.add(temp);
 						semesterBin.put(temp.maxDepth, alist);
 					} else {
-						ArrayList<Node> alist = new ArrayList<Node>();
+						ArrayList<CourseInReq> alist = new ArrayList<CourseInReq>();
 						alist.add(temp);
 						semesterBin.put(temp.maxDepth, alist);
 					}
@@ -778,57 +821,35 @@ public class StudyPlan {
 		Map<Integer, Integer> numOfCourseInSemester = new HashMap<Integer, Integer>();
 		int level = max;
 		int curSemester = numOfSemester;
-		int hhhhh = -1;
 		while (level >= 0 && curSemester > 0) {
 
-			ArrayList<Node> courseInSameLvl = semesterBin.get(level);// get the
-																		// courses
-																		// in
-																		// this
-																		// level
-																		// of
-																		// depth
-			int num = courseInSemester;// record how many courses remain in one
-										// semester
+			ArrayList<CourseInReq> courseInSameLvl = semesterBin.get(level);
+			// get the courses in this level of depth
+			int num = courseInSemester;
+			// record how many courses remain in one semester
 			num -= courseCountInSemester.get(curSemester);
-			int lvlRemainCourse = courseInSameLvl.size();// record how many
-															// courses remain in
-															// this level of
-															// depth
+			int lvlRemainCourse = courseInSameLvl.size();
+			// record how many courses remain in this level of depth
 			// mark the course with semester
 			for (int i = 0; i < courseInSameLvl.size() && num > 0; i++) {
 				// check the if the course has already been assigned with a
 				// semester.
 				if (courseInSameLvl.get(i).semester != -1) {
-					// -1 is the default number of semester,
-					// if course has been assigned with a semester, then do
-					// nothing continue the loop
+					/**
+					 * -1 is the default number of semester, if course has been
+					 * assigned with a semester, then do nothing continue the
+					 * loop
+					 */
 					lvlRemainCourse--;
 					continue;
 				}
 				// if the course has not been assigned
-				int tempt = courseInSameLvl.get(i).cName;
+				int tempt = courseInSameLvl.get(i).cId;
 				if (corerequsiteList.containsKey(Integer.valueOf(tempt))) {
-					courseInSameLvl.get(i).semester = curSemester;// assign the
-																	// current
-																	// semester
-																	// to the
-																	// course
+					courseInSameLvl.get(i).semester = curSemester;
+					// assign the current semester to the course
 					num--;
-					num = BacktrackCore(courseInHash, courseInSameLvl.get(i).cName, curSemester, num);
-					// ArrayList<Integer> coreqs=(ArrayList<Integer>)
-					// corerequsiteList.get(courseInSameLvl.get(i).cName);
-					// for(Integer lalala:coreqs){
-					// for(int n = 0 ;n<courseBin.size();n++){
-					// if(courseInHash.get(lalala).get(0).cName==courseBin.get(n)){
-					// courseInHash.get(lalala).get(0).semester=curSemester;
-					// num--;
-					// //迭代查找所有的corequisite.
-					// }
-					//
-					// }
-					//
-					// }
+					num = BacktrackCore(courseInHash, courseInSameLvl.get(i).cId, curSemester, num);
 				} else {
 					courseInSameLvl.get(i).semester = curSemester;
 					lvlRemainCourse--;
@@ -841,14 +862,14 @@ public class StudyPlan {
 			if (lvlRemainCourse == 0) {
 				level--;
 			}
-			if (num < 6)
+			if (num < courseInSemester)
 				curSemester--;
 		}
 
 		for (int i = 1; i <= numOfCourseInSemester.size(); i++) {
 			int remainCourse = numOfCourseInSemester.get(i);
 			if (numOfCourseInSemester.get(i) > 0) {
-				ArrayList<Node> courseWithoutReq = semesterBin.get(0);
+				ArrayList<CourseInReq> courseWithoutReq = semesterBin.get(0);
 
 				for (int j = 0; j < courseWithoutReq.size() && remainCourse > 0; j++) {
 					if (courseWithoutReq.get(j).semester == -1) {
@@ -862,30 +883,28 @@ public class StudyPlan {
 
 		// -------------------------------
 
-//		for (Integer key : numOfCourseInSemester.keySet()) {
-//			System.out.println("*************In " + key + " semester, it has "
-//					+ numOfCourseInSemester.get(key) + " size remain ");
-//		}
-
-//		for (Integer key : semesterBin.keySet()) {
-//			System.out.print("The semester " + key + " is \n");
-//			ArrayList<Node> tempNodeList = semesterBin.get(key);
-//			for (Node course : tempNodeList) {
-//				System.out.print(course.cName + "\n");
-//			}
-//		}
+		for (Integer key : numOfCourseInSemester.keySet()) {
+			System.out.println("*************In " + key + " semester, it has " + numOfCourseInSemester.get(key) + " size remain ");
+		}
 
 		for (Integer key : semesterBin.keySet()) {
-			ArrayList<Node> temp = semesterBin.get(key);
-			for (Node course : temp) {// get each course
+			System.out.print("The level " + key + " has \n");
+			ArrayList<CourseInReq> tempCourseInReqList = semesterBin.get(key);
+			for (CourseInReq course : tempCourseInReqList) {
+				System.out.print(course.cId + "\n");
+			}
+		}
+
+		for (Integer key : semesterBin.keySet()) {
+			ArrayList<CourseInReq> temp = semesterBin.get(key);
+			for (CourseInReq course : temp) {// get each course
 				if (result.containsKey(course.semester)) {
-					ArrayList<Integer> thisSemester = result
-							.get(course.semester);
-					thisSemester.add(Integer.valueOf(course.cName));
+					ArrayList<Integer> thisSemester = result.get(course.semester);
+					thisSemester.add(Integer.valueOf(course.cId));
 					result.put(course.semester, thisSemester);
 				} else {
 					ArrayList<Integer> thisNewSemester = new ArrayList<Integer>();
-					thisNewSemester.add(Integer.valueOf(course.cName));
+					thisNewSemester.add(Integer.valueOf(course.cId));
 					result.put(course.semester, thisNewSemester);
 				}
 			}
@@ -903,35 +922,59 @@ public class StudyPlan {
 		return result;
 	}
 
-	public int BacktrackCore(HashMap<Integer, ArrayList<Node>> courseInHash, Integer courseID, int currentSemester, int num) {
-		// course.semester = currentSemester;// assign the current semester to
-		// the course
+	/**
+	 * According to all corequisite relation and selected course in course bin,
+	 * the algorithm finds which courses needs to have corequisite constraints.
+	 * 
+	 * @param courseInHash
+	 * @param courseID
+	 * @param currentSemester
+	 * @param num
+	 * @return number of remaining course in a semester
+	 */
+	public int BacktrackCore(HashMap<Integer, ArrayList<CourseInReq>> courseInHash, Integer courseID, int currentSemester, int num) {
+		// course.semester = currentSemester;
+		// assign the current semester to the course
 		// num--;
 		Integer[] coreqs = corerequsiteList.get(courseID).toArray(new Integer[0]);
-		for (Integer lalala : coreqs) {
-			if (courseInHash.get(lalala).get(0).semester != -1)
-				continue;
-			for (int n = 0; n < courseBin.size(); n++) {
-				if (lalala.equals(courseBin.get(n))) {
-					courseInHash.get(lalala).get(0).semester = currentSemester;
-					num--;
-					num = BacktrackCore(courseInHash, lalala, currentSemester, num);
-					// 迭代查找所有的corequisite.
+
+		for (Integer coreq : coreqs) {
+			if (courseInHash.containsKey(coreq)) {
+				if (courseInHash.get(coreq).get(0).semester != -1)
+					continue;
+				for (int n = 0; n < courseBin.size(); n++) {
+					if (coreq.equals(courseBin.get(n))) {
+						courseInHash.get(coreq).get(0).semester = currentSemester;
+						num--;
+						num = BacktrackCore(courseInHash, coreq, currentSemester, num);
+						// find corequisite iteratively
+					}
+
 				}
-
 			}
-
 		}
 
 		return num;
 	}
 
-	public void FillNonePreCoreReq(ComplexReq complexReq, Linklist simpleReq, ArrayList<Integer> courseBinResult) {
-		Node course = null;
-		Linklist tempSimple = null;
+	/**
+	 * Satisfying requirement that all courses have no prerequisite and
+	 * corequisite relation
+	 * 
+	 * @param complexReq
+	 *            complex requirement id
+	 * @param simpleReq
+	 *            simple requirement id
+	 * @param courseBinResult
+	 *            all courses in course bin c
+	 * @return null
+	 */
+	public void FillNonePreCoreReq(ComplexReq complexReq, SimpleReq simpleReq, ArrayList<Integer> courseBinResult) {
+		CourseInReq course = null;
+		SimpleReq tempSimple = null;
 		ComplexReq tempComplex = null;
-		for (Linklist simpleRequirement : degreeProgram.course_list) {
-			if (simpleRequirement.first.cName == simpleReq.first.cName) {
+		for (SimpleReq simpleRequirement : degreeProgram.course_list) {
+			if (simpleRequirement.first.cId == simpleReq.first.cId) {
 				course = simpleRequirement.first.next;
 				tempSimple = simpleRequirement;
 				break;
@@ -946,31 +989,38 @@ public class StudyPlan {
 		}
 
 		while (course != null && course.chosen == false && tempSimple.first.statisfied == false && tempComplex.first.satisfied == false) {
-			degreeProgram.checkCourseIn_ReqList(tempSimple.first.cName, course.cName); // mark
-																						// this
-																						// course
-																						// true
-																						// in
-																						// the
-																						// simple
+			degreeProgram.checkCourseIn_ReqList(tempSimple.first.cId, course.cId); // mark
+																					// this
+																					// course
+																					// true
+																					// in
+																					// the
+																					// simple
 
 			degreeProgram.CheckAllSimpleAndComplex();
-			courseBinResult.add(course.cName);
+			courseBinResult.add(course.cId);
 
 			course = course.next;
 		}
 		return;
 	}
 
-//	public void ShowRelatedCourse(ArrayList<Integer> pre_and_core) {
-//		for (int i = 0; i < pre_and_core.size(); i++) {
-//
-//			System.out.print(pre_and_core.get(i) + "\n");
-//		}
-//	}
+	// public void ShowRelatedCourse(ArrayList<Integer> pre_and_core) {
+	// for (int i = 0; i < pre_and_core.size(); i++) {
+	//
+	// System.out.print(pre_and_core.get(i) + "\n");
+	// }
+	// }
 
-	public ArrayList<Integer> RemoveTheLastCourseItSelf(
-			ArrayList<Integer> courseList) {
+	/**
+	 * remove the course itself
+	 * 
+	 * @param courseList
+	 *            all related prerequisite and corequisite courses including
+	 *            course itself
+	 * @return courseList without course itself
+	 */
+	public ArrayList<Integer> RemoveTheLastCourseItSelf(ArrayList<Integer> courseList) {
 
 		if (courseList.size() == 0) {
 
@@ -981,8 +1031,15 @@ public class StudyPlan {
 		return courseList;
 	}
 
-	public ArrayList<Integer> RemoveTheRedInRelatedCourseList(
-			ArrayList<Integer> pre_and_core) {
+	/**
+	 * remove the red node
+	 * 
+	 * @param pre_and_core
+	 *            all related prerequisite and corequisite courses
+	 * 
+	 * @return pre_and_core without red node
+	 */
+	public ArrayList<Integer> RemoveTheRedInRelatedCourseList(ArrayList<Integer> pre_and_core) {
 		for (int i = 0; i < pre_and_core.size(); i++) {
 			if (pre_and_core.get(i) < 0) {
 				pre_and_core.remove(i);
@@ -992,61 +1049,59 @@ public class StudyPlan {
 		return pre_and_core;
 	}
 
-	public void backtrackCourse(int courseID, ArrayList<Integer> courseList) { // given
-																				// course
-																				// name
-		CrossLinkedList cr = allCross_relation;
+	/**
+	 * Find all prerequisite and corequisite courses, which is related to one
+	 * given course
+	 * 
+	 * @param courseID
+	 *            course id
+	 * @param courseList
+	 *            prerequisite and corequisite courses list
+	 * 
+	 */
+	public void backtrackCourse(int courseID, ArrayList<Integer> courseList) {
+		ConstructCourseRelation cr = allCross_relation;
 		int size = cr.headNodeList.size();
-		ArcBox tempArc = new ArcBox();
+		CourseRelation tempArc = new CourseRelation();
 		NodeInGraph tempNode = new NodeInGraph();
-		// int i = 0, j = 0; // 计数器
 		for (int i = 0; i < size; i++) {
-			tempNode = cr.headNodeList.get(i); // 找到这个将要被选的课程，开始回溯
-			if (tempNode.courseID == courseID) {// 找到了这个课名的headnode
-												// 开始遍历链表
+			tempNode = cr.headNodeList.get(i);
+			if (tempNode.courseID == courseID) {
+
 				tempArc = tempNode.firstIn;
 				for (; tempArc != null; tempArc = tempArc.hlink) {
-					int relation_type = tempArc.info;// 边的权值，代表关系
+					int relation_type = tempArc.info;
 					int tempTailCourseID = tempArc.tailCourseID;
 					if (relation_type == 3) {
-						for (int j = 0; j < size; j++) { // 这个for
-							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
-							NodeInGraph tempNode2 = cr.headNodeList.get(j);
-							if (tempNode2.courseID == tempTailCourseID) { // for
-																			// loop只需要做if判断为正的时候的事情
-								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
+						for (int j = 0; j < size; j++) {
+
+							NodeInGraph tempCourseInReq2 = cr.headNodeList.get(j);
+							if (tempCourseInReq2.courseID == tempTailCourseID) {
+
+								if (tempCourseInReq2.finished) {
 									break;
-								} else if (tempNode2.finished == false
-										&& tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
-									backtrackCourse(tempNode2.courseID,
-											courseList);
-								} else { // tempNode2.finished == false &&
-											// tempNode2.visited == true
-									tempNode2.visited = true; // 先把这个节点标记为mark过
-									backtrackCourse(tempNode2.courseID,
-											courseList);
+								} else if (tempCourseInReq2.finished == false && tempCourseInReq2.visited == true) {
+									backtrackCourse(tempCourseInReq2.courseID, courseList);
+								} else {
+									tempCourseInReq2.visited = true;
+									backtrackCourse(tempCourseInReq2.courseID, courseList);
 								}
 							}
 
 						}
 						break;
 					} else {
-						for (int j = 0; j < size; j++) { // 这个for
-							// loop只是一个找的过程，找到tempNode的第一个前驱课程，并在headnodelist中看它是否已经被选入
-							NodeInGraph tempNode2 = cr.headNodeList.get(j);
-							if (tempNode2.courseID == tempTailCourseID) { // for
-																			// loop只需要做if判断为正的时候的事情
-								if (tempNode2.finished) {// 如果这个前驱课程被选入，应该看下一个前驱课程有没有被选入,回到上一层for循环
+						for (int j = 0; j < size; j++) {
+							NodeInGraph tempCourseInReq2 = cr.headNodeList.get(j);
+							if (tempCourseInReq2.courseID == tempTailCourseID) {
+
+								if (tempCourseInReq2.finished) {
 									break;
-								} else if (tempNode2.finished == false
-										&& tempNode2.visited == true) { // 这个前驱节点已经被mark但是它本身还没遍历完
-									backtrackCourse(tempNode2.courseID,
-											courseList);
-								} else { // tempNode2.finished == false &&
-											// tempNode2.visited == true
-									tempNode2.visited = true; // 先把这个节点标记为mark过
-									backtrackCourse(tempNode2.courseID,
-											courseList);
+								} else if (tempCourseInReq2.finished == false && tempCourseInReq2.visited == true) {
+									backtrackCourse(tempCourseInReq2.courseID, courseList);
+								} else {
+									tempCourseInReq2.visited = true;
+									backtrackCourse(tempCourseInReq2.courseID, courseList);
 
 								}
 							}
@@ -1055,17 +1110,17 @@ public class StudyPlan {
 					}
 
 				}
-				tempNode.finished = true; // 这个课的所有前驱finished=true;
+				tempNode.finished = true;
 				tempNode.visited = true;
 				courseList.add(tempNode.courseID);
-				// System.out.print(tempNode.courseID + " ");
+				// System.out.print(tempCourseInReq.courseID + " ");
 				// System.out.println();
 				return;
 			}
 
 		}
-		// System.out.print("Cannot find selected course in headnodelist!");
-		return; // 没找到这个被选的课程
+		// System.out.print("Cannot find selected course in headCourseInReqlist!");
+		return;
 	}
 
 }

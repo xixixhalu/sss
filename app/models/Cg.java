@@ -11,13 +11,7 @@ import models.Cg;
 import models.entities.ECg;
 
 
-/* Bowen: 
- * This class is used for encapsulating the data entity, so that any extended functions
- * AND exceptions handling can be added here.
- * 
- * Exceptions have not been taken into account, and will be added later*/
-
-
+@SuppressWarnings("serial")
 public class Cg extends Model{
 	
 	private ECg entity;
@@ -32,6 +26,7 @@ public class Cg extends Model{
 
 	/** unwrap(Cg) : ECg,
 	 * Unwrap the cg Entity*/
+	@SuppressWarnings("unused")
 	private static ECg unwrap(Cg cg) {
 		return cg == null ? null : cg.entity;
 	}

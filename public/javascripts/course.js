@@ -3,7 +3,9 @@
  */
 
 window.onload = initAll;
-
+/**
+ * initiate the page
+ */
 function initAll() {
     document.getElementById("prereq").onkeyup = function() {
         searchSuggest("prereq", "popups_pre", event.keyCode);
@@ -32,7 +34,9 @@ function initAll() {
     }
     initEdit();
 }
-
+/**
+ * parse the json String get from server to json object
+ */
 function getCoursesArray() {
     var coursesArray = new Array();
     if (xhr.readyState == 4) {
@@ -47,7 +51,15 @@ function getCoursesArray() {
     }
     return coursesArray;
 }
-
+/**
+ * the auto complete function when entering the course name
+ * @param value
+ * the suggested course name
+ * @param div
+ * the div element to append the course
+ * @param keyCode
+ * the key user pressed. 
+ */
 function searchSuggest(value, div, keyCode) {
 
     var coursesArray = getCoursesArray();
@@ -109,21 +121,33 @@ function searchSuggest(value, div, keyCode) {
         document.getElementById(div).innerHTML = "";
     }
 }
-
+/**
+ * if there is only one suggestion left, help the user choose
+ * add course into prerequisites
+ */
 function makeChoice(evt) {
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     document.getElementById("prereq").value = thisDiv.innerHTML;
     document.getElementById("prerequisite_id").value = thisDiv.parentElement.getElementsByTagName("input")[0].value;
     document.getElementById("popups_pre").innerHTML = "";
 }
-
+/**
+ * if there is only one suggestion left, help the user choose
+ * add course into corequisites
+ */
 function makeChoice2(evt) {
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     document.getElementById("coreq").value = thisDiv.innerHTML;
     document.getElementById("corequisite_id").value = thisDiv.parentElement.getElementsByTagName("input")[0].value;
     document.getElementById("popups_co").innerHTML = "";
 }
-
+/**
+ * add the course into prerequisites or corequisites
+ * @param name
+ * where to append the course only two value prereq and coreq
+ * @param list
+ * used when calling romove() function
+ */
 function addReq(name, list) {
     var courseName = document.getElementById(name).value;
 
@@ -173,7 +197,15 @@ function checkExist(id) {
     }
     return false;
 }
-
+/**
+ * remove the course from prerequisites or corequisites list
+ * @param li
+ * ul element contain the course need to be remove
+ * @param list
+ * ul element contain all prerequisites or corequisites courses
+ * @param evt 
+ * click event
+ */
 function remove(li, list, evt) {
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     if (thisDiv.nodeName == "INPUT") {
@@ -199,7 +231,11 @@ function Course(id, prefix, num, relation, group) {
     this.relation = relation;
     this.group = group;
 }
-
+/**
+ * get all the courses in prerequisites or corequisites list
+ * @param req
+ * only two value reqlist and coreqlist
+ */
 function getReqCourses(req) {
     var courses = new Array();
     var reqlist = document.getElementById(req);
@@ -224,7 +260,11 @@ function getReqCourses(req) {
     }
     return courses;
 }
-
+/**
+ * submit the data
+ * @param form 
+ * form element need to be submit
+ */
 function doSubmit(form) {
     if (checkCourseForm()) {
         var prereqs = getReqCourses("reqlist");
@@ -238,7 +278,9 @@ function doSubmit(form) {
         return false;
     //form.submit();
 }
-
+/**
+ * initiate the prerequisites and corequisites list on edit course page
+ */
 function initEdit() {
     var prereqStr = document.getElementById("prerequisite_id").value;
     var coreqStr = document.getElementById("corequisite_id").value;

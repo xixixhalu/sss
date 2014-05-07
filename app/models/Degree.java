@@ -10,13 +10,7 @@ import play.db.ebean.*;
 import models.entities.EDegree;
 
 
-/* Bowen: 
- * This class is used for encapsulating the data entity, so that any extended functions
- * AND exceptions handling can be added here.
- * 
- * Exceptions have not been taken into account, and will be added later*/
-
-
+@SuppressWarnings("serial")
 public class Degree extends Model{
 	
 	private EDegree entity;
@@ -31,6 +25,7 @@ public class Degree extends Model{
 
 	/** unwrap(Degree) : EDegree,
 	 * Unwrap the degree Entity*/
+	@SuppressWarnings("unused")
 	private static EDegree unwrap(Degree degree) {
 		return degree == null ? null : degree.entity;
 	}

@@ -98,6 +98,15 @@
                     </ul>
                 </div>
                 <div>
+                    <style scoped>
+                        .button-secondary {
+                            color: white;
+                            border-radius: 4px;
+                            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                        }
+                    </style>
+
+                    <a class="button left_auto pure-button pure-button-disabled" style="margin-bottom:0px" id="undo_assign_button" onclick='undo_assign()'>UNDO</a>
                     <a class="button left_auto pure-button pure-button-primary" href="javascript:{}" id="auto_next_semester_button"
                     		onclick="auto_next_semester_action()">AUTO ASSIGN SEMESTERS</a>
                     		<!-- <a class="button left_next" href="studyplan">NEXT</a> -->
@@ -139,7 +148,7 @@
                             }
                         </style>
                         <div class="addsemester sem_add_title" onclick="addSemesters()">
-                            <button class="button-warning pure-button" style="width:100%">ADD NEW SEMESTERS</button>
+                            <button id="add_semesters_button" class="button-warning pure-button" style="width:100%">ADD NEW SEMESTERS</button>
                         </div>
                     </li>
                     <!-- <li>

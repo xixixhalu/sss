@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import play.db.ebean.Model;
 
+@SuppressWarnings("serial")
 @Entity 
 @Table(name = "user")
 public class EUser extends Model{

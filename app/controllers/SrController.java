@@ -11,6 +11,10 @@ import play.mvc.Result;
 
 public class SrController extends Controller{
 	
+	/**
+	 * retrieve Simple Requirement Information
+	 * @return simple requirement list page
+	 */
 	public static Result retrieveSrs() {
 		String user = session().get("user");
     	if(user == null)
@@ -25,6 +29,11 @@ public class SrController extends Controller{
     	}
     }
 	
+	/**
+	 * delete simple requirement
+	 * @param id
+	 *         - id of the simple requirement selected
+	 * */
 	public static Result deleteSr(Integer id){
 		String user = session().get("user");
     	if(user == null)
@@ -40,6 +49,11 @@ public class SrController extends Controller{
     	}
     }
     
+	/**
+	 * request edit simple requirement page
+	 * @param id
+	 *         - id of the simple requirement selected
+	 * */
     public static Result requestEditSrPage(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -55,6 +69,11 @@ public class SrController extends Controller{
     	}
     }
     
+    /**
+	 * update the selected simple requirement information
+	 * @param id
+	 *         - id of the simple requirement selected
+	 * */
     public static Result updateSr(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -82,6 +101,10 @@ public class SrController extends Controller{
     	}
     }
     
+    /**
+     * request create simple requirement page
+     * @return simple requirement information input page
+     */
     public static Result requestCreateSrPage(){
     	String user = session().get("user");
     	if(user == null)
@@ -97,6 +120,10 @@ public class SrController extends Controller{
     	}
     }
     
+    /**
+     * submit a new simple requirement information
+     * @return simple requirement list page
+     */
     public static Result addSr(){
     	String user = session().get("user");
     	if(user == null)

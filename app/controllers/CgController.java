@@ -17,6 +17,10 @@ import play.mvc.Result;
 
 public class CgController extends Controller{
 	
+	/**
+	 * retrieve Course Group Information
+	 * @return course group list page
+	 */
 	public static Result retrieveCgs() {
 		String user = session().get("user");
     	if(user == null)
@@ -31,6 +35,11 @@ public class CgController extends Controller{
     	}
     }
 	
+	/**
+	 * delete course group
+	 * @param id
+	 *         - id of the course group selected
+	 * */
 	public static Result deleteCg(Integer id){
 		String user = session().get("user");
     	if(user == null)
@@ -46,6 +55,11 @@ public class CgController extends Controller{
     	}
     }
     
+	/**
+	 * request edit course group page
+	 * @param id
+	 *         - id of the course group selected
+	 * */
     public static Result requestEditCgPage(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -62,6 +76,11 @@ public class CgController extends Controller{
     		
     }
     
+    /**
+	 * update the selected course group information
+	 * @param id
+	 *         - id of the course group selected
+	 * */
     public static Result updateCg(Integer id){
     	String user = session().get("user");
     	if(user == null)
@@ -89,6 +108,10 @@ public class CgController extends Controller{
     	
     }
     
+    /**
+     * request create course group page
+     * @return course group information input page
+     */
     public static Result requestCreateCgPage(){
     	String user = session().get("user");
     	if(user == null)
@@ -104,6 +127,10 @@ public class CgController extends Controller{
     	}
     }
     
+    /**
+     * submit a new course group information
+     * @return course group list page
+     */
     public static Result addCg(){
     	String user = session().get("user");
     	if(user == null)
@@ -127,7 +154,11 @@ public class CgController extends Controller{
     	}
     } 
     
-
+    /**
+	 * get the courses information in the selected course group
+	 * @param id
+	 *         - id of the course group selected
+	 * */
     public static Result retrieveCgCourses(Integer id) {
     	
     	List<String> ids = Cg.findById(id).getCourse_ids();

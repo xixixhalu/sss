@@ -16,13 +16,7 @@ import models.Course;
 import models.entities.ECourse;
 
 
-/* Bowen: 
- * This class is used for encapsulating the data entity, so that any extended functions
- * AND exceptions handling can be added here.
- * 
- * Exceptions have not been taken into account, and will be added later*/
-
-
+@SuppressWarnings("serial")
 public class Course extends Model{
 	
 	private ECourse entity;
@@ -37,6 +31,7 @@ public class Course extends Model{
 
 	/** unwrap(Course) : ECourse,
 	 * Unwrap the course Entity*/
+	@SuppressWarnings("unused")
 	private static ECourse unwrap(Course course) {
 		return course == null ? null : course.entity;
 	}

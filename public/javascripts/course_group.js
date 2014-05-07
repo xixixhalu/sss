@@ -1,13 +1,17 @@
 /**
  * @author Bohan Zheng
  */
+
+/**
+ * add selected courses into the course group
+ */
 function add() {
     var courses = document.getElementsByName("courses");
     var checked_course = new Array;
     for ( i = 0; i < courses.length; i++) {
         if (courses[i].checked == true) {
             checked_course.push(courses[i].value);
-            courses[i].checked=false;
+            courses[i].checked = false;
         }
     }
     var selected = document.getElementById("selected");
@@ -19,16 +23,16 @@ function add() {
             selected_course.push(s_courses[i].value);
         }
     }
-    var result=combineCourse(checked_course,selected_course);
-    
-    var resultName=new Array;
-    for (i=0; i<result.length;i++){
-    	resultName.push(document.getElementById(result[i]).innerHTML);
-    	
+    var result = combineCourse(checked_course, selected_course);
+
+    var resultName = new Array;
+    for ( i = 0; i < result.length; i++) {
+        resultName.push(document.getElementById(result[i]).innerHTML);
+
     }
     //alert(selected_course[0]);
     while (selected.firstChild) {
-    selected.removeChild(selected.firstChild);
+        selected.removeChild(selected.firstChild);
     }
 
     for ( i = 0; i < resultName.length; i++) {
@@ -46,6 +50,13 @@ function add() {
     }
 }
 
+/**
+ * combine the newly selected courses with the courses already in the course group
+ * @param courses
+ * courses already in the course group
+ * @param s_courses
+ * newly selected courses
+ */
 function combineCourse(courses, s_courses) {
     if (courses.length == 0) {
         return false;
@@ -67,6 +78,9 @@ function combineCourse(courses, s_courses) {
     }
 }
 
+/**
+ *remove the courses from course group
+ */
 function remove() {
     var courses = document.getElementsByName("s_courses");
     var s_courses = new Array;
@@ -82,6 +96,11 @@ function remove() {
     }
 }
 
+/**
+ * submit course group data
+ * @param e
+ * form object
+ */
 function onCgSub(e) {
     var s_courses = document.getElementsByName("s_courses");
     var selected_course = new Array;
@@ -98,7 +117,12 @@ function onCgSub(e) {
     document.getElementById("selected").appendChild(hidden);
     e.submit();
 }
-
+/**
+ * we used the same javascript file in add/edit degree program pages
+ * submit degree program data
+ * @param e
+ * form object
+ */
 function onDegreeSub(e) {
     var s_courses = document.getElementsByName("s_courses");
     var selected_course = new Array;
@@ -113,6 +137,6 @@ function onDegreeSub(e) {
     hidden.value = selected_course;
     hidden.name = "req_ids";
     document.getElementById("selected").appendChild(hidden);
-    
+
     e.submit();
 }
