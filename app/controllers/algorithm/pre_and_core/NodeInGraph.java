@@ -14,7 +14,7 @@ public class NodeInGraph {
 	public int maxDepth = 0;
 	public boolean assign = false;
 	public CourseRelation firstIn, firstOut;
-	public boolean visited = false; // course is marked, visited=true
+	public boolean visited = false; // course is visited in BFS_MAX, visited=true
 	public boolean finished = false; // course is selected successfully with
 										// pre/core-requisite finished = true ;
 
