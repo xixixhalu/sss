@@ -8,7 +8,7 @@ public class Application extends Controller {
     public static Result index() {
 
         //return ok(index.render("Your new application is ready."));
-    	return redirect(routes.StudyPlanController2.retrieveDegrees());
+    	return redirect(routes.StudyPlanController.retrieveDegrees());
     }
     
     public static Result help() {

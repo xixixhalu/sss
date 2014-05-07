@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class StudyPlanController2 extends Controller {	
+public class StudyPlanController extends Controller {	
 	
 	/**
 	 * retrieve degree selection page
