@@ -26,7 +26,7 @@ $(document).ready(function() {
     });
 });
 /**
- * dropdown effect for the requirement
+ * drop down effect for the requirement
  * @param id
  *         - id of the requirement clicked
  * */
@@ -45,12 +45,9 @@ function dropDown(id) {
 }
 
 /**
- * adding course to want-to-take list
- * @param id
- * - id of the course clicked
- * @param curNode
- * - the current course element clicked
- * */
+ * expand the clicked course group tab at the right side panel
+ * 
+ */
 function expand(id) {
     var node = document.getElementById(id);
     var nodes = node.children;
@@ -61,6 +58,9 @@ function expand(id) {
     nodes[0].style.display = "none";
 }
 
+/**
+ * shrink the clicked course group tab at the right side panel
+ */
 function shrink(id) {
     var node = document.getElementById(id);
     var nodes = node.children;
@@ -71,6 +71,9 @@ function shrink(id) {
     nodes[1].style.display = "none";
 }
 
+/**
+ * expand all the course group tabs at the right side panel
+ */
 function expandAll() {
     var req_list = $('#reqs_list')[0].children;
     for (var i = 0; i < req_list.length; i++) {
@@ -81,6 +84,9 @@ function expandAll() {
     }
 }
 
+/**
+ * shrink all the course group tabs at the right side panel
+ */
 function shrinkAll() {
     var req_list = $('#reqs_list')[0].children;
     for (var i = 0; i < req_list.length; i++) {
@@ -552,13 +558,18 @@ function wantTakeCourse(id, sid, cid) {
     this.cid = cid;
 }
 /**
- * 
+ * The data structure wrapped with course id and course maximum depth
+ * the maximum depth will be filled after clicking "AUTO_FILL_COURSE"
  */
 function ASO(id, maxDepth) {
     this.id = id;
     this.maxDepth = maxDepth;
 }
 
+/**
+ * the function invoked when clicking "NEXT" button
+ * the form get submitted by this function
+ */
 function submitCourse(form) {
     /* create hidden field of selected courses */
     var acForm = document.getElementById("acForm");
@@ -757,7 +768,11 @@ function take_all_action(srElement) {
     }
 
 }
-
+/**
+ * This function undoes the AUTO_FILL_COURSE step
+ * the system selected courses will be cleared from the course bin
+ * additional, expanded tabs will be shrinked
+ */
 function undo_fill() {
     // first visually clear course bin
     var ul_want = document.getElementById('wantTake');
@@ -805,6 +820,10 @@ function undo_fill() {
     });
 }
 
+/**
+ * the function invoked when "TAKE_ALL_MANDATORY" button being clicked
+ * @param {Object} parentElem
+ */
 function take_all_mandatory_action(parentElem) {
     var nodes = parentElem.children;
     for (var i = 0; i < nodes.length; i++) {

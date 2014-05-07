@@ -2,6 +2,9 @@
  * @author rtong
  */
 
+/**
+ * Check the null value of the form
+ */
 function checkCgForm() {
 	var prefix = document.getElementsByName("prefix")[0].value;
 	var title = document.getElementsByName("title")[0].value;
@@ -22,6 +25,9 @@ function checkCgForm() {
 	return true;
 }
 
+/**
+ * Check the null value of the form
+ */
 function checkCourseForm() {
 	var prefix = document.getElementsByName("prefix")[0].value;
 	var number = document.getElementsByName("number")[0].value;
@@ -65,6 +71,9 @@ function checkCourseForm() {
 	return true;
 }
 
+/**
+ * Check the null value of the form
+ */
 function checkDegreeForm() {
 	var title = document.getElementsByName("title")[0].value;
 	var selected = document.getElementById("selected").getElementsByTagName("li").length;
@@ -80,6 +89,9 @@ function checkDegreeForm() {
 	return true;
 }
 
+/**
+ * Check the null value of the form
+ */
 function checkRequirementForm() {
 	var title = document.getElementsByName("title")[0].value;
 	var s_r = document.getElementById("s_list").getElementsByTagName("li").length;
@@ -96,6 +108,9 @@ function checkRequirementForm() {
 	return true;
 }
 
+/**
+ * Check the null value of the form
+ */
 function checkSrForm() {
 	var title = document.getElementsByName("title")[0].value;
 	var required_num = document.getElementsByName("required_num")[0].value;

@@ -1,18 +1,7 @@
 /**
  * @author Bohan Zheng
  */
-//var ASO = {
-//    "minSemester" : "6",
-//    "courses" : {
-//        97 : "3",
-//        93 : "3",
-//        89 : "2",
-//        84 : "1",
-//        86 : "1",
-//        74 : "1",
-//        180 : "1"
-//    }
-//};
+
 /**
  * initiate the page and all the json data
  * */
@@ -206,11 +195,16 @@ function semesterDropDown(evt) {
     }
 }
 
+/**
+ * expand the clicked semester tab at the right side panel
+ */
 function expand(thisDiv) {
     thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "block";
     thisDiv.style.backgroundColor = '#DDD';
 }
-
+/**
+ * expand all the semester tabs at the right side panel
+ */
 function expandAll() {
     var sem_list = $('.req_list')[0].children;
     for (var i = 0; i < sem_list.length; i++) {
@@ -221,11 +215,16 @@ function expandAll() {
     }
 }
 
+/**
+ * shrink the clicked semester tab at the right side panel
+ */
 function shrink(thisDiv) {
     thisDiv.parentElement.getElementsByTagName("div")[1].style.display = "none";
     thisDiv.style.backgroundColor = 'white';
 }
-
+/**
+ * shrink all the semester tabs at the right side panel
+ */
 function shrinkAll() {
     var sem_list = $('.req_list')[0].children;
     for (var i = 0; i < sem_list.length; i++) {
@@ -582,6 +581,9 @@ function checkSemesterReq(id, courses, req) {
     }
 }
 
+/**
+ * the function invoked after clicked "AUTO_NEXT_SEMESTER" button
+ */
 function auto_next_semester_action()
 {
 	var element_text = $('#auto_next_semester_button').html();
@@ -595,6 +597,10 @@ function auto_next_semester_action()
 	}
 }
 
+/**
+ * undo the step of "AUTO_NEXT_SEMESTER"
+ * NOT_IMPLEMENTED
+ */
 function undo_assign() {
     shrinkAll();
 }
