@@ -72,10 +72,12 @@ function clickable() {
  * */
 var f = 0;
 function addSemesters() {
-    f = 0;
-    document.getElementById("pop_back").style.display = "block";
-    document.getElementById("pop_window").style.display = "block";
-    document.getElementById("pop_content_a").style.display = "block";
+	if ($('#add_semesters_button')[0].className == 'button-warning pure-button') {
+	    f = 0;
+	    document.getElementById("pop_back").style.display = "block";
+	    document.getElementById("pop_window").style.display = "block";
+	    document.getElementById("pop_content_a").style.display = "block";
+   }
 }
 /**
  * show add semester pop up window
@@ -174,6 +176,7 @@ function appendSemester() {
  * - the element triggered the click event 
  * */
 function semesterDropDown(evt) {
+	shrinkAll();
     var thisDiv = (evt) ? evt.target : window.event.srcElement;
     if (thisDiv.parentElement.getElementsByTagName("div")[1].style.display == "none") {
         var lis = document.getElementById("req_list").getElementsByTagName("li");
@@ -369,6 +372,7 @@ function autoSemester() {
             
             $('#auto_next_semester_button').html('GET FINAL STUDY PLAN');
             $('#undo_assign_button')[0].className = 'button left_auto pure-button button-secondary';
+            $('#add_semesters_button')[0].className = 'pure-button pure-button-disabled';
             expandAll();
         });
     }
@@ -602,5 +606,5 @@ function auto_next_semester_action()
  * NOT_IMPLEMENTED
  */
 function undo_assign() {
-    shrinkAll();
+    alert("Still under construction...");
 }
