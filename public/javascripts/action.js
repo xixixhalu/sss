@@ -610,7 +610,9 @@ function submitCourse(form) {
     var dataArray = new Array;
     for ( i = 0; i < wantTake.length; i++) {
         var id = wantTake[i].id;
-        var maxDepth = wantTake[i].getElementsByTagName("input")[2].value;
+        // var maxDepth = 1;
+        // if (wantTake[i].getElementsByTagName("input")[2])
+        	maxDepth = wantTake[i].getElementsByTagName("input")[2].value;
         dataArray.push(new ASO(id, maxDepth));
     }
 
