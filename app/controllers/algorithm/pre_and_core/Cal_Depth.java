@@ -120,8 +120,8 @@ public class Cal_Depth {
 
 			NodeInGraph course = this.allCross_relation_example.headNodeList.get(i);
 			if (course.firstIn == null) {
-				if (course.assign == false) {
-					course.assign = true;
+				if (course.visited == false) {
+					course.visited = true;
 					course.maxDepth = 1;
 					CourseRelation arc = course.firstOut;
 					while(arc !=null){
@@ -161,8 +161,8 @@ public class Cal_Depth {
 					next.add(arcOfTemp);
 					arcOfTemp = arcOfTemp.tlink;
 				}
-				if (temp.assign == false) {
-					temp.assign = true;
+				if (temp.visited == false) {
+					temp.visited = true;
 					//all course depth is equal to its tail course's depth + 1
 					temp.maxDepth = this.allCross_relation_example.findHeadCourse(tempCourse.tailCourseID).maxDepth + stepLength; 
 				} else { // courses in queue have been assigned with a depth
