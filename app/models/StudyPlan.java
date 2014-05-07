@@ -563,19 +563,6 @@ public class StudyPlan {
 			}
 		}
 
-		// put all students' selecting courses into courseBinResult
-		for (Integer key : degreeProgram.course.keySet()) {
-			ArrayList<CourseInReq> theSameCourse = degreeProgram.course.get(key);
-
-			for (CourseInReq eachCourse : theSameCourse) {
-				if (eachCourse.chosen == true) {
-					courseBinResult.add(eachCourse.cId);
-					break;
-				}
-
-			}
-
-		}
 
 		for (int i = 0; i < degreeProgram.allComplexReq.size(); i++) {
 			ComplexReq complexReq = degreeProgram.allComplexReq.get(i);
@@ -875,7 +862,7 @@ public class StudyPlan {
 			if (lvlRemainCourse == 0) {
 				level--;
 			}
-			if (num < 6)
+			if (num < courseInSemester)
 				curSemester--;
 		}
 
